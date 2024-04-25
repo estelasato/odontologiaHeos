@@ -20,19 +20,20 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
-    "baseUrl": ".",
-    "paths": {
-      // "@components/*": ["./src/components/*"],
-      // "@services/*": ["./src/services/*"],
-      // "@config/*": ["./src/config/*"],
-      // "@utils/*": ["./src/utils/*"],
-      // "@hooks/*": ["./src/hooks/*"],
-      // "@stores/*": ["./src/stores/*"],
-      // "@assets/*": ["./src/assets/*"],
-      // "@styles/*": ["./src/styles/*"],
-      // "@layouts/*": ["./src/layouts/*"]
-    }
+    // "baseUrl": ".",
+    // "paths": {
+    //   "@components/*": ["./src/components/*"],
+    //   "@services/*": ["./src/services/*"],
+    //   "@config/*": ["./src/config/*"],
+    //   "@utils/*": ["./src/utils/*"],
+    //   "@hooks/*": ["./src/hooks/*"],
+    //   "@stores/*": ["./src/stores/*"],
+    //   "@assets/*": ["./src/assets/*"],
+    //   "@styles/*": ["./src/styles/*"],
+    //   "@layouts/*": ["./src/layouts/*"]
+    // }
+
   },
   "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "references": [{ "path": "./tsconfig.node.json" }],
 }

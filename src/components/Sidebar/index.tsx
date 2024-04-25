@@ -1,10 +1,12 @@
-import { useMediaQuery } from "react-responsive";
-import { Container, ItemRootStyle, ItemStyle, TextItemMenu } from "./styles";
-import { Menu, MenuItem, Sidebar as SidebarCont } from "react-pro-sidebar";
-import adminRoutes from "../../routes/admin.routes";
 import { useState } from "react";
-import { LuClock } from "react-icons/lu";
+import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
+import { Menu, MenuItem, Sidebar as SidebarCont } from "react-pro-sidebar";
+
+import adminRoutes from "../../routes/admin.routes";
+
+import { Container, ItemRootStyle, ItemStyle } from "./styles";
+
 export default function Sidebar() {
   const isMobileScreen = useMediaQuery({ maxWidth: 900 });
   const [isOpen, setIsOpen] = useState(true);

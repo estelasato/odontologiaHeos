@@ -10,9 +10,21 @@ import { GlobalStyles } from "./styles/GlobalStyles"
 import { defaultTheme } from './styles/themes/default'
 
 import Router from './routes'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function App() {
   return (
+    <QueryClientProvider client={queryClient}>
     <ThemeProvider theme={defaultTheme}>
       <BrowserRouter>
         <GlobalStyles />
@@ -20,6 +32,7 @@ function App() {
         <ToastContainer theme="colored" />
       </BrowserRouter>
     </ThemeProvider>
+    </QueryClientProvider>
   )
 }
 

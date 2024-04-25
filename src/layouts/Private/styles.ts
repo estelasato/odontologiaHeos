@@ -9,7 +9,7 @@ export const Container = styled.div`
 `;
 
 export const Content = styled.div`
-  padding: 24px;
+  padding: 32px 38px;
   width: 100%;
   overflow-y: auto;
 `;

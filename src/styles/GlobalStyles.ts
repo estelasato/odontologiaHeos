@@ -66,6 +66,11 @@ export const GlobalStyles = createGlobalStyle`
 
   }
 
+  p {
+    font-size: 14px;
+    color: ${({ theme }) => theme.colors.gray[400]};
+  }
+
   a {
     text-decoration: none;
     color: ${({ theme }) => theme.colors.primary.main};
