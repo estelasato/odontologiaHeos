@@ -1,89 +1,106 @@
-import { useMemo, useRef } from "react";
-// import { Table } from "src/components/Table";
-import { useQuery } from "@tanstack/react-query";
-import Table  from '../../../components/Table';
+import { useMemo, useRef, useState } from "react";
+import { CgTrash } from "react-icons/cg";
 
-import { ModalCountry } from "../../../components/Modal/ModalCountry";
-import { modalRefProps } from "../../../components/Modal";
-import masks from "../../../utils/masks";
-import countryServices from "../../../services/countryServices";
+import masks from "@/utils/masks";
+import Table from "@/components/Table";
+import { Button } from "@/components/Button";
+import { modalRefProps } from "@/components/Modal";
+import { ModalCountry } from "@/components/Modal/ModalCountry";
+import { ModalConfirmation } from "@/components/Modal/ModalConfirm";
+import { CountryProps } from "@/services/countryServices";
+
+import useCountry from "./useCountry";
+import { Container } from "./styles";
 
 export const Country = () => {
+  const modalRef = useRef<modalRefProps>(null);
+  const modalRemoveRef = useRef<modalRefProps>(null);
+  const [selectedCountry, setSelectedCountry] = useState<CountryProps>();
 
-  const { data } = useQuery({
-    queryKey: ["getCountries"],
-    queryFn: () => {
-      return countryServices.getAllCountries();
-    },
-  });
+  const { countryList, handleRemove } = useCountry(modalRemoveRef);
 
-  const modalRef = useRef<modalRefProps>(null)
-
-  const columns = useMemo(() => [
-    {
-      header: "Código",
-      accessorKey: "pais_ID",
-    },
-    {
-      header: "País",
-      accessorKey: "pais",
-      // meta: { alignText: "right"},
-      cell: (row: any) => {
-        return (
-          <>
-            {row.getValue() || 0}
-          </>
-        );
+  const columns = useMemo(
+    () => [
+      {
+        header: "Código",
+        accessorKey: "pais_ID",
       },
-    },
-    {
-      header: "DDI",
-      accessorKey: "ddi",
-    },
-    {
-      header: "Sigla",
-      accessorKey: "sigla",
-    },
-    {
-      header: "Ativo",
-      accessorKey: "ativo",
-    },
-    {
-      header: "Cadastro",
-      accessorKey: "data_cadastro",
-      cell: (row: any) => {
-        return (
-          <>
-            {masks.convertToDateString(row.getValue() as string)}
-          </>
-        );
-      }
-    },
-    {
-      header: "Última alteração",
-      accessorKey: "data_ult_alt",
-      cell: (row: any) => {
-        return (
-          <>
-            {masks.convertToDateString(row.getValue() as string)}
-          </>
-        );
-      }
-    },
-  ], [])
+      {
+        header: "País",
+        accessorKey: "pais",
+        cell: (row: any) => {
+          return <>{row.getValue() || 0}</>;
+        },
+      },
+      {
+        header: "DDI",
+        accessorKey: "ddi",
+      },
+      {
+        header: "Sigla",
+        accessorKey: "sigla",
+      },
+      {
+        header: "Ativo",
+        accessorKey: "ativo",
+      },
+      {
+        header: "Cadastro",
+        accessorKey: "data_cadastro",
+        cell: (row: any) => {
+          return <>{masks.convertToDateString(row.getValue() as string)}</>;
+        },
+      },
+      {
+        header: "Última alteração",
+        accessorKey: "data_ult_alt",
+        meta: { alignText: "center", alignHeader: "center" },
+        cell: (row: any) => {
+          return <>{masks.convertToDateString(row.getValue() as string)}</>;
+        },
+      },
+      {
+        header: "",
+        accessorKey: "delete",
+        meta: { alignText: "right" },
+        cell: (row: any) => (
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              setSelectedCountry(row.row.original);
+              modalRemoveRef.current?.open();
+            }}
+            style={{ paddingRight: "35px", width: "15px", cursor: "pointer" }}
+          >
+            <CgTrash />
+          </div>
+        ),
+      },
+    ],
+    []
+  );
 
   return (
     <>
-    <ModalCountry modalRef={modalRef} />
-    <div>
-
-      <Table
-        cols={columns}
-        data={data ?  data : []}
-        onOpenRow={(data) => modalRef.current?.open(data)}
+      <ModalConfirmation
+        modalRef={modalRemoveRef}
+        title="Remover país"
+        message={"Tem certeza que deseja remover este país?"}
+        onConfirm={() =>
+          selectedCountry?.pais_ID && handleRemove(selectedCountry?.pais_ID)
+        }
+      />
+      <ModalCountry modalRef={modalRef} />
+      <Container>
+        <Table
+          cols={columns}
+          data={countryList || []}
+          onOpenRow={(data) => modalRef.current?.open(data)}
         />
-    </div>
+        <Button variant="link" onClick={() => modalRef?.current?.open()}>
+          + Adicionar
+        </Button>
+      </Container>
     </>
-
-  )
-}
+  );
+};

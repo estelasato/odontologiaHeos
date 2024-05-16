@@ -1,15 +1,9 @@
-// import masks, { MaskFunctions } from "@utils/masks";
-import {
-  ChangeEvent,
-  ComponentProps,
-  forwardRef,
-  useCallback,
+import { ChangeEvent, ComponentProps, forwardRef, useCallback } from "react";
+import { Control, Controller, useFormContext } from "react-hook-form";
 
-} from "react";
-
-import { Control, Controller, useForm } from "react-hook-form";
+import { ErrorMessage } from "@/components/ErrorMessage";
 import masks, { MaskFunctions } from "../../../utils/masks";
-import { Container, InputStyle, StyledInput } from "./styles";
+import { Container, StyledInput } from "./styles";
 
 interface InputProps extends ComponentProps<"input"> {
   value?: string;
@@ -18,15 +12,12 @@ interface InputProps extends ComponentProps<"input"> {
   label?: string;
   placeholder?: string;
   fullWidth?: boolean;
-  // variant?: "outlined" | "standard";
   required?: boolean;
-  // autoComplete?: string;
-  // leftIcon?: React.ReactNode;
   width?: string;
   handleBlur?: (e?: any) => void;
   error?: any;
   disabled?: boolean;
-  control: Control<any>;
+  control?: Control<any>;
   handleChange?: (value: ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -42,10 +33,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       placeholder,
       fullWidth = true,
       width,
-      // variant,
       required = false,
-      // autoComplete = "off",
-      // leftIcon,
       handleBlur: customHandleBlur,
       handleChange,
       error,
@@ -55,9 +43,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     },
     ref
   ) => {
-    const isPasswordInput = type === "password";
+    // const isPasswordInput = type === "password";
 
-    const { setValue } = useForm();
+    const { setValue, control: Control } = useFormContext();
 
     const handleInputChange = useCallback(
       (e: ChangeEvent<HTMLInputElement>) => {
@@ -86,7 +74,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       <Controller
         name={name || "name"}
         {...props}
-        control={control}
+        control={control || Control}
         render={({ field: { onChange, value } }) => (
           <Container $width={width}>
             <p className="label-input">{label}</p>
@@ -100,13 +88,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               fullWidth={true}
               onBlur={handleBlur}
               value={value || ""}
-              InputProps={{
-                readOnly: disabled ,
-              }}
+              InputProps={{ readOnly: disabled }}
               variant="standard"
               // type={isPasswordInput ? "password" : props.type}
               inputRef={ref}
             />
+            {!!error && <ErrorMessage error={error} />}
           </Container>
         )}
       />

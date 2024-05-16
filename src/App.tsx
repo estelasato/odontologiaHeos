@@ -1,17 +1,12 @@
-import { BrowserRouter } from 'react-router-dom'
-import { ThemeProvider } from 'styled-components'
-import { ToastContainer } from 'react-toastify'
+import { ToastContainer } from "react-toastify";
+import { BrowserRouter } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-import 'react-toastify/dist/ReactToastify.css'
-// import '@szhsin/react-menu/dist/index.css';
-// import '@szhsin/react-menu/dist/transitions/slide.css';
-
-import { GlobalStyles } from "./styles/GlobalStyles"
-import { defaultTheme } from './styles/themes/default'
-
-import Router from './routes'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-
+import Router from "./routes";
+import { GlobalStyles } from "./styles/GlobalStyles";
+import { defaultTheme } from "./styles/themes/default";
+import { ThemeProvider } from "styled-components";
+import "react-toastify/dist/ReactToastify.css";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,15 +20,15 @@ export const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-    <ThemeProvider theme={defaultTheme}>
-      <BrowserRouter>
-        <GlobalStyles />
-        <Router />
-        <ToastContainer theme="colored" />
-      </BrowserRouter>
-    </ThemeProvider>
+      <ThemeProvider theme={defaultTheme}>
+        <BrowserRouter>
+          <GlobalStyles />
+          <Router />
+          <ToastContainer theme="colored" />
+        </BrowserRouter>
+      </ThemeProvider>
     </QueryClientProvider>
-  )
+  );
 }
 
-export default App
+export default App;

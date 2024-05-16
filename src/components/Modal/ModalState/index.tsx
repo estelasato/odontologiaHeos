@@ -1,35 +1,37 @@
 import { useEffect, useState } from "react";
 import { FormProvider } from "react-hook-form";
 
-import { Input } from "../../Form/Input";
 import masks from "@/utils/masks";
-import { CountryProps } from "@/services/countryServices";
-
-import { useModalCountry } from "./useModalCountry";
 import { Switch } from "@/components/Switch";
 import { Button } from "@/components/Button";
-import { ModalProps } from "@/interfaces/Modal";
+import { Input } from "@/components/Form/Input";
+import { Select } from "@/components/Form/Select";
+import { StateProps } from "@/services/stateServices";
 
+import { useModalState } from "./useModalState";
 import Modal from "..";
 import { Box, Container } from "./styles";
 
-export const ModalCountry = ({ modalRef }: ModalProps) => {
-  const [values, setValues] = useState<CountryProps | null>(null);
+export const ModalState = ({ modalRef }: any) => {
+  const [values, setValues] = useState<StateProps | null>(null);
 
-  const { onSubmit, countryForm } = useModalCountry(!values, modalRef);
+  const { onSubmit, stateForm, countryOptions } = useModalState(
+    !values,
+    modalRef
+  );
 
   const {
     handleSubmit,
     formState: { errors },
     reset,
     register,
-  } = countryForm;
+  } = stateForm;
 
   const defaultValues = {
+    estado_ID: undefined,
+    estado: "",
+    uf: "",
     pais_ID: undefined,
-    pais: "",
-    ddi: "",
-    sigla: "",
     ativo: undefined,
     data_cadastro: "",
     data_ult_alt: "",
@@ -47,31 +49,28 @@ export const ModalCountry = ({ modalRef }: ModalProps) => {
       title={values ? "Edição" : "Cadastro"}
       getValues={setValues}
     >
-      <FormProvider {...countryForm}>
+      <FormProvider {...stateForm}>
         <Container onSubmit={handleSubmit(onSubmit)}>
           <Box>
             <Input
-              {...register("pais_ID")}
+              {...register("estado_ID")}
               label="Código"
               width="100px"
               disabled={true}
             />
             <Input
-              {...register("pais")}
-              label="País"
-              error={errors.pais?.message}
+              {...register("estado")}
+              label="Estado"
+              error={errors.estado?.message}
             />
           </Box>
           <Box>
-            <Input
-              {...register("ddi")}
-              label="DDI"
-              error={errors.ddi?.message}
-            />
-            <Input
-              {...register("sigla")}
-              label="Sigla"
-              error={errors.sigla?.message}
+            <Input {...register("uf")} label="UF" error={errors.uf?.message} />
+            <Select
+              {...register("pais_ID")}
+              label="País"
+              options={countryOptions}
+              error={errors.pais_ID?.message}
             />
             <Switch
               value={values?.ativo}

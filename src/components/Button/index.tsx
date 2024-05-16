@@ -9,7 +9,8 @@ interface ButtonProps {
   isLoading?: boolean,
   disabled?: boolean,
   fullWidth?: boolean,
-  children?: React.ReactNode
+  children?: React.ReactNode,
+  className?: string,
 }
 
 export function Button({
@@ -19,11 +20,12 @@ export function Button({
   variant,
   fullWidth = false,
   children,
+  className,
   ...rest
 }: ButtonProps) {
   return (
     <Container
-      className='button-component'
+      className={'button-component'|| className}
       type={type}
       $variant={variant}
       $isFullWidth={fullWidth}

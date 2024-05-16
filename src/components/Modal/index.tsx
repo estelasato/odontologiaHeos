@@ -31,12 +31,12 @@ const ComponenteModal: React.ForwardRefRenderFunction<
 
   useImperativeHandle(ref, () => ({
     open: (data) => {
-      setIsOpen(true)
       if (data) setInitialData(data)
+      setIsOpen(true)
     },
     close: () => {
-      setIsOpen(false)
       setInitialData(null)
+      setIsOpen(false)
       getValues && getValues(null)
     },
     getInitialData: () => initialData
@@ -51,6 +51,7 @@ const ComponenteModal: React.ForwardRefRenderFunction<
 
   const closeModal = () => {
     if (ref && "current" in ref && ref.current) {
+      setInitialData(null)
       ref.current.close();
     }
   };

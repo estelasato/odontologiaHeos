@@ -8,6 +8,7 @@ import { TableGrid, Td, Th, Thead, Tr } from "./styles";
 
 declare module "@tanstack/react-table" {
   interface ColumnMeta<TData, TValue> {
+    alignHeader?: "right" | "center";
     alignText?: "right" | "center"; // padrão left
     justifyContent?: "right" | "center";
   }
@@ -57,10 +58,10 @@ const Table: React.FunctionComponent<TableProps> = ({
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
-                const alignTr = header.column.columnDef.meta?.alignText;
+                const alignTr = header.column.columnDef.meta?.alignHeader;
 
                 return (
-                  <Th key={header.id} align={alignTr}>
+                  <Th key={header.id} $align={alignTr}>
                     {flexRender(
                       header.column.columnDef.header,
                       header.getContext()
@@ -77,8 +78,11 @@ const Table: React.FunctionComponent<TableProps> = ({
               return (
                 <Tr key={row.id}>
                   {row.getVisibleCells().map((cell) => {
+                    const alignTr =
+                      cell.column.columnDef.meta?.alignText || "left";
                     return (
                       <Td
+                        $alignTr={alignTr}
                         accessKey={`${cell.column.columnDef.header}`}
                         key={cell.id}
                         onClick={() =>

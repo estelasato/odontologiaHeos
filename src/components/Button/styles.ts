@@ -14,7 +14,7 @@ export const Container = styled.button<IButtonContainer>`
   cursor: pointer;
   width: ${(props) => props.$isFullWidth && '100%'};
   font-size: 0.938rem;
-  height: 46px;
+  height: 42px;
   padding: 0 2rem;
   border: none;
   border-radius: 12px;

@@ -35,7 +35,7 @@ export const LabelCont = styled.div<{
         transform: translateX(-50%);
         width: 100%;
         height: 4px;
-        background: #80232d;
+        background: ${theme.colors.primary.main};
         border-radius: 10px;
       }
     `}

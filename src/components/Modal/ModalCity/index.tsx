@@ -1,35 +1,34 @@
 import { useEffect, useState } from "react";
 import { FormProvider } from "react-hook-form";
 
-import { Input } from "../../Form/Input";
 import masks from "@/utils/masks";
-import { CountryProps } from "@/services/countryServices";
-
-import { useModalCountry } from "./useModalCountry";
 import { Switch } from "@/components/Switch";
 import { Button } from "@/components/Button";
-import { ModalProps } from "@/interfaces/Modal";
+import { Input } from "@/components/Form/Input";
+import { Select } from "@/components/Form/Select";
+import { StateProps } from "@/services/stateServices";
 
 import Modal from "..";
-import { Box, Container } from "./styles";
+import { useModalCity } from "./useModalCity";
+import { Box, Container } from "../ModalCountry/styles";
 
-export const ModalCountry = ({ modalRef }: ModalProps) => {
-  const [values, setValues] = useState<CountryProps | null>(null);
+export const ModalCity = ({ modalRef }: any) => {
+  const [values, setValues] = useState<StateProps | null>(null);
 
-  const { onSubmit, countryForm } = useModalCountry(!values, modalRef);
+  const { onSubmit, cityForm, stateOpt } = useModalCity(!values, modalRef);
 
   const {
     handleSubmit,
     formState: { errors },
     reset,
     register,
-  } = countryForm;
+  } = cityForm;
 
   const defaultValues = {
-    pais_ID: undefined,
-    pais: "",
-    ddi: "",
-    sigla: "",
+    estado_ID: undefined,
+    cidade_ID: undefined,
+    cidade: "",
+    ddd: "",
     ativo: undefined,
     data_cadastro: "",
     data_ult_alt: "",
@@ -37,6 +36,7 @@ export const ModalCountry = ({ modalRef }: ModalProps) => {
 
   useEffect(() => {
     if (values) {
+      console.log(values);
       reset(values);
     } else reset(defaultValues);
   }, [values]);
@@ -47,31 +47,32 @@ export const ModalCountry = ({ modalRef }: ModalProps) => {
       title={values ? "Edição" : "Cadastro"}
       getValues={setValues}
     >
-      <FormProvider {...countryForm}>
+      <FormProvider {...cityForm}>
         <Container onSubmit={handleSubmit(onSubmit)}>
           <Box>
             <Input
-              {...register("pais_ID")}
+              {...register("cidade_ID")}
               label="Código"
               width="100px"
               disabled={true}
             />
             <Input
-              {...register("pais")}
-              label="País"
-              error={errors.pais?.message}
+              {...register("cidade")}
+              label="Cidade"
+              error={errors.cidade?.message}
             />
           </Box>
           <Box>
             <Input
-              {...register("ddi")}
-              label="DDI"
-              error={errors.ddi?.message}
+              {...register("ddd")}
+              label="DDD"
+              error={errors.ddd?.message}
             />
-            <Input
-              {...register("sigla")}
-              label="Sigla"
-              error={errors.sigla?.message}
+            <Select
+              {...register("estado_ID")}
+              label="Estado"
+              options={stateOpt}
+              error={errors.estado_ID?.message}
             />
             <Switch
               value={values?.ativo}

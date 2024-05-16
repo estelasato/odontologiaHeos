@@ -1,53 +1,84 @@
-import { useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMemo, useRef, useState } from "react";
+import { CgTrash } from "react-icons/cg";
 
-import Table  from '../../../components/Table';
-import stateServices from "../../../services/stateServices";
+import Table from "@/components/Table";
+import { Button } from "@/components/Button";
+import { modalRefProps } from "@/components/Modal";
+import { StateProps } from "@/services/stateServices";
+import { ModalState } from "@/components/Modal/ModalState";
+import { ModalConfirmation } from "@/components/Modal/ModalConfirm";
+
+import useStateData from "./useState";
+import { Container } from "../Country/styles";
 
 export const State = () => {
+  const modalRef = useRef<modalRefProps>(null);
+  const modalRemoveRef = useRef<modalRefProps>(null);
+  const [selectedState, setSelectedState] = useState<StateProps>();
 
-  const { data } = useQuery({
-    queryKey: ["getStates"],
-    queryFn: () => {
-      return stateServices.getAllStates();
-    },
-  });
+  const { stateList, handleRemove } = useStateData(modalRemoveRef);
 
-  const columns = useMemo(() => [
-    {
-      header: "Código",
-      accessorKey: "estado_ID",
-    },
-    {
-      header: "Estado",
-      accessorKey: "estado",
-      // meta: { alignText: "right"},
-      cell: (row: any) => {
-        return (
-          <>
-            {row.getValue() || 0}
-          </>
-        );
+  const columns = useMemo(
+    () => [
+      {
+        header: "Código",
+        accessorKey: "estado_ID",
       },
-    },
-    {
-      header: "UF",
-      accessorKey: "uf",
-    },
-    {
-      header: "País",
-      accessorKey: "pais.pais",
-    },
-  ], [])
+      {
+        header: "Estado",
+        accessorKey: "estado",
+        cell: (row: any) => {
+          return <>{row.getValue() || 0}</>;
+        },
+      },
+      {
+        header: "UF",
+        accessorKey: "uf",
+      },
+      {
+        header: "País",
+        accessorKey: "pais.pais",
+      },
+      {
+        header: "",
+        accessorKey: "delete",
+        meta: { alignText: "right" },
+        cell: (row: any) => (
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              setSelectedState(row.row.original);
+              modalRemoveRef.current?.open();
+            }}
+            style={{ paddingRight: "35px", width: "15px", cursor: "pointer" }}
+          >
+            <CgTrash />
+          </div>
+        ),
+      },
+    ],
+    []
+  );
 
   return (
-    <div>
-
+    <Container>
+      <ModalConfirmation
+        modalRef={modalRemoveRef}
+        title="Remover estado"
+        message={`Deseja realmente remover o estado ${selectedState?.estado_ID}?`}
+        onConfirm={() => {
+          selectedState?.estado_ID && handleRemove(selectedState?.estado_ID);
+        }}
+      />
+      <ModalState modalRef={modalRef} />
       <Table
         cols={columns}
-        data={data || []}
+        data={stateList || []}
+        onOpenRow={(data) => modalRef.current?.open(data)}
       />
-    </div>
-
-  )
-}
+      <Button variant="link" onClick={() => modalRef?.current?.open()}>
+        <div>+ Adicionar</div>
+      </Button>
+    </Container>
+  );
+};

@@ -1,28 +1,33 @@
-import { ComponentProps, forwardRef } from "react";
+import { ComponentProps, forwardRef, useEffect } from "react";
+import { Control, Controller, useFormContext } from "react-hook-form";
 
 import { Checkbox as MuiCheckbox } from "@mui/material";
-import { Control, Controller } from "react-hook-form";
-
-import {  Content } from "./styles";
 import { FormControlLabel } from "@mui/material";
+
+import { Content } from "./styles";
 
 interface CheckboxProps extends ComponentProps<"input"> {
   value?: string;
   label?: string;
   error?: any;
-  control: Control<any>;
+  control?: Control<any>;
   name: string;
-  options: { label: string; value: string }[];
+  options: { label: any; value: any }[];
 }
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
-  ({ control, name, label, value, error, options, ...props }, ref) => {
+  ({ defaultValue, control, name, label, value, options }) => {
+    const { control: Control, setValue } = useFormContext();
+
+    useEffect(() => {
+      setValue(name, defaultValue);
+    }, [defaultValue]);
     return (
       <div>
         <p className="label-input">{label}</p>
         <Controller
           name={name}
-          control={control}
+          control={control || Control}
           defaultValue={value}
           render={({ field }) => (
             <Content>
@@ -31,10 +36,13 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
                   key={opt.value}
                   control={
                     <MuiCheckbox
-                      checked={field.value === opt.value}
-                      onChange={(e) =>
-                        field.onChange(e.target.checked ? opt.value : undefined)
-                      }
+                      defaultChecked={defaultValue == opt.value}
+                      checked={field?.value == opt.value}
+                      onChange={(e) => {
+                        field.onChange(
+                          e.target.checked ? opt.value : undefined
+                        );
+                      }}
                     />
                   }
                   label={opt.label}

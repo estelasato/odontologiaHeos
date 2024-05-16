@@ -1,8 +1,9 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 type TdProps = {
   active?: boolean;
   handleOpenRow?: boolean;
+  $alignTr?: string;
 };
 
 export const TableGrid = styled.table`
@@ -11,7 +12,7 @@ export const TableGrid = styled.table`
   table-layout: auto;
 
   @media screen and (max-width: 800px) {
-    min-width: 3-0px;
+    min-width: 30px;
     thead tr {
       display: none;
     }
@@ -41,27 +42,10 @@ export const Thead = styled.thead`
   border-bottom: 1px solid ${({ theme }) => theme.colors.primary.main}!important;
 `;
 
-export const Th = styled.th<{ align?: string }>`
+export const Th = styled.th<{ $align?: string }>`
   padding: 16px;
-  /* font-size: 13px;
-  font-weight: 400; */
   text-align: left;
-
-  ${({ align }) => {
-    if (align === "right")
-      return css`
-        display: flex;
-        align-items: center;
-        justify-content: right;
-      `;
-    if (align === "center")
-      return css`
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      `;
-  }}
-
+  text-align: ${({ $align }) => ($align ? $align : "left")};
   cursor: auto;
 `;
 
@@ -71,30 +55,13 @@ export const Tr = styled.tr` // hover na linha
 
   &:hover {
     cursor: pointer;
-    /* background-color: ${({ theme }) => theme.colors.primary.main}; */
   }
 `;
 
 export const Td = styled.td<TdProps>`
   padding: 12px;
   white-space: pre-wrap;
-
-  /* ${({ active }) => !active && `opacity: 0.4;`} */
   position: relative;
 
-  ${({ align }) => {
-    if (align === "right")
-      return css`
-        display: flex;
-        align-items: center;
-        justify-content: right;
-      `;
-    if (align === "center")
-      return css`
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      `;
-  }}
+  text-align: ${({ $alignTr }) => ($alignTr ? $alignTr : "left")};
 `;
-

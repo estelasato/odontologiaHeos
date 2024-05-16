@@ -1,11 +1,11 @@
 import api from "../config/api";
 
 export interface StateProps{
-  pais_Id?: number;
-  state_ID?: string;
-  state?: string;
+  pais_ID?: number;
+  estado_ID?: number;
+  estado?: string;
   uf?: string;
-  ativo?: boolean;
+  ativo?: any;
   data_cadastro?: any;
   data_ult_alt?: any;
   pais?: {

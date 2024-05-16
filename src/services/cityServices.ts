@@ -1,11 +1,11 @@
 import api from "../config/api";
 
-export interface CityProps{
-  state_ID?: string;
-  city_ID?: string;
-  cidade?: string
+export interface CityProps {
+  estado_ID?: number;
+  cidade_ID?: number;
+  cidade?: string;
   ddd?: string;
-  ativo?: boolean;
+  ativo?: any;
   data_cadastro?: any;
   data_ult_alt?: any;
 }
@@ -32,7 +32,7 @@ class CityServices {
   }
 
   async deleteCity(id: number) {
-    return await api.delete(`/state/${id}`);
+    return await api.delete(`/city/${id}`);
   }
 }
 

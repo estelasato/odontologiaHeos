@@ -13,10 +13,6 @@ export const Container = styled.div<StyledProps>`
 
   max-width: ${props => props.$fullWidth ? '100%' : '700px'};
   width: ${props => props.$width ? props.$width : '100%'};
-
-  .label-input {
-    /* font-weight: 500; */
-  }
 `;
 
 export const InputStyle = styled(TextField)({
@@ -29,13 +25,10 @@ export const StyledInput = styled(TextField)(({}) => ({
   },
 
   "& .MuiInputBase-root": {
-      // border: '1px solid #E0E3E7',
-
     "& .MuiInput-input": {
       border: '1px solid #E0E3E7',
-      height: '34px',
       borderRadius: 8,
-      padding: '5px 16px'
+      padding: '8px 16px'
     },
     "&::after": {
       display: "none",
@@ -44,16 +37,4 @@ export const StyledInput = styled(TextField)(({}) => ({
       display: "none",
     }
   }
-  // "& .MuiInputBase-input": {
-  //   borderRadius: 4,
-  //   position: "relative",
-  //   backgroundColor: "#F3F6F9",
-  //   border: "1px solid",
-  //   borderColor:  "#E0E3E7",
-  //   fontSize: 16,
-  //   width: "auto",
-  //   padding: "10px 12px",
-
-  //   // Use the system font instead of the default Roboto font.
-  // },
 }));

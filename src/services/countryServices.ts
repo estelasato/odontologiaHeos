@@ -1,11 +1,12 @@
 import api from "../config/api";
+import { CountryForm } from "../validators/locationValidator";
 
-export interface CountryProps{
-  pais_Id?: number;
+export interface CountryProps {
+  pais_ID?: number;
   pais?: string;
   ddi?: string;
   sigla?: string;
-  ativo?: boolean;
+  ativo?: any;
   data_cadastro?: any;
   data_ult_alt?: any;
 }
@@ -26,7 +27,7 @@ class CountryService {
     return response;
   }
 
-  async createCountry(data: CountryProps) {
+  async createCountry(data: CountryForm) {
     const { data: response } = await api.post("country/", data);
     return response;
   }

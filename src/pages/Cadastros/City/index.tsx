@@ -1,51 +1,86 @@
-import { useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMemo, useRef, useState } from "react";
+import { CgTrash } from "react-icons/cg";
 
-import Table  from '../../../components/Table';
-import cityServices from "../../../services/cityServices";
+import Table from "@/components/Table";
+import { Button } from "@/components/Button";
+import { modalRefProps } from "@/components/Modal";
+import { ModalCity } from "@/components/Modal/ModalCity";
+import { ModalConfirmation } from "@/components/Modal/ModalConfirm";
+import { CityProps } from "@/services/cityServices";
+
+import useCity from "./useCity";
+import { Container } from "../Country/styles";
 
 export const City = () => {
+  const modalRef = useRef<modalRefProps>(null);
+  const modalRemoveRef = useRef<modalRefProps>(null);
+  const [selectedCity, setSelectedCity] = useState<CityProps>();
 
-  const { data } = useQuery({
-    queryKey: ["getCities"],
-    queryFn: () => {
-      return cityServices.getAllCities();
-    },
-  });
+  const { cityList, handleRemove } = useCity(modalRemoveRef);
 
-  const columns = useMemo(() => [
-    {
-      header: "Código",
-      accessorKey: "cidade_ID",
-    },
-    {
-      header: "Cidade",
-      accessorKey: "cidade",
-      cell: (row: any) => {
-        return (
-          <>
-            {row.getValue() || 0}
-          </>
-        );
+  const columns = useMemo(
+    () => [
+      {
+        header: "Código",
+        accessorKey: "cidade_ID",
       },
-    },
-    {
-      header: "DDD",
-      accessorKey: "ddd",
-    },
-    {
-      header: "Estado",
-      accessorKey: "estado.estado",
-    },
-  ], [])
+      {
+        header: "Cidade",
+        accessorKey: "cidade",
+        cell: (row: any) => {
+          return <>{row.getValue() || 0}</>;
+        },
+      },
+      {
+        header: "DDD",
+        accessorKey: "ddd",
+      },
+      {
+        header: "Estado",
+        accessorKey: "estado.estado",
+      },
+      {
+        header: "",
+        accessorKey: "delete",
+        meta: { alignText: "right" },
+        cell: (row: any) => (
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              setSelectedCity(row.row.original);
+              modalRemoveRef.current?.open();
+            }}
+            style={{ paddingRight: "35px", width: "15px", cursor: "pointer" }}
+          >
+            <CgTrash />
+          </div>
+        ),
+      },
+    ],
+    []
+  );
 
   return (
-    <div>
-
-      <Table
-        cols={columns}
-        data={data || []}
+    <>
+      <ModalConfirmation
+        modalRef={modalRemoveRef}
+        title="Remover cidade"
+        message={"Tem certeza que deseja remover esta cidade?"}
+        onConfirm={() =>
+          selectedCity?.cidade_ID && handleRemove(selectedCity?.cidade_ID)
+        }
       />
-    </div>
-  )
-}
+      <Container>
+        <ModalCity modalRef={modalRef} />
+        <Table
+          cols={columns}
+          data={cityList || []}
+          onOpenRow={(e) => modalRef.current?.open(e)}
+        />
+        <Button variant="link" onClick={() => modalRef?.current?.open()}>
+          + Adicionar
+        </Button>
+      </Container>
+    </>
+  );
+};
