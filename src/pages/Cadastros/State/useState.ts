@@ -21,8 +21,8 @@ export default function useStateData(
   const handleRemove = async (id: number) => {
     try {
       await deleteState(id);
-      modalRemoveRef?.current?.close();
       refetch();
+      modalRemoveRef?.current?.close();
     } catch (e) {
       toast.error("Ocorreu um erro");
     }

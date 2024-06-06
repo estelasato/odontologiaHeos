@@ -33,7 +33,7 @@ export const useModalCountry = (
   const { mutateAsync: updateCountry } = useMutation({
     mutationKey: ["updateCountry"],
     mutationFn: async (params: any) => {
-      return countryServices.updateCountry(params.pais_ID, params);
+      return countryServices.updateCountry(params.id, params);
     },
   });
 

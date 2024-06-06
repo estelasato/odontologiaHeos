@@ -1,13 +1,13 @@
 import api from "../config/api";
 
 export interface CityProps {
-  estado_ID?: number;
-  cidade_ID?: number;
+  idEstado?: number;
+  id?: number;
   cidade?: string;
   ddd?: string;
   ativo?: any;
-  data_cadastro?: any;
-  data_ult_alt?: any;
+  dtCadastro?: any;
+  dtUltAlt?: any;
 }
 
 class CityServices {

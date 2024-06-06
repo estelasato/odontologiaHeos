@@ -12,7 +12,7 @@ interface SwitchTypes extends ComponentProps<any> {
 }
 
 export const Switch = forwardRef<HTMLInputElement, SwitchTypes>(
-  ({ label, handleChange, value = true, name, control, ...props }, ref) => {
+  ({ label, handleChange, value = false, name, control, ...props }, ref) => {
     const method = useFormContext();
 
     return (

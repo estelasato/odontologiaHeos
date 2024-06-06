@@ -23,7 +23,7 @@ export const Country = () => {
     () => [
       {
         header: "Código",
-        accessorKey: "pais_ID",
+        accessorKey: "id",
       },
       {
         header: "País",
@@ -46,14 +46,14 @@ export const Country = () => {
       },
       {
         header: "Cadastro",
-        accessorKey: "data_cadastro",
+        accessorKey: "dtCadastro",
         cell: (row: any) => {
           return <>{masks.convertToDateString(row.getValue() as string)}</>;
         },
       },
       {
         header: "Última alteração",
-        accessorKey: "data_ult_alt",
+        accessorKey: "dtUltAlt",
         meta: { alignText: "center", alignHeader: "center" },
         cell: (row: any) => {
           return <>{masks.convertToDateString(row.getValue() as string)}</>;
@@ -87,7 +87,7 @@ export const Country = () => {
         title="Remover país"
         message={"Tem certeza que deseja remover este país?"}
         onConfirm={() =>
-          selectedCountry?.pais_ID && handleRemove(selectedCountry?.pais_ID)
+          selectedCountry?.id && handleRemove(selectedCountry?.id)
         }
       />
       <ModalCountry modalRef={modalRef} />

@@ -26,13 +26,13 @@ export const ModalCountry = ({ modalRef }: ModalProps) => {
   } = countryForm;
 
   const defaultValues = {
-    pais_ID: undefined,
+    id: 0,
     pais: "",
     ddi: "",
     sigla: "",
     ativo: undefined,
-    data_cadastro: "",
-    data_ult_alt: "",
+    dtCadastro: "",
+    dtUltAlt: "",
   };
 
   useEffect(() => {
@@ -51,10 +51,11 @@ export const ModalCountry = ({ modalRef }: ModalProps) => {
         <Container onSubmit={handleSubmit(onSubmit)}>
           <Box>
             <Input
-              {...register("pais_ID")}
+              {...register("id")}
               label="Código"
               width="100px"
               disabled={true}
+              type="number"
             />
             <Input
               {...register("pais")}
@@ -84,15 +85,15 @@ export const ModalCountry = ({ modalRef }: ModalProps) => {
             <div>
               <p>Data de cadastro</p>
               <p>
-                {values?.data_cadastro &&
-                  masks.convertDateISO(values?.data_cadastro)}
+                {values?.dtCadastro &&
+                  masks.convertDateISO(values?.dtCadastro)}
               </p>
             </div>
             <div>
               <p>Data da última alteração</p>
               <p>
-                {values?.data_ult_alt &&
-                  masks.convertDateISO(values?.data_ult_alt)}
+                {values?.dtUltAlt &&
+                  masks.convertDateISO(values?.dtUltAlt)}
               </p>
             </div>
           </Box>

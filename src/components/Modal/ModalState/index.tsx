@@ -28,13 +28,13 @@ export const ModalState = ({ modalRef }: any) => {
   } = stateForm;
 
   const defaultValues = {
-    estado_ID: undefined,
+    id: undefined,
     estado: "",
     uf: "",
-    pais_ID: undefined,
+    idPais: undefined,
     ativo: undefined,
-    data_cadastro: "",
-    data_ult_alt: "",
+    dtCadastro: "",
+    dtUltAlt: "",
   };
 
   useEffect(() => {
@@ -53,7 +53,7 @@ export const ModalState = ({ modalRef }: any) => {
         <Container onSubmit={handleSubmit(onSubmit)}>
           <Box>
             <Input
-              {...register("estado_ID")}
+              {...register("id")}
               label="Código"
               width="100px"
               disabled={true}
@@ -67,10 +67,10 @@ export const ModalState = ({ modalRef }: any) => {
           <Box>
             <Input {...register("uf")} label="UF" error={errors.uf?.message} />
             <Select
-              {...register("pais_ID")}
+              {...register("idPais")}
               label="País"
               options={countryOptions}
-              error={errors.pais_ID?.message}
+              error={errors.idPais?.message}
             />
             <Switch
               value={values?.ativo}
@@ -83,15 +83,15 @@ export const ModalState = ({ modalRef }: any) => {
             <div>
               <p>Data de cadastro</p>
               <p>
-                {values?.data_cadastro &&
-                  masks.convertDateISO(values?.data_cadastro)}
+                {values?.dtCadastro &&
+                  masks.convertDateISO(values?.dtCadastro)}
               </p>
             </div>
             <div>
               <p>Data da última alteração</p>
               <p>
-                {values?.data_ult_alt &&
-                  masks.convertDateISO(values?.data_ult_alt)}
+                {values?.dtUltAlt &&
+                  masks.convertDateISO(values?.dtUltAlt)}
               </p>
             </div>
           </Box>

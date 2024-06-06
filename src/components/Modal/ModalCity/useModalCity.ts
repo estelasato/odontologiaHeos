@@ -31,7 +31,7 @@ export const useModalCity = (
   const { mutateAsync: updateCity } = useMutation({
     mutationKey: ["updateCity"],
     mutationFn: async (params: any) => {
-      return cityServices.updateCity(params.cidade_ID, params);
+      return cityServices.updateCity(params.id, params);
     },
   });
 
@@ -55,7 +55,7 @@ export const useModalCity = (
 
   const stateOpt = useMemo(() => {
     return stateList?.map((state: StateProps) => ({
-      value: state.estado_ID,
+      value: state.id,
       label: state.estado,
     }));
   }, [stateList]);

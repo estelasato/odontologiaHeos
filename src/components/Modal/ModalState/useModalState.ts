@@ -31,13 +31,12 @@ export const useModalState = (
   const { mutateAsync: updateState } = useMutation({
     mutationKey: ["updateState"],
     mutationFn: async (params: any) => {
-      return stateServices.updateState(params.estado_ID, params);
+      return stateServices.updateState(params.id, params);
     },
   });
 
   const onSubmit = async (data?: stateForm) => {
     try {
-      console.log(data, "dd");
       if (isCreate) {
         await createState(data);
       } else {
@@ -56,7 +55,7 @@ export const useModalState = (
 
   const countryOptions = useMemo(() => {
     return countryList?.map((country: CountryProps) => ({
-      value: country.pais_ID,
+      value: country.id,
       label: country.pais,
     }));
   }, [countryList]);

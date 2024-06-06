@@ -22,7 +22,7 @@ export const City = () => {
     () => [
       {
         header: "Código",
-        accessorKey: "cidade_ID",
+        accessorKey: "id",
       },
       {
         header: "Cidade",
@@ -38,6 +38,10 @@ export const City = () => {
       {
         header: "Estado",
         accessorKey: "estado.estado",
+      },
+      {
+        header: "Ativo",
+        accessorKey: "ativo",
       },
       {
         header: "",
@@ -67,7 +71,7 @@ export const City = () => {
         title="Remover cidade"
         message={"Tem certeza que deseja remover esta cidade?"}
         onConfirm={() =>
-          selectedCity?.cidade_ID && handleRemove(selectedCity?.cidade_ID)
+          selectedCity?.id && handleRemove(selectedCity?.id)
         }
       />
       <Container>

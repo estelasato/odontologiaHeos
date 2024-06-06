@@ -22,7 +22,7 @@ export const State = () => {
     () => [
       {
         header: "Código",
-        accessorKey: "estado_ID",
+        accessorKey: "id",
       },
       {
         header: "Estado",
@@ -38,6 +38,10 @@ export const State = () => {
       {
         header: "País",
         accessorKey: "pais.pais",
+      },
+      {
+        header: "Ativo",
+        accessorKey: "ativo",
       },
       {
         header: "",
@@ -65,9 +69,9 @@ export const State = () => {
       <ModalConfirmation
         modalRef={modalRemoveRef}
         title="Remover estado"
-        message={`Deseja realmente remover o estado ${selectedState?.estado_ID}?`}
+        message={`Deseja realmente remover o estado ${selectedState?.id}?`}
         onConfirm={() => {
-          selectedState?.estado_ID && handleRemove(selectedState?.estado_ID);
+          selectedState?.id && handleRemove(selectedState?.id);
         }}
       />
       <ModalState modalRef={modalRef} />

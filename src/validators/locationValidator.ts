@@ -1,7 +1,7 @@
 import * as zod from "zod";
 
 export const countrySchema = zod.object({
-  pais_ID: zod.number().optional(),
+  id: zod.number().optional(),
   ddi: zod.string().optional(),
   ativo: zod.boolean().optional().transform((value) => !!value ? 1 : 0),
   pais: zod.string().min(1,'Campo obrigatório'),
@@ -11,18 +11,18 @@ export const countrySchema = zod.object({
 export type CountryForm = zod.infer<typeof countrySchema>;
 
 export const stateSchema = zod.object({
-  estado_ID: zod.any().optional(),
+  id: zod.any().optional(),
   estado: zod.string().min(1,'Campo obrigatório'),
   uf: zod.string().min(1,'Campo obrigatório'),
   ativo: zod.boolean().optional().transform((value) => !!value ? 1 : 0),
-  pais_ID: zod.number().min(1, 'Campo obrigatório'),
+  idPais: zod.number().min(1, 'Campo obrigatório'),
 });
 
 export type stateForm = zod.infer<typeof stateSchema>;
 
 export const citySchema = zod.object({
-  estado_ID: zod.number().min(1, 'Campo obrigatório'),
-  cidade_ID: zod.any().optional(),
+  idEstado: zod.number().min(1, 'Campo obrigatório'),
+  id: zod.any().optional(),
   cidade: zod.string().min(1,'Campo obrigatório'),
   ddd: zod.string(),
   ativo: zod.boolean().optional().transform((value) => !!value ? 1 : 0),
