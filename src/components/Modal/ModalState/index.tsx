@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { FormProvider } from "react-hook-form";
 
-import masks from "@/utils/masks";
+// import masks from "@/utils/masks";
 import { Switch } from "@/components/Switch";
-import { Button } from "@/components/Button";
 import { Input } from "@/components/Form/Input";
 import { Select } from "@/components/Form/Select";
 import { StateProps } from "@/services/stateServices";
 
 import { useModalState } from "./useModalState";
 import Modal from "..";
+import { FooterModal } from "../Footer";
 import { Box, Container } from "./styles";
 
 export const ModalState = ({ modalRef }: any) => {
@@ -79,26 +79,11 @@ export const ModalState = ({ modalRef }: any) => {
             />
           </Box>
 
-          <Box className="dates" style={{ gap: "20px" }}>
-            <div>
-              <p>Data de cadastro</p>
-              <p>
-                {values?.dtCadastro &&
-                  masks.convertDateISO(values?.dtCadastro)}
-              </p>
-            </div>
-            <div>
-              <p>Data da última alteração</p>
-              <p>
-                {values?.dtUltAlt &&
-                  masks.convertDateISO(values?.dtUltAlt)}
-              </p>
-            </div>
-          </Box>
-
-          <Box className="buttons">
-            <Button type="submit">Salvar</Button>
-          </Box>
+          <FooterModal
+            dtCadastro={values?.dtCadastro}
+            dtUltAlt={values?.dtUltAlt}
+            handleSubmit={handleSubmit(onSubmit)}
+          />
         </Container>
       </FormProvider>
     </Modal>

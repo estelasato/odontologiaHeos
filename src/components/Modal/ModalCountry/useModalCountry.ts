@@ -5,7 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { modalRefProps } from "..";
 import { zodResolver } from "@hookform/resolvers/zod";
 import countryServices from "@/services/countryServices";
-import useCountry from "@/pages/Cadastros/Country/useCountry";
+import useCountry from "@/pages/Registrations/Country/useCountry";
 import { CountryForm, countrySchema } from "@/validators/locationValidator";
 
 export const options = [

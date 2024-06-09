@@ -29,4 +29,16 @@ export const ItemRootStyle: MenuItemStyles = {
       backgroundColor: 'transparent',
     },
   }
-}
+};
+
+export const ButtonClose = styled.div`
+  width: 0;
+  padding: 5px;
+  z-index: 99;
+  cursor: pointer;
+  svg: {
+    cursor: pointer;
+  }
+`;
+
+

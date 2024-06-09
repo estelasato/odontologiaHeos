@@ -76,7 +76,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {...props}
         control={control || Control}
         render={({ field: { onChange, value } }) => (
-          <Container $width={width}>
+          <Container $width={width} $disabled={disabled}>
             <p className="label-input">{label}</p>
             <StyledInput
               placeholder={placeholder}

@@ -16,13 +16,13 @@ export const SelectComp = styled(Select)`
   .ant-select-selector{
     border: 1px solid ${({ theme }) => theme.colors.border} !important;
     box-shadow: none !important;
-    padding: 8px 16px !important;
+    padding: 8px 12px !important;
     border-radius: 8px !important;
   }
 
   .ant-select-selection-item {
-    line-height: 23px !important;
-    font-size: 1rem !important;
+    line-height: 20px !important;
+    font-size: 14px !important;
   }
 
   .ant-select-selection-search {
@@ -31,17 +31,17 @@ export const SelectComp = styled(Select)`
     height: 23px !important;
     line-height: 23px !important;
     input {
-      height:  1.4375em !important;
-      line-height: 1.5 !important;
+      height:  14px !important;
+      line-height: 20px !important;
     }
   }
 
   .ant-select-selection-placeholder{
-    line-height: 23px !important;
+    line-height: 20px !important;
   }
 
   .ant-select-selector:after{
-    line-height: 23px !important;
+    line-height: 20px !important;
   }
 
   svg {

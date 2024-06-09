@@ -2,7 +2,6 @@ import { useMemo, useRef, useState } from "react";
 import { CgTrash } from "react-icons/cg";
 
 import Table from "@/components/Table";
-import { Button } from "@/components/Button";
 import { modalRefProps } from "@/components/Modal";
 import { StateProps } from "@/services/stateServices";
 import { ModalState } from "@/components/Modal/ModalState";
@@ -10,6 +9,7 @@ import { ModalConfirmation } from "@/components/Modal/ModalConfirm";
 
 import useStateData from "./useState";
 import { Container } from "../Country/styles";
+import { SearchContainer } from "@/components/SearchContainer";
 
 export const State = () => {
   const modalRef = useRef<modalRefProps>(null);
@@ -75,14 +75,16 @@ export const State = () => {
         }}
       />
       <ModalState modalRef={modalRef} />
+      <SearchContainer
+        modalRef={modalRef}
+        onSearch={(e) => console.log(e, "search")}
+      />
+
       <Table
         cols={columns}
         data={stateList || []}
         onOpenRow={(data) => modalRef.current?.open(data)}
       />
-      <Button variant="link" onClick={() => modalRef?.current?.open()}>
-        <div>+ Adicionar</div>
-      </Button>
     </Container>
   );
 };

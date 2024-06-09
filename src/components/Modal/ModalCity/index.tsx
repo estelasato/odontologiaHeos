@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { FormProvider } from "react-hook-form";
 
-import masks from "@/utils/masks";
+// import masks from "@/utils/masks";
 import { Switch } from "@/components/Switch";
-import { Button } from "@/components/Button";
 import { Input } from "@/components/Form/Input";
 import { Select } from "@/components/Form/Select";
 import { StateProps } from "@/services/stateServices";
@@ -11,6 +10,7 @@ import { StateProps } from "@/services/stateServices";
 import Modal from "..";
 import { useModalCity } from "./useModalCity";
 import { Box, Container } from "../ModalCountry/styles";
+import { FooterModal } from "../Footer";
 
 export const ModalCity = ({ modalRef }: any) => {
   const [values, setValues] = useState<StateProps | null>(null);
@@ -81,26 +81,12 @@ export const ModalCity = ({ modalRef }: any) => {
             />
           </Box>
 
-          <Box className="dates" style={{ gap: "20px" }}>
-            <div>
-              <p>Data de cadastro</p>
-              <p>
-                {values?.dtCadastro &&
-                  masks.convertDateISO(values?.dtCadastro)}
-              </p>
-            </div>
-            <div>
-              <p>Data da última alteração</p>
-              <p>
-                {values?.dtUltAlt &&
-                  masks.convertDateISO(values?.dtUltAlt)}
-              </p>
-            </div>
-          </Box>
+          <FooterModal
+            dtCadastro={values?.dtCadastro}
+            dtUltAlt={values?.dtUltAlt}
+            handleSubmit={handleSubmit(onSubmit)}
+          />
 
-          <Box className="buttons">
-            <Button type="submit">Salvar</Button>
-          </Box>
         </Container>
       </FormProvider>
     </Modal>

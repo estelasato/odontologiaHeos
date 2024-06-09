@@ -5,8 +5,8 @@ import { useMutation } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import cityServices from "@/services/cityServices";
-import useCity from "@/pages/Cadastros/City/useCity";
-import useStateData from "@/pages/Cadastros/State/useState";
+import useCity from "@/pages/Registrations/City/useCity";
+import useStateData from "@/pages/Registrations/State/useState";
 import { StateProps } from "@/services/stateServices";
 import { CityForm, citySchema } from "@/validators/locationValidator";
 import { modalRefProps } from "..";

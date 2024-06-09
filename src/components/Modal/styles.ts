@@ -38,6 +38,7 @@ export const Content = styled.div<{ $width?: string }>`
   background: #fff;
   border-radius: 20px;
   padding: 32px;
+  margin: 0 20px !important;
   box-shadow: 1px 6px 12px rgba(0, 0, 0, 0.1);
 
   max-width: ${({ $width }) => $width ? $width : '500px'};

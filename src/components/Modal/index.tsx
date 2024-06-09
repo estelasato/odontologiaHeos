@@ -18,7 +18,7 @@ interface ModalProps {
   children?: React.ReactNode;
   title?: string;
   width?: string;
-  getValues?: (data?: any) => void,
+  getValues?: (data?: any) => void;
 }
 
 const ComponenteModal: React.ForwardRefRenderFunction<

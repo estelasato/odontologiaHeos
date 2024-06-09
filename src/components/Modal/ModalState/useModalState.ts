@@ -7,9 +7,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { modalRefProps } from "..";
 import stateServices from "@/services/stateServices";
 import { CountryProps } from "@/services/countryServices";
-import useStateData from "@/pages/Cadastros/State/useState";
 import { stateForm, stateSchema } from "@/validators/locationValidator";
-import useCountry from "@/pages/Cadastros/Country/useCountry";
+import useStateData from "@/pages/Registrations/State/useState";
+import useCountry from "@/pages/Registrations/Country/useCountry";
 
 export const useModalState = (
   isCreate = false,

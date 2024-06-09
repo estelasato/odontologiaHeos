@@ -5,7 +5,7 @@ import { State } from "./State";
 import { City } from "./City";
 import { Container, LabelCont, TabsCont } from "./styles";
 
-export const Cadastros = () => {
+export const Registrations = () => {
   const [step, setStep] = useState(0);
 
   const tabs = [
@@ -31,8 +31,6 @@ export const Cadastros = () => {
       </TabsCont>
 
       {tabs[step].component}
-
-
     </Container>
   );
 };

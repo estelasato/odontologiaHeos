@@ -2,15 +2,15 @@ import { useEffect, useState } from "react";
 import { FormProvider } from "react-hook-form";
 
 import { Input } from "../../Form/Input";
-import masks from "@/utils/masks";
+// import masks from "@/utils/masks";
 import { CountryProps } from "@/services/countryServices";
 
 import { useModalCountry } from "./useModalCountry";
 import { Switch } from "@/components/Switch";
-import { Button } from "@/components/Button";
 import { ModalProps } from "@/interfaces/Modal";
 
 import Modal from "..";
+import { FooterModal } from "../Footer";
 import { Box, Container } from "./styles";
 
 export const ModalCountry = ({ modalRef }: ModalProps) => {
@@ -81,26 +81,11 @@ export const ModalCountry = ({ modalRef }: ModalProps) => {
             />
           </Box>
 
-          <Box className="dates" style={{ gap: "20px" }}>
-            <div>
-              <p>Data de cadastro</p>
-              <p>
-                {values?.dtCadastro &&
-                  masks.convertDateISO(values?.dtCadastro)}
-              </p>
-            </div>
-            <div>
-              <p>Data da última alteração</p>
-              <p>
-                {values?.dtUltAlt &&
-                  masks.convertDateISO(values?.dtUltAlt)}
-              </p>
-            </div>
-          </Box>
-
-          <Box className="buttons">
-            <Button type="submit">Salvar</Button>
-          </Box>
+          <FooterModal
+            dtCadastro={values?.dtCadastro}
+            dtUltAlt={values?.dtUltAlt}
+            handleSubmit={handleSubmit(onSubmit)}
+          />
         </Container>
       </FormProvider>
     </Modal>
