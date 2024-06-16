@@ -25,7 +25,7 @@ export function Button({
 }: ButtonProps) {
   return (
     <Container
-      className={'button-component'|| className}
+      className={className || 'button-component'}
       type={type}
       $variant={variant}
       $isFullWidth={fullWidth}

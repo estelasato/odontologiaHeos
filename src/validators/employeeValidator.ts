@@ -1,22 +1,74 @@
+import masks from "@/utils/masks";
 import * as zod from "zod";
+import { AddressValidator } from "./addressValidator";
 
-export const EmployeeSchema = zod.object({
-  id: zod.number().optional(),
-  nome: zod.number().min(1,'Campo obrigatório'),
-  cpf: zod.number().optional(),
-  rg: zod.number().optional(),
-  dtNascimento: zod.date().optional(),
+export const EmployeeSchema = AddressValidator.extend({
+  id: zod.any().optional(),
+  nome: zod.string().min(1,'Campo obrigatório'),
+  cpf: zod
+  .string()
+  .optional()
+  .transform((value) => value && masks.unmask(value)),
+  rg: zod.string().optional() .transform((value) => value && masks.unmask(value)),
+  dtNascimento: zod.coerce.date({message: 'Data inválida'}),
   email: zod.string().optional(),
-  celular: zod.string().optional(),
-  sexo: zod.string().optional(),
-  estCivil: zod.string().optional(),
+  celular: zod
+  .string()
+  .transform((value) => value && masks.unmask(value)),
+  sexo: zod.string({message: 'Campo obrigatório'}).min(1, 'Campo obrigatório'),
+  estCivil: zod.string().optional().nullable(),
 
-  cargo: zod.string().optional(),
-  salario: zod.number().optional(),
-  pis: zod.number().optional(),
-  dtAdmissao: zod.date().optional(),
-  dtDemissao: zod.date().optional(),
+  cargo: zod.string().min(1, 'Campo obrigatório'),
+  salario: zod
+  .coerce
+  .string({ required_error: 'Campo obrigatório' })
+  .min(1, 'Campo obrigaório')
+  .transform((value) => value && masks.unmask(value))
+  .transform((value) => value && masks.number(value)),
+  pis: zod
+  .string()
+  .min(11, 'Campo obrigatório')
+  .transform((value) => value && masks.unmask(value)),
+  dtAdmissao: zod.coerce.date().optional(),
+  dtDemissao: zod.coerce.date().optional(),
 
-  idCidade: zod.number().optional(),
   ativo: zod.boolean().optional().transform((value) => !!value ? 1 : 0),
+  idCidade: zod.number().optional().nullable(),
 })
+// TODO: fazer superrefine
+// .superRefine((fields, ctx) => {
+//   if (fields.pais === 'Brasil') {
+//     ctx.addIssue({
+//       path: ['rg', 'cpf'],
+//       code: 'custom',
+//       // code: zod.ZodIssueCode.custom,
+//       message: 'Campo obrigatório'
+//     })
+//   }
+// })
+
+export type EmployeeFormSchema = zod.infer<typeof EmployeeSchema>
+
+export const defaultValuesEmployee = {
+  id: undefined,
+  nome: '',
+  cpf: '',
+  rg: '',
+  dtNascimento: undefined,
+  email: '',
+  celular: '',
+  sexo: '',
+  estCivil: '',
+
+  cargo: '',
+  salario: '',
+  pis: '',
+  dtAdmissao: undefined,
+  dtDemissao: undefined,
+
+  dtCadastro: '',
+  dtUltAlt: '',
+  idCidade: undefined,
+  ativo: undefined,
+}
+

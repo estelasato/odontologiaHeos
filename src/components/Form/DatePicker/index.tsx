@@ -1,13 +1,14 @@
 
+import { forwardRef, useEffect } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
+import 'react-datepicker/dist/react-datepicker.css';
+import Calendar from 'react-datepicker';
+import ptBR from 'date-fns/locale/pt-BR';
 
-import { DatePicker as Calendar } from 'antd'
-import { Container, Label } from './styles';
 import { ErrorMessage } from '@/components/ErrorMessage';
-import { ConfigProvider } from 'antd';
-import ptBr from 'antd/lib/locale/pt_BR';
+import { Container, Label } from './styles';
 
-type DateProps = {
+interface DateProps{
   label?: string;
   name: string;
   initialValue?: Date;
@@ -17,40 +18,50 @@ type DateProps = {
   className?: string;
 };
 
-export function DatePicker({
+export const DatePicker = forwardRef<HTMLInputElement, DateProps>(
+  ({
   label,
   name,
   error,
   minDate,
   className,
-  defaultValue = new Date(),
-}: DateProps) {
-  const { control } = useFormContext();
+  defaultValue = undefined,
+  ...props
+}, ref) => {
+  const { control, setValue } = useFormContext();
+
+  useEffect(() => {
+    if (defaultValue) {
+      setValue(name, new Date(defaultValue));
+    }
+  }, [defaultValue])
 
   return (
-    <Container>
+    <Container className={className}>
       <Label>{label}</Label>
       <Controller
         control={control}
+        {...props}
         name={name}
-        defaultValue={defaultValue}
+        defaultValue={defaultValue ? new Date(defaultValue as any) : undefined}
         render={({ field: { value, ...fieldProps } }) => {
           return (
-            <ConfigProvider locale={ptBr}>
+            <>
               <Calendar
-                placeholder=""
                 minDate={minDate}
                 {...fieldProps}
-                format="DD/MM/YYYY"
-                // value={value ? new Date(value) : null}
+                ref={ref as any}
+                selected={value ? new Date(value) : undefined}
+                dateFormat="dd/MM/yyyy"
+                locale={ptBR as any}
                 className="custom-datepicker-input"
               />
 
               {error && <ErrorMessage error={error} />}
-            </ConfigProvider>
+            </>
           );
         }}
       />
     </Container>
   );
-}
+})

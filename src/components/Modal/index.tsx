@@ -5,7 +5,7 @@ import {
   useState,
 } from "react";
 import { createPortal } from "react-dom";
-
+import { IoCloseOutline } from "react-icons/io5";
 import { Container, Content, Title } from "./styles";
 
 export interface modalRefProps {
@@ -65,6 +65,7 @@ const ComponenteModal: React.ForwardRefRenderFunction<
           $width={width}
         >
           <Title>{title}</Title>
+          <IoCloseOutline className="close-icon" onClick={closeModal}/>
           <div>{children}</div>
         </Content>
       </Container>

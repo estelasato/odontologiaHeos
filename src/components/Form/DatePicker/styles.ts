@@ -19,6 +19,25 @@ export const Container = styled.div`
     width: 100%;
     font-size: 16px;
   }
+
+  .react-datepicker__month-container {
+    border-radius: 8px;
+  }
+
+  .react-datepicker__header {
+    background-color: ${({ theme }) => theme.colors.bg.main};
+    padding: 12px;
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+  }
+  .react-datepicker__triangle {
+    display: none;
+  }
+  .react-datepicker {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 1px 6px 12px rgba(0, 0, 0, 0.1);
+  }
 `;
 
 export const Label = styled.p`

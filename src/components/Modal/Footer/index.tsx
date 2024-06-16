@@ -6,12 +6,14 @@ interface FooterModalProps {
   dtCadastro?: any;
   dtUltAlt?: any;
   handleSubmit?: () => void;
+  modalRef?: React.RefObject<any>;
 }
 
 export const FooterModal = ({
   dtCadastro,
   dtUltAlt,
   handleSubmit,
+  modalRef,
 }: FooterModalProps) => {
   return (
     <Container>
@@ -27,6 +29,9 @@ export const FooterModal = ({
       </Content>
 
       <Content>
+        <Button className="btn-cancel" variant="link" onClick={() => modalRef?.current?.close()}>
+          Cancelar
+        </Button>
         <Button onClick={handleSubmit}>Salvar</Button>
       </Content>
     </Container>

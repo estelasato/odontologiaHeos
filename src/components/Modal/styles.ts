@@ -38,7 +38,6 @@ export const Content = styled.div<{ $width?: string }>`
   background: #fff;
   border-radius: 20px;
   padding: 32px;
-  margin: 0 20px !important;
   box-shadow: 1px 6px 12px rgba(0, 0, 0, 0.1);
 
   max-width: ${({ $width }) => $width ? $width : '500px'};
@@ -48,6 +47,16 @@ export const Content = styled.div<{ $width?: string }>`
   gap: 16px;
 
   margin: auto;
+
+  .close-icon {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+
+  }
 `;
 
 export const Title = styled.div`

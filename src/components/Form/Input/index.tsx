@@ -19,6 +19,7 @@ interface InputProps extends ComponentProps<"input"> {
   disabled?: boolean;
   control?: Control<any>;
   handleChange?: (value: ChangeEvent<HTMLInputElement>) => void;
+  isPassword?: boolean;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -39,12 +40,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       error,
       onBlur,
       disabled,
+      isPassword = false,
       ...props
     },
     ref
   ) => {
     // const isPasswordInput = type === "password";
-
     const { setValue, control: Control } = useFormContext();
 
     const handleInputChange = useCallback(
@@ -87,10 +88,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               }}
               fullWidth={true}
               onBlur={handleBlur}
-              value={value || ""}
+              value={mask ? masks[mask](`${value}`) : value || ""}
               InputProps={{ readOnly: disabled }}
               variant="standard"
-              // type={isPasswordInput ? "password" : props.type}
+              type={isPassword ? "password" : type}
               inputRef={ref}
             />
             {!!error && <ErrorMessage error={error} />}
