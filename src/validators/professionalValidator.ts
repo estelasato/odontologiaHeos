@@ -5,7 +5,7 @@ import { AddressValidator } from "./addressValidator";
 export const ProfessionalSchema = AddressValidator.extend({
   id: zod.any().optional(),
   nome: zod.string().min(1, "Campo obrigatório"),
-  cpf: zod
+  cpfCnpj: zod
     .string()
     .optional()
     .transform((value) => value && masks.unmask(value)),
@@ -13,7 +13,7 @@ export const ProfessionalSchema = AddressValidator.extend({
     .string()
     .optional()
     .transform((value) => value && masks.unmask(value)),
-  dtNascimento: zod.coerce.date({ message: "Data inválida" }),
+    dtNascimento: zod.string(({ message: 'Campo obrigatório'})).or(zod.date({ message: 'Campo obrigatório'})),
   email: zod.string().optional(),
   celular: zod.string().transform((value) => value && masks.unmask(value)),
   sexo: zod
@@ -21,11 +21,10 @@ export const ProfessionalSchema = AddressValidator.extend({
     .min(1, "Campo obrigatório"),
   estCivil: zod.string().optional().nullable(),
 
-  cro: zod.string().min(4, "Campo obrigatório"),
+  cro: zod.string().min(4, "CRO inválido").max(6, "CRO inválido"),
   especialidade: zod.any().optional(),
-  formacoes: zod.string().optional(),
+  formacoes: zod.string().optional().nullable(),
   certificacoes: zod.string().optional(),
-  obs: zod.string().optional(),
 
   ativo: zod
     .boolean()
@@ -39,7 +38,7 @@ export type ProfessionalFormSchema = zod.infer<typeof ProfessionalSchema>;
 export const defaultValuesProfessional = {
   id: undefined,
   nome: "",
-  cpf: "",
+  cpfCnpj: "",
   rg: "",
   dtNascimento: undefined,
   email: "",
@@ -51,7 +50,6 @@ export const defaultValuesProfessional = {
   especialidade: '',
   formacoes: '',
   certificacoes: '',
-  obs: '',
 
   dtCadastro: "",
   dtUltAlt: "",

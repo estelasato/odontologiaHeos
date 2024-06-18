@@ -1,23 +1,22 @@
 import { useMemo, useRef, useState } from "react";
 import { CgTrash } from "react-icons/cg";
 
-import Table from "@/components/Table";
-import { SearchContainer } from "@/components/SearchContainer";
 import { modalRefProps } from "@/components/Modal";
-import { ModalEmployee } from "@/components/Modal/ModalEmployee";
-import { EmployeeProps } from "@/services/employeeServices";
-
-import { useEmployee } from "./useEmployee";
-import { Container } from "./styles";
+import { PatientProps } from "@/services/patientService";
 import { ModalConfirmation } from "@/components/Modal/ModalConfirm";
+import { SearchContainer } from "@/components/SearchContainer";
+import { ModalPatient } from "@/components/Modal/ModalPatient";
+import Table from "@/components/Table";
 import masks from "@/utils/masks";
+import { Container } from "../Employees/styles";
+import { usePatient } from "./usePatient";
 
-export const Employees = () => {
+export const Patient = () => {
   const modalRef = useRef<modalRefProps>(null);
   const modalRemoveRef = useRef<modalRefProps>(null);
-  const [selectEmployee, setSelectEmployee] = useState<EmployeeProps>();
+  const [selectData, setSelectData] = useState<PatientProps>();
 
-  const { employeeList, handleRemove } = useEmployee(modalRemoveRef);
+  const { patientList, handleRemove } = usePatient(modalRemoveRef);
 
   const columns = useMemo(
     () => [
@@ -29,14 +28,13 @@ export const Employees = () => {
           return <>{row.getValue() || 0}</>;
         },
       },
-      { header: "Cargo", accessorKey: "cargo" },
       {
         header: "Contato",
         accessorKey: "celular",
         cell: (row: any) => {
           const data = row.getValue() as string;
-          return masks.cell(data)
-        }
+          return masks.cell(data);
+        },
       },
       { header: "Ativo", accessorKey: "ativo" },
       {
@@ -47,7 +45,7 @@ export const Employees = () => {
           <div
             onClick={(e) => {
               e.stopPropagation();
-              setSelectEmployee(row.row.original);
+              setSelectData(row.row.original);
               modalRemoveRef.current?.open();
             }}
             style={{ paddingRight: "35px", width: "15px", cursor: "pointer" }}
@@ -64,20 +62,21 @@ export const Employees = () => {
     <Container>
       <ModalConfirmation
         modalRef={modalRemoveRef}
-        title="Remover funcionário"
-        message={`Tem certeza que deseja remover o funcionário ${selectEmployee?.nome || ''}?`}        onConfirm={() =>
-          selectEmployee?.id && handleRemove(selectEmployee?.id)
-        }
+        title="Remover paciente?"
+        message={`Tem certeza que deseja remover o paciente ${
+          selectData?.nome || ""
+        }?`}
+        onConfirm={() => selectData?.id && handleRemove(selectData?.id)}
       />
-      <ModalEmployee modalRef={modalRef} />
-      <h1>Funcionários</h1>
+      <ModalPatient modalRef={modalRef} />
+      <h1>Pacientes</h1>
       <SearchContainer
         modalRef={modalRef}
         onSearch={(e) => console.log(e, "search")}
       />
       <Table
         cols={columns}
-        data={employeeList || []}
+        data={patientList || []}
         onOpenRow={(data) => modalRef.current?.open(data)}
       />
     </Container>

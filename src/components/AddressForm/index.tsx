@@ -41,8 +41,8 @@ export const AddressForm = () => {
           options={cityOpt || []}
           error={errors.idEstado?.message}
         />
-        <Input {...register("uf")} label="UF"/>
-        <Input {...register("pais")} label="País" />
+        <Input {...register("uf")} label="UF" disabled={true} />
+        <Input {...register("pais")} label="País" disabled={true}/>
       </GridCont>
     </Container>
   );

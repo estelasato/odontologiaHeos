@@ -21,7 +21,7 @@ export interface EmployeeProps extends AddressType{
 }
 
 
-class EmployeService {
+class EmployeeService {
   async getAllEmployees() {
     const { data: response } = await api.get("employee");
     return response;
@@ -47,4 +47,4 @@ class EmployeService {
   }
 }
 
-export default new EmployeService();
+export default new EmployeeService();

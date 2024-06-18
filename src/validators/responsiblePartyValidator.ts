@@ -2,7 +2,7 @@ import masks from "@/utils/masks";
 import { AddressValidator } from "./addressValidator";
 import * as zod from "zod";
 
-export const PatientsSchema = AddressValidator.extend({
+export const ResponsibleSchema = AddressValidator.extend({
   id: zod.any().optional(),
   nome: zod.string().min(1, 'Campo obrigatório'),
   cpf: zod
@@ -15,19 +15,17 @@ export const PatientsSchema = AddressValidator.extend({
   celular: zod
   .string()
   .transform((value) => value && masks.unmask(value)),
-  sexo: zod.string({message: 'Campo obrigatório'}).min(1, 'Campo obrigatório'),
+  sexo: zod.string().optional().nullable(),
   estCivil: zod.string().optional().nullable(),
-  obs: zod.string().optional(),
   profissao: zod.string().optional(),
-  indicacao: zod.string().optional(),
   ativo: zod.boolean().optional().transform((value) => !!value ? 1 : 0),
   idCidade: zod.number().optional().nullable(),
   idResponsavel: zod.number().optional().nullable(),
 })
 
-export type PatientFormSchema = zod.infer<typeof PatientsSchema>
+export type ResponsibleFormSchema = zod.infer<typeof ResponsibleSchema>
 
-export const defaultValuesPatient = {
+export const defaultValuesResponsible = {
   id: null,
   nome: '',
   cpf: '',
@@ -37,9 +35,7 @@ export const defaultValuesPatient = {
   celular: '',
   sexo: '',
   estCivil: '',
-  obs: '',
   profissao: '',
-  indicacao: '',
   dtCadastro: '',
   dtUltAlt: '',
   idCidade: undefined,

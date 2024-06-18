@@ -7,6 +7,9 @@ import { Illnesses } from "@/pages/Illness";
 import { Medication } from "@/pages/Medication";
 import { Allergy } from "@/pages/Allergy";
 import { Habit } from "@/pages/Habit";
+import { Patient } from "@/pages/Patient";
+import { Professional } from "@/pages/Professional";
+import { ResponsibleParty } from "@/pages/ResponsibleParty";
 
 export default function Router() {
 
@@ -20,6 +23,9 @@ export default function Router() {
         <Route path="/medications" element={<Medication  />} />
         <Route path="/allergies" element={<Allergy />} />
         <Route path="/habits" element={<Habit />} />
+        <Route path="/patients" element={<Patient />} />
+        <Route path="/professionals" element={<Professional />} />
+        <Route path="/responsible" element={<ResponsibleParty />} />
       </Route>
     </Routes>
   )

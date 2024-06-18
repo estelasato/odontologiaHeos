@@ -10,6 +10,7 @@ import { MdOutlineLocationOn } from "react-icons/md";
 import { LiaUserNurseSolid } from "react-icons/lia";
 import { PiPillBold } from "react-icons/pi";
 import { LuCalendarClock } from "react-icons/lu";
+import { PiUsersThree } from "react-icons/pi";
 
 export default [
   {
@@ -26,6 +27,11 @@ export default [
     name: 'Pacientes',
     route: '/patients',
     icon: <RiFolderUserLine color="white" size={20}/>
+  },
+  {
+    name: 'Responsáveis',
+    route: '/responsible',
+    icon: <PiUsersThree color="white" size={20}/>
   },
   {
     name: 'Agenda',

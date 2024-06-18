@@ -1,7 +1,8 @@
+import masks from "@/utils/masks";
 import * as zod from "zod";
 
 export const AddressValidator = zod.object({
-  cep: zod.string().optional().nullable(),
+  cep: zod.string().optional().nullable().transform((value) => value && masks.unmask(value)),
   logradouro: zod.string().optional().nullable(),
   numero: zod.coerce.number().optional(),
   bairro: zod.string().optional().nullable(),

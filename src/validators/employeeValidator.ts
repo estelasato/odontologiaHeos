@@ -8,9 +8,10 @@ export const EmployeeSchema = AddressValidator.extend({
   cpf: zod
   .string()
   .optional()
+  .nullable()
   .transform((value) => value && masks.unmask(value)),
-  rg: zod.string().optional() .transform((value) => value && masks.unmask(value)),
-  dtNascimento: zod.coerce.date({message: 'Data inválida'}),
+  rg: zod.string().optional().nullable().transform((value) => value && masks.unmask(value)),
+  dtNascimento: zod.string(({ message: 'Campo obrigatório'})).or(zod.date({ message: 'Campo obrigatório'})),
   email: zod.string().optional(),
   celular: zod
   .string()
@@ -27,7 +28,7 @@ export const EmployeeSchema = AddressValidator.extend({
   .transform((value) => value && masks.number(value)),
   pis: zod
   .string()
-  .min(11, 'Campo obrigatório')
+  .optional()
   .transform((value) => value && masks.unmask(value)),
   dtAdmissao: zod.coerce.date().optional(),
   dtDemissao: zod.coerce.date().optional(),
@@ -52,8 +53,8 @@ export type EmployeeFormSchema = zod.infer<typeof EmployeeSchema>
 export const defaultValuesEmployee = {
   id: undefined,
   nome: '',
-  cpf: '',
-  rg: '',
+  cpf: undefined,
+  rg: undefined,
   dtNascimento: undefined,
   email: '',
   celular: '',
