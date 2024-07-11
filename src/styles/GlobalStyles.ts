@@ -55,7 +55,9 @@ export const GlobalStyles = createGlobalStyle`
     font-size: 1rem;
     overflow: hidden;
   }
-
+  h1 {
+    font-size: 1.75rem;
+  }
   input {
     outline: none;
   }

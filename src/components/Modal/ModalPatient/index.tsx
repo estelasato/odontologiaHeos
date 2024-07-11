@@ -1,25 +1,28 @@
-import { RefObject, useEffect, useState } from "react";
+import { RefObject, useEffect } from "react";
+import { FormProvider } from "react-hook-form";
+
+import Modal from "..";
 import { useModalPatient } from "./useModalPatient";
 import { AddressForm, defaultAddressValues } from "@/components/AddressForm";
-import Modal from "..";
-import { FormProvider } from "react-hook-form";
-import { Input } from "@/components/Form/Input";
+import { IncludeResponsible } from "@/components/IncludeResponsible";
 import { DatePicker } from "@/components/Form/DatePicker";
-import { Grid } from "@/config/grid";
-import { GenderOpt } from "@/utils/shared/Options";
+import { Input } from "@/components/Form/Input";
 import { Select } from "@/components/Form/Select";
-import { Container, GridComp } from "./styles";
 import { Switch } from "@/components/Switch";
+import { GenderOpt, estadoCivilOpt } from "@/utils/shared/Options";
+import { Grid } from "@/config/grid";
 import { FooterModal } from "../Footer";
+
+import { Container, GridComp } from "./styles";
+import { IncludeHabits } from "@/components/IncludeHabits";
 
 interface ModalPatientProps {
   modalRef: RefObject<any>;
 }
 
 export const ModalPatient = ({ modalRef }: ModalPatientProps) => {
-  const [values, setValues] = useState<any>(null);
-
-  const { patientForm, onSubmit } = useModalPatient(!values, modalRef);
+  const { patientForm, onSubmit, isLoading, setValues, values, patientData } =
+    useModalPatient(modalRef);
 
   const {
     handleSubmit,
@@ -42,32 +45,34 @@ export const ModalPatient = ({ modalRef }: ModalPatientProps) => {
     <Modal
       width={"1000px"}
       ref={modalRef}
-      title={values ? "Edição" : "Cadastro"}
+      title={values ? "Editar Paciente" : "Cadastrar Paciente"}
       getValues={setValues}
     >
       <FormProvider {...patientForm}>
         <Container onSubmit={handleSubmit(onSubmit)}>
-          <Grid $template="1fr 4fr 2fr">
+          <Grid $template="120px 6fr" $templateMd="1fr 5fr">
             <Input
               {...register("id")}
               label="Código"
               disabled={true}
               type="number"
             />
-            <Input
-              {...register("nome")}
-              label="Nome"
-              error={errors.nome?.message}
-            />
-            <Select
-              {...register("sexo")}
-              label="Sexo"
-              error={errors.sexo?.message}
-              options={GenderOpt}
-            />
+            <Grid $template="3fr 1fr" $templateMd="2fr 1fr">
+              <Input
+                {...register("nome")}
+                label="Nome"
+                error={errors.nome?.message}
+              />
+              <Select
+                {...register("sexo")}
+                label="Sexo"
+                error={errors.sexo?.message}
+                options={GenderOpt}
+              />
+            </Grid>
           </Grid>
 
-          <Grid $template="3fr 2fr 2fr">
+          <Grid $template="2fr 1fr 1fr 1fr">
             <Input
               {...register("email")}
               label="E-mail"
@@ -85,6 +90,12 @@ export const ModalPatient = ({ modalRef }: ModalPatientProps) => {
               label="Celular"
               error={errors.celular?.message}
               mask="cell"
+            />
+            <Select
+              {...register("estCivil")}
+              label="Estado Civil"
+              options={estadoCivilOpt}
+              error={errors.estCivil?.message}
             />
           </Grid>
 
@@ -120,7 +131,10 @@ export const ModalPatient = ({ modalRef }: ModalPatientProps) => {
             />
           </GridComp>
 
+          <IncludeResponsible listData={patientData?.responsaveis}/>
+          <IncludeHabits listData={patientData?.habitos}/>
           <FooterModal
+            isLoading={isLoading}
             modalRef={modalRef}
             dtCadastro={values?.dtCadastro}
             dtUltAlt={values?.dtUltAlt}

@@ -3,14 +3,13 @@ import * as zod from "zod";
 import { AddressValidator } from "./addressValidator";
 
 export const EmployeeSchema = AddressValidator.extend({
-  id: zod.any().optional(),
+  id: zod.coerce.number().optional().nullable(),
   nome: zod.string().min(1,'Campo obrigatório'),
   cpf: zod
   .string()
-  .optional()
   .nullable()
-  .transform((value) => value && masks.unmask(value)),
-  rg: zod.string().optional().nullable().transform((value) => value && masks.unmask(value)),
+  .transform((value) => value && masks.unmask(value)).nullable(),
+  rg: zod.string().optional().nullable().transform((value) => value && masks.unmask(value)).nullable(),
   dtNascimento: zod.string(({ message: 'Campo obrigatório'})).or(zod.date({ message: 'Campo obrigatório'})),
   email: zod.string().optional(),
   celular: zod
@@ -25,36 +24,26 @@ export const EmployeeSchema = AddressValidator.extend({
   .string({ required_error: 'Campo obrigatório' })
   .min(1, 'Campo obrigaório')
   .transform((value) => value && masks.unmask(value))
-  .transform((value) => value && masks.number(value)),
+  .transform((value) => value && masks.number(value))
+  .refine((value) => !value || parseFloat(value) > 1, { message: 'Campo inválido' }),
   pis: zod
   .string()
-  .optional()
-  .transform((value) => value && masks.unmask(value)),
+  .min(11, 'Insira um PIS válido')
+  .transform((value) => value && masks.unmask(value)).nullable(),
   dtAdmissao: zod.coerce.date().optional(),
   dtDemissao: zod.coerce.date().optional(),
 
   ativo: zod.boolean().optional().transform((value) => !!value ? 1 : 0),
   idCidade: zod.number().optional().nullable(),
 })
-// TODO: fazer superrefine
-// .superRefine((fields, ctx) => {
-//   if (fields.pais === 'Brasil') {
-//     ctx.addIssue({
-//       path: ['rg', 'cpf'],
-//       code: 'custom',
-//       // code: zod.ZodIssueCode.custom,
-//       message: 'Campo obrigatório'
-//     })
-//   }
-// })
 
 export type EmployeeFormSchema = zod.infer<typeof EmployeeSchema>
 
 export const defaultValuesEmployee = {
   id: undefined,
   nome: '',
-  cpf: undefined,
-  rg: undefined,
+  cpf: null,
+  rg: null,
   dtNascimento: undefined,
   email: '',
   celular: '',
@@ -63,7 +52,7 @@ export const defaultValuesEmployee = {
 
   cargo: '',
   salario: '',
-  pis: '',
+  pis: undefined,
   dtAdmissao: undefined,
   dtDemissao: undefined,
 

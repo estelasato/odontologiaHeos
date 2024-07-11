@@ -18,6 +18,13 @@ const masks: MaskFunctions = {
       ? value.replace(/(\d{1})(\d)/, "$1h$2")
       : value.replace(/(\d{2})(\d)/, "$1h$2");
   },
+  documento: (value) => {
+    if (value.length < 15) {
+      return masks.cpf(value);
+    } else {
+      return masks.cnpj(value);
+    }
+  },
   cpf: (value) =>
     value
       .replace(/\D/g, "")
@@ -42,11 +49,11 @@ const masks: MaskFunctions = {
       .replace(/(-\d{2})\d+?$/, "$1"),
   pis: (value) =>
     value
-    .replace(/\D/g, "")
-    .replace(/(\d{3})(\d)/, "$1.$2")
-    .replace(/^(\d{3})\.(\d{5})(\d)/, "$1.$2.$3")
-    .replace(/(\d{3})\.(\d{5})\.(\d{2})(\d)/, "$1.$2.$3-$4")
-    .replace(/(-\d{1})\d+?$/, "$1"),
+      .replace(/\D/g, "")
+      .replace(/(\d{3})(\d)/, "$1.$2")
+      .replace(/^(\d{3})\.(\d{5})(\d)/, "$1.$2.$3")
+      .replace(/(\d{3})\.(\d{5})\.(\d{2})(\d)/, "$1.$2.$3-$4")
+      .replace(/(-\d{1})\d+?$/, "$1"),
   zipcode: (value) =>
     value
       .replace(/\D/g, "")
@@ -65,7 +72,6 @@ const masks: MaskFunctions = {
       .replace(/(\d{5})(\d)/, "$1-$2")
       .replace(/(-\d{4})\d+?$/, "$1"),
   currency: (value) => {
-
     if (value.replace(/\D/g, "") !== "")
       return (parseInt(value.replace(/\D/g, ""), 10) / 100).toLocaleString(
         "pt-BR",
@@ -141,11 +147,11 @@ const masks: MaskFunctions = {
       .reverse()
       .join("-");
   },
-  convertToDateAndTime: (value)=>{
-    return format(new Date(value), "dd/MM/yyyy - HH:mm")
+  convertToDateAndTime: (value) => {
+    return format(new Date(value), "dd/MM/yyyy - HH:mm");
   },
-  convertToDateString: (value)=>{
-    return format(new Date(value), "dd/MM/yyyy")
+  convertToDateString: (value) => {
+    return format(new Date(value), "dd/MM/yyyy");
   },
 };
 

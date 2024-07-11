@@ -10,7 +10,7 @@ import { FooterModal } from "../Footer";
 import { DatePicker } from "@/components/Form/DatePicker";
 import { useModalEmployee } from "./useModalEmployee";
 import { Select } from "@/components/Form/Select";
-import { GenderOpt } from "@/utils/shared/Options";
+import { GenderOpt, estadoCivilOpt } from "@/utils/shared/Options";
 import { Switch } from "@/components/Switch";
 
 interface ModalEmployeeProps {
@@ -31,7 +31,8 @@ export const ModalEmployee = ({ modalRef }: ModalEmployeeProps) => {
   console.log(errors);
 
   useEffect(() => {
-    if (values) {
+    console.log(values)
+    if (values && Object.keys(values).length > 0) {
       reset(values);
     } else {
       reset();
@@ -41,7 +42,7 @@ export const ModalEmployee = ({ modalRef }: ModalEmployeeProps) => {
 
   return (
     <Modal
-      width={"1000px"}
+      width={"1020px"}
       ref={modalRef}
       title={values ? "Edição" : "Cadastro"}
       getValues={setValues}
@@ -68,7 +69,7 @@ export const ModalEmployee = ({ modalRef }: ModalEmployeeProps) => {
             />
           </Grid>
 
-          <Grid $template="3fr 2fr 2fr">
+          <Grid $template="2fr 1fr 1fr 1fr">
             <Input
               {...register("email")}
               label="E-mail"
@@ -86,6 +87,12 @@ export const ModalEmployee = ({ modalRef }: ModalEmployeeProps) => {
               label="Celular"
               error={errors.celular?.message}
               mask="cell"
+            />
+            <Select
+              {...register("estCivil")}
+              label="Estado Civil"
+              options={estadoCivilOpt}
+              error={errors.estCivil?.message}
             />
           </Grid>
 
@@ -124,9 +131,9 @@ export const ModalEmployee = ({ modalRef }: ModalEmployeeProps) => {
               error={errors.pis?.message}
               mask="pis"
             />
-          {/* </Grid> */}
+            {/* </Grid> */}
 
-          {/* <Grid $template="1fr 1fr 1fr" $templateMd="1fr 1fr"> */}
+            {/* <Grid $template="1fr 1fr 1fr" $templateMd="1fr 1fr"> */}
             <DatePicker
               label="Data de Admissão"
               error={errors.dtAdmissao?.message}

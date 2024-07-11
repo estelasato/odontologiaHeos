@@ -1,5 +1,4 @@
-import { useMemo, useRef, useState } from "react";
-import { CgTrash } from "react-icons/cg";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import Table from "@/components/Table";
 import { modalRefProps } from "@/components/Modal";
@@ -10,11 +9,18 @@ import { CityProps } from "@/services/cityServices";
 import useCity from "./useCity";
 import { Container } from "../Country/styles";
 import { SearchContainer } from "@/components/SearchContainer";
+import { TableIconColumn } from "@/pages/shared/iconsTable";
+import { FilterList } from "@/utils/shared/FilterList";
 
-export const City = () => {
+interface CityTypes {
+  onClickRow?: (data: any) => void;
+}
+
+export const City = ({ onClickRow }: CityTypes) => {
   const modalRef = useRef<modalRefProps>(null);
   const modalRemoveRef = useRef<modalRefProps>(null);
   const [selectedCity, setSelectedCity] = useState<CityProps>();
+  const [cities, setCities] = useState<CityProps[]>([]);
 
   const { cityList, handleRemove } = useCity(modalRemoveRef);
 
@@ -42,28 +48,47 @@ export const City = () => {
       {
         header: "Ativo",
         accessorKey: "ativo",
+        cell: (row: any) => {
+          return <>{row.getValue() === true ? "Sim" : "Não"}</>;
+        },
       },
       {
         header: "",
         accessorKey: "delete",
         meta: { alignText: "right" },
         cell: (row: any) => (
-          <div
-            onClick={(e) => {
-              e.stopPropagation();
+          <TableIconColumn
+            handleEdit={() => modalRef.current?.open(row.row.original)}
+            handleRemove={() => {
               setSelectedCity(row.row.original);
               modalRemoveRef.current?.open();
             }}
-            style={{ paddingRight: "35px", width: "15px", cursor: "pointer" }}
-          >
-            <CgTrash />
-          </div>
+          />
         ),
       },
     ],
     []
   );
 
+  const handleClickRow = (data?: any) => {
+    selectedCity?.id === data.id ? setSelectedCity(undefined) : setSelectedCity(data);
+  };
+
+
+  useEffect(() => {
+    onClickRow && onClickRow(selectedCity);
+  }, [selectedCity]);
+
+  useEffect(() => {
+    cityList && setCities(cityList);
+  }, [cityList]);
+
+  const handleSearch = (e: any) => {
+    if (e) {
+      const filtered = FilterList(cityList as any, e, ["id", "cidade"]);
+      setCities(filtered || []);
+    } else setCities(cityList);
+  };
   return (
     <>
       <ModalConfirmation
@@ -76,12 +101,12 @@ export const City = () => {
         <ModalCity modalRef={modalRef} />
         <SearchContainer
           modalRef={modalRef}
-          onSearch={(e) => console.log(e, "search")}
+          onSearch={(e) => handleSearch(e)}
         />
         <Table
           cols={columns}
-          data={cityList || []}
-          onOpenRow={(e) => modalRef.current?.open(e)}
+          data={cities || []}
+          onClickRow={onClickRow ? (data) => handleClickRow(data) : undefined}
         />
       </Container>
     </>

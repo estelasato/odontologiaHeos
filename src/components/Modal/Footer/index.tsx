@@ -7,6 +7,7 @@ interface FooterModalProps {
   dtUltAlt?: any;
   handleSubmit?: () => void;
   modalRef?: React.RefObject<any>;
+  isLoading?: boolean;
 }
 
 export const FooterModal = ({
@@ -14,6 +15,7 @@ export const FooterModal = ({
   dtUltAlt,
   handleSubmit,
   modalRef,
+  isLoading,
 }: FooterModalProps) => {
   return (
     <Container>
@@ -29,7 +31,7 @@ export const FooterModal = ({
       </Content>
 
       <Content>
-        <Button className="btn-cancel" variant="link" onClick={() => modalRef?.current?.close()}>
+        <Button isLoading={isLoading} className="btn-cancel" variant="link" onClick={() => modalRef?.current?.close()}>
           Cancelar
         </Button>
         <Button onClick={handleSubmit}>Salvar</Button>

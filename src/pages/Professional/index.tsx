@@ -1,10 +1,8 @@
 import { useMemo, useRef, useState } from "react";
-import { CgTrash } from "react-icons/cg";
 
 import Table from "@/components/Table";
 import { modalRefProps } from "@/components/Modal";
 import { SearchContainer } from "@/components/SearchContainer";
-import { ModalResponsible } from "@/components/Modal/ModalResponsible";
 import { ModalConfirmation } from "@/components/Modal/ModalConfirm";
 import masks from "@/utils/masks";
 import { Container } from "../Employees/styles";
@@ -12,6 +10,7 @@ import { Container } from "../Employees/styles";
 import { ResponsibleProps } from "@/services/responsiblePartyService";
 import { useProfessional } from "./useProfessional";
 import { ModalProfessional } from "@/components/Modal/ModalProfessional";
+import { TableIconColumn } from "../shared/iconsTable";
 
 export const Professional = () => {
   const modalRef = useRef<modalRefProps>(null);
@@ -38,22 +37,25 @@ export const Professional = () => {
           return masks.cell(data);
         },
       },
-      { header: "Ativo", accessorKey: "ativo" },
+      {
+        header: "Ativo",
+        accessorKey: "ativo",
+        cell: (row: any) => {
+          return <>{row.getValue() === true ? "Sim" : "Não"}</>;
+        },
+      },
       {
         header: "",
         accessorKey: "delete",
         meta: { alignText: "right" },
         cell: (row: any) => (
-          <div
-            onClick={(e) => {
-              e.stopPropagation();
+          <TableIconColumn
+            handleEdit={() => modalRef.current?.open(row.row.original)}
+            handleRemove={() => {
               setSelectData(row.row.original);
               modalRemoveRef.current?.open();
             }}
-            style={{ paddingRight: "35px", width: "15px", cursor: "pointer" }}
-          >
-            <CgTrash />
-          </div>
+          />
         ),
       },
     ],

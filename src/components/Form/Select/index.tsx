@@ -37,6 +37,11 @@ export const Select = forwardRef<HTMLInputElement, SelectProps>(
   ) => {
     const { control: Control } = useFormContext();
 
+    const onSearch = (value: string) => {
+      console.log('search:', value);
+    };
+
+
     return (
       <Controller
         name={name || "select"}
@@ -45,6 +50,10 @@ export const Select = forwardRef<HTMLInputElement, SelectProps>(
           <Container>
             <p className="label-input">{label}</p>
             <SelectComp
+              allowClear
+              showSearch
+              onSearch={onSearch}
+              optionFilterProp="label"
               loading={isLoading}
               options={options}
               {...field}

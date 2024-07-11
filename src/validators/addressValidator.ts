@@ -9,7 +9,7 @@ export const AddressValidator = zod.object({
   complemento: zod.string().optional().nullable(),
   idCidade: zod.string().optional().nullable(),
   // nome puxado automático
-  estado: zod.string().optional().nullable(),
+  uf: zod.string().optional().nullable(),
   pais: zod.string().optional().nullable(),
 })
 

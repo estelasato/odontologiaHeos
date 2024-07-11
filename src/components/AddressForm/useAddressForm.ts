@@ -8,7 +8,7 @@ export const useAddressForm = () => {
   const addressForm = useFormContext();
   const watchCity = addressForm.watch('idCidade')
 
-  const { data: listCities } = useQuery({
+  const { data: listCities, refetch } = useQuery({
     queryKey: ['listCities'],
     queryFn: () => cityServices.getAllCities()
   })
@@ -20,11 +20,6 @@ export const useAddressForm = () => {
     return data
   }, [listCities])
 
-  // const { data: cityData } = useMutation({
-  //   mutationFn: (id: number) =>  {
-  //     return cityServices.getCityById(id)
-  //   }
-  // })
   const { data: city } = useQuery({
     queryKey: ['city', watchCity],
     queryFn: async () => {
@@ -42,6 +37,7 @@ export const useAddressForm = () => {
 
 
   return {
+    refetch,
     cityOpt,
     addressForm,
   }

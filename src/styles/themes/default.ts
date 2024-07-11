@@ -8,7 +8,8 @@ export const defaultTheme = {
     border: "#E0E3E7",
     primary: {
       main: "#65000B",
-      light: "#80232D",
+      medium: "#80232D",
+      light: "#F8F2F8",
     },
     danger: {
       main: "#FC5050",

@@ -14,10 +14,10 @@ export const Container = styled.button<IButtonContainer>`
   cursor: pointer;
   width: ${(props) => props.$isFullWidth && '100%'};
   font-size: 0.938rem;
-  height: 42px;
+  height: 38px;
   padding: 0 2rem;
   border: none;
-  border-radius: 12px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center !important;
@@ -47,10 +47,11 @@ export const Container = styled.button<IButtonContainer>`
       return css`
         padding: 0 18px;
         background: transparent;
-        border: 0;
+        /* border: 0; */
         color: ${theme.colors.primary.main};
         font-weight: 700;
         font-size: 1rem;
+        border: 1px solid ${({ theme }) => theme.colors.primary.main};
       `;}
     }}
 

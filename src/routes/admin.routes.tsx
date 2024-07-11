@@ -14,6 +14,11 @@ import { PiUsersThree } from "react-icons/pi";
 
 export default [
   {
+    name: 'Agenda',
+    route: '/schedules',
+    icon: <LuCalendarClock color="white" size={20}/>
+  },
+  {
     name: 'Localidades',
     route: '/registrations',
     icon: <MdOutlineLocationOn size={20}/>
@@ -32,11 +37,6 @@ export default [
     name: 'Responsáveis',
     route: '/responsible',
     icon: <PiUsersThree color="white" size={20}/>
-  },
-  {
-    name: 'Agenda',
-    route: '/schedules',
-    icon: <LuCalendarClock color="white" size={20}/>
   },
   {
     name: 'Profissionais',

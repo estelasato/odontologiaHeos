@@ -1,6 +1,7 @@
 import { Grid } from "@/config/grid";
 import styled from "styled-components";
 
+// compartilhado
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -12,11 +13,15 @@ export const Container = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 8px;
 
-  .titleAddress {
+  & > .title{
     color: ${({ theme }) => theme.colors.gray[400]};
     font-size: 1rem;
     font-weight: 500;
     align-self: flex-start;
+  }
+
+  .button-component {
+    align-self: end;
   }
 `;
 

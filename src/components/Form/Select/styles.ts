@@ -31,7 +31,7 @@ export const SelectComp = styled(Select)`
     height: 23px !important;
     line-height: 23px !important;
     input {
-      height:  14px !important;
+      /* height:  14px !important; */
       line-height: 20px !important;
     }
   }
@@ -45,10 +45,8 @@ export const SelectComp = styled(Select)`
   }
 
   svg {
-    height: 8px;
+    height: 12px;
     width: 12px;
-    path {
-
-  };}
+  ;}
 
 `;

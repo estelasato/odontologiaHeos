@@ -18,7 +18,7 @@ export const Medication = () => {
   const { list, handleRemove } = useBasicForm("medication", modalRemoveRef);
 
   const cols = useMemo(
-    () => columnsBasicForm({ setSelectData, modalRemoveRef }),
+    () => columnsBasicForm({ setSelectData, modalRef, modalRemoveRef }),
     []
   );
 
@@ -32,7 +32,7 @@ export const Medication = () => {
       />
       <ModalBasicForm modalRef={modalRef} type="medication"/>
 
-      <h1>Doenças</h1>
+      <h1>Medicamentos</h1>
 
       <SearchContainer modalRef={modalRef} onSearch={(e) => console.log(e)} />
       <Table

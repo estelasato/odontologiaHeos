@@ -1,4 +1,4 @@
-import { RefObject } from "react";
+import { RefObject, useMemo } from "react";
 import { toast } from "react-toastify";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -8,10 +8,17 @@ import responsiblePartyService from "@/services/responsiblePartyService";
 export const useResponsible = (
   modalRemoveRef?: RefObject<modalRefProps>
 ) => {
-  const { data: responsibleList, refetch } = useQuery({
+  const { data: responsibleList, refetch, isLoading } = useQuery({
     queryKey: ["responsibleList"],
     queryFn: () => responsiblePartyService.getAll()
   })
+
+  const responsibleOpts = useMemo(() => {
+    return responsibleList?.map((responsible: any) => ({
+      value: responsible.id,
+      label: responsible.nome
+    }))
+  }, [responsibleList])
 
   const { mutateAsync: deleteResponsible } = useMutation({
     mutationFn: (id: number) => responsiblePartyService.delete(id)
@@ -33,5 +40,7 @@ export const useResponsible = (
     responsibleList,
     handleRemove,
     refetch,
+    isLoading,
+    responsibleOpts,
   }
 }

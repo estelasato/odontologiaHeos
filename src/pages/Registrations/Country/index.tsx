@@ -1,5 +1,4 @@
-import { useMemo, useRef, useState } from "react";
-import { CgTrash } from "react-icons/cg";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import masks from "@/utils/masks";
 import Table from "@/components/Table";
@@ -11,11 +10,14 @@ import { CountryProps } from "@/services/countryServices";
 import useCountry from "./useCountry";
 import { Container } from "./styles";
 import { SearchContainer } from "@/components/SearchContainer";
+import { TableIconColumn } from "@/pages/shared/iconsTable";
+import { FilterList } from "@/utils/shared/FilterList";
 
 export const Country = () => {
   const modalRef = useRef<modalRefProps>(null);
   const modalRemoveRef = useRef<modalRefProps>(null);
   const [selectedCountry, setSelectedCountry] = useState<CountryProps>();
+  const [list, setList] = useState<CountryProps[]>([])
 
   const { countryList, handleRemove } = useCountry(modalRemoveRef);
 
@@ -43,6 +45,9 @@ export const Country = () => {
       {
         header: "Ativo",
         accessorKey: "ativo",
+        cell: (row: any) => {
+          return <>{row.getValue() === true ? "Sim" : "Não"}</>;
+        },
       },
       {
         header: "Cadastro",
@@ -64,22 +69,28 @@ export const Country = () => {
         accessorKey: "delete",
         meta: { alignText: "right" },
         cell: (row: any) => (
-          <div
-            onClick={(e) => {
-              e.stopPropagation();
+          <TableIconColumn
+            handleEdit={() => modalRef.current?.open(row.row.original)}
+            handleRemove={() => {
               setSelectedCountry(row.row.original);
               modalRemoveRef.current?.open();
             }}
-            style={{ paddingRight: "35px", width: "15px", cursor: "pointer" }}
-          >
-            <CgTrash />
-          </div>
+          />
         ),
       },
     ],
     []
   );
+  useEffect(() => {
+    countryList && setList(countryList);
+  }, [countryList])
 
+  const handleSearch = (e: any) => {
+    if (e) {
+      const filtered = FilterList(countryList as any, e, ["id", "pais"]);
+      setList(filtered || []);
+    } else setList(countryList);
+  };
   return (
     <>
       <ModalConfirmation
@@ -92,10 +103,10 @@ export const Country = () => {
       />
       <ModalCountry modalRef={modalRef} />
       <Container>
-        <SearchContainer modalRef={modalRef} onSearch={(e) => console.log(e, 'search')} />
+        <SearchContainer modalRef={modalRef} onSearch={(e) => handleSearch(e)} />
         <Table
           cols={columns}
-          data={countryList || []}
+          data={list || []}
           onOpenRow={(data) => modalRef.current?.open(data)}
         />
       </Container>

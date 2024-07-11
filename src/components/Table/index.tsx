@@ -4,7 +4,9 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { TableGrid, Td, Th, Thead, Tr } from "./styles";
+import { Empty, TableGrid, Td, Th, Thead, Tr } from "./styles";
+import { useState } from "react";
+import Spinner from "../Spinner";
 
 declare module "@tanstack/react-table" {
   interface ColumnMeta<TData, TValue> {
@@ -23,18 +25,21 @@ export interface TableProps {
   dataPagination?: any;
   setPagination?: (page: any) => void;
   numberData?: { rows?: number; columns?: number };
+  onClickRow?: (data: any) => void;
 }
 
 const Table: React.FunctionComponent<TableProps> = ({
   cols,
-  // isLoading = false,
+  isLoading = false,
   data,
   // onSort,
-  onOpenRow,
   dataPagination,
   // setPagination,
   // numberData
+  onClickRow,
 }) => {
+  const [selectedRow, setSelectedRow] = useState(undefined);
+
   const table = useReactTable({
     data,
     columns: cols,
@@ -50,6 +55,13 @@ const Table: React.FunctionComponent<TableProps> = ({
     getPaginationRowModel: getPaginationRowModel(),
     debugTable: true,
   });
+
+  const handleSelectedRow = (value: any) => {
+    selectedRow === value.id
+      ? setSelectedRow(undefined)
+      : setSelectedRow(value.id);
+    onClickRow && onClickRow(value);
+  };
 
   return (
     <div>
@@ -76,7 +88,11 @@ const Table: React.FunctionComponent<TableProps> = ({
           {table.getRowModel().rows?.length > 0 &&
             table.getRowModel().rows.map((row) => {
               return (
-                <Tr key={row.id}>
+                <Tr
+                  key={row.id}
+                  $selected={selectedRow === row.original.id}
+                  $hasHover={!onClickRow}
+                >
                   {row.getVisibleCells().map((cell) => {
                     const alignTr =
                       cell.column.columnDef.meta?.alignText || "left";
@@ -86,7 +102,7 @@ const Table: React.FunctionComponent<TableProps> = ({
                         accessKey={`${cell.column.columnDef.header}`}
                         key={cell.id}
                         onClick={() =>
-                          onOpenRow && onOpenRow(cell.row.original)
+                          onClickRow && handleSelectedRow(cell.row.original)
                         }
                       >
                         {flexRender(
@@ -101,6 +117,15 @@ const Table: React.FunctionComponent<TableProps> = ({
             })}
         </tbody>
       </TableGrid>
+
+      {!isLoading && (data?.length === 0 || !data) && (
+        <Empty>Nenhum item encontrado</Empty>
+      )}
+      {isLoading && (
+        <Empty>
+          <Spinner size={30} />
+        </Empty>
+      )}
     </div>
   );
 };

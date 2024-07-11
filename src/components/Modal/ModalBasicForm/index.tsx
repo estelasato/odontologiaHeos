@@ -59,7 +59,7 @@ export const ModalBasicForm = ({ type, modalRef }: ModalBasic) => {
             />
           </Grid>
           <Content>
-            <TextArea {...register("descricao")} label="Descricão" />
+            <TextArea {...register("descricao")} label="Descrição" />
             <Switch
               value={values?.ativo}
               {...register("ativo")}

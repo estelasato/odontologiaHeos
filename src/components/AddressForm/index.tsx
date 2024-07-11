@@ -4,6 +4,11 @@ import { Select } from "../Form/Select";
 import { useAddressForm } from "./useAddressForm";
 
 import { Container, GridCont } from "./styles";
+import { Button } from "../Button";
+import { ModalInsertCity } from "../Modal/ModalInsertCity";
+import { useRef } from "react";
+import { modalRefProps } from "../Modal";
+import { toast } from "react-toastify";
 
 export const defaultAddressValues = {
   cep: "",
@@ -14,25 +19,39 @@ export const defaultAddressValues = {
 };
 
 export const AddressForm = () => {
-  const { cityOpt, addressForm } = useAddressForm();
+  const modalCityRef = useRef<modalRefProps>();
+  const { cityOpt, addressForm, refetch } = useAddressForm();
 
   const {
     register,
     formState: { errors },
+    setValue,
   } = addressForm;
+
+  const handleInclude = (data: any) => {
+    refetch();
+    if (!data.ativo) {
+      toast.error("Cidade inativa, selecione outra cidade");
+    } else {
+      setValue("idCidade", data.id);
+      modalCityRef.current?.close();
+    }
+  };
 
   return (
     <Container>
-      <p className="titleAddress">Endereço</p>
-      <Grid $template="1fr 3fr 1fr" $templateMd="1fr 2fr 1fr">
+      <ModalInsertCity
+        modalRef={modalCityRef}
+        selectData={(data) => handleInclude(data)}
+      />
+      <p className="title">Endereço</p>
+      <Grid $template="1fr 3fr 1fr 2fr" $templateMd="1fr 2fr 1fr 1fr">
         <Input {...register("cep")} label="Cep" mask="zipcode" />
         <Input {...register("logradouro")} label="Logradouro" />
         <Input {...register("numero")} label="Número" mask="number" />
-      </Grid>
-      <GridCont
-        $template="1fr 1fr 1fr 70px 1fr"
-      >
         <Input {...register("bairro")} label="Bairro" />
+      </Grid>
+      <GridCont $template="1fr 1fr 70px 1fr 50px">
         <Input {...register("complemento")} label="Complemento" />
 
         <Select
@@ -42,7 +61,8 @@ export const AddressForm = () => {
           error={errors.idEstado?.message}
         />
         <Input {...register("uf")} label="UF" disabled={true} />
-        <Input {...register("pais")} label="País" disabled={true}/>
+        <Input {...register("pais")} label="País" disabled={true} />
+        <Button variant="link" onClick={() => modalCityRef.current?.open()}>+</Button>
       </GridCont>
     </Container>
   );

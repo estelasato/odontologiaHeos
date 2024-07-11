@@ -1,19 +1,20 @@
 import masks from "@/utils/masks";
 import * as zod from "zod";
 import { AddressValidator } from "./addressValidator";
+import { handleSearch } from "@/utils/shared/FilterList";
+import { validarCNPJ, validarCPF } from "@/utils/validaDoc";
 
 export const ProfessionalSchema = AddressValidator.extend({
   id: zod.any().optional(),
-  nome: zod.string().min(1, "Campo obrigatório"),
-  cpfCnpj: zod
-    .string()
-    .optional()
-    .transform((value) => value && masks.unmask(value)),
+  nome: zod.string().min(1, "Campo obrigatório").nonempty("Campo obrigatório"),
+  cpfCnpj: zod.string().transform((value) => value && masks.unmask(value)),
   rg: zod
     .string()
     .optional()
     .transform((value) => value && masks.unmask(value)),
-    dtNascimento: zod.string(({ message: 'Campo obrigatório'})).or(zod.date({ message: 'Campo obrigatório'})),
+  dtNascimento: zod
+    .string({ message: "Campo obrigatório" })
+    .or(zod.date({ message: "Campo obrigatório" })),
   email: zod.string().optional(),
   celular: zod.string().transform((value) => value && masks.unmask(value)),
   sexo: zod
@@ -31,6 +32,44 @@ export const ProfessionalSchema = AddressValidator.extend({
     .optional()
     .transform((value) => (!!value ? 1 : 0)),
   idCidade: zod.number().optional().nullable(),
+}).superRefine((data, ctx) => {
+  console.log(data.cpfCnpj)
+  if (data.idCidade) {
+    if (handleSearch(data.pais) === handleSearch("Brasil")) {
+      if (!data.cpfCnpj) {
+        ctx.addIssue({
+          code: zod.ZodIssueCode.custom,
+          message: "Campo obrigatório",
+          path: ["cpfCnpj"],
+        });
+      }
+      if (data.cpfCnpj.length === 11) {
+        if (!validarCPF(data.cpfCnpj)) {
+          ctx.addIssue({
+            code: zod.ZodIssueCode.custom,
+            message: "Documento inválido",
+            path: ["cpfCnpj"],
+          });
+        }
+      }
+      if (data.cpfCnpj.length === 14) {
+        if (!validarCNPJ(data.cpfCnpj)) {
+          ctx.addIssue({
+            code: zod.ZodIssueCode.custom,
+            message: "Documento inválido",
+            path: ["cpfCnpj"],
+          });
+        }
+      }
+      if (data.cpfCnpj && data.cpfCnpj.length !== 11 && data.cpfCnpj.length !== 14) {
+        ctx.addIssue({
+          code: zod.ZodIssueCode.custom,
+          message: "Documento inválido",
+          path: ["cpfCnpj"],
+        });
+      }
+    }
+  }
 });
 
 export type ProfessionalFormSchema = zod.infer<typeof ProfessionalSchema>;
@@ -46,10 +85,10 @@ export const defaultValuesProfessional = {
   sexo: "",
   estCivil: "",
 
-  cro: '',
-  especialidade: '',
-  formacoes: '',
-  certificacoes: '',
+  cro: "",
+  especialidade: "",
+  formacoes: "",
+  certificacoes: "",
 
   dtCadastro: "",
   dtUltAlt: "",

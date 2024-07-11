@@ -57,7 +57,7 @@ const ComponenteModal: React.ForwardRefRenderFunction<
   };
 
   return createPortal(
-    <div onClick={closeModal}>
+    <div>
       <Container>
         <Content
           {...rest}

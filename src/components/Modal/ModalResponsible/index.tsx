@@ -5,7 +5,7 @@ import { FormProvider } from "react-hook-form";
 import { Input } from "@/components/Form/Input";
 import { DatePicker } from "@/components/Form/DatePicker";
 import { Grid } from "@/config/grid";
-import { GenderOpt } from "@/utils/shared/Options";
+import { GenderOpt, estadoCivilOpt } from "@/utils/shared/Options";
 import { Select } from "@/components/Form/Select";
 import { Container, GridComp } from "./styles";
 import { Switch } from "@/components/Switch";
@@ -42,7 +42,7 @@ export const ModalResponsible = ({ modalRef }: ModalResponsibleProps) => {
     <Modal
       width={"1000px"}
       ref={modalRef}
-      title={values ? "Edição" : "Cadastro"}
+      title={values ? "Editar Responsável" : "Cadastrar Responsável"}
       getValues={setValues}
     >
       <FormProvider {...responsibleForm}>
@@ -67,7 +67,7 @@ export const ModalResponsible = ({ modalRef }: ModalResponsibleProps) => {
             />
           </Grid>
 
-          <Grid $template="3fr 2fr 2fr">
+          <Grid $template="3fr 2fr 2fr 2fr">
             <Input
               {...register("email")}
               label="E-mail"
@@ -85,6 +85,12 @@ export const ModalResponsible = ({ modalRef }: ModalResponsibleProps) => {
               label="Celular"
               error={errors.celular?.message}
               mask="cell"
+            />
+            <Select
+              {...register("estCivil")}
+              label="Estado Civil"
+              options={estadoCivilOpt}
+              error={errors.estCivil?.message}
             />
           </Grid>
 

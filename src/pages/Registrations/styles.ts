@@ -24,7 +24,7 @@ export const LabelCont = styled.div<{
   ${({ $selected, theme }) =>
     $selected === true &&
     css`
-      color: ${theme.colors.primary.light};
+      color: ${theme.colors.primary.main};
 
       &::before {
         flex-shrink: 0;

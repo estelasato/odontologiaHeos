@@ -50,10 +50,12 @@ export const Th = styled.th<{ $align?: string }>`
 `;
 
 
-export const Tr = styled.tr` // hover na linha
+export const Tr = styled.tr<{ $selected?: boolean, $hasHover?: boolean }>` // hover na linha
   transition: all 0.3s ease;
+  background-color: ${({ $selected, theme }) => $selected ? theme.colors.primary.light : 'none'};
 
   &:hover {
+    background-color: ${({ $hasHover, theme }) => $hasHover ? theme.colors.primary.light : 'none'};
     cursor: pointer;
   }
 `;
@@ -64,4 +66,12 @@ export const Td = styled.td<TdProps>`
   position: relative;
 
   text-align: ${({ $alignTr }) => ($alignTr ? $alignTr : "left")};
+`;
+
+export const Empty = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  margin-top: 30px;
 `;
