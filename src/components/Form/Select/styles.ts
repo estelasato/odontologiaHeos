@@ -1,12 +1,13 @@
 import { Select } from "antd";
 import styled from "styled-components";
 
-export const Container = styled.div`
+export const Container = styled.div<{ $width?: string }>`
   display: flex;
   flex-direction: column;
   gap: 3px;
   border: none;
-  min-width: 200px;
+  max-width: ${({ $width }) => $width || "100%"};
+  min-width: ${({ $width }) => !$width && "200px"};
 `;
 
 export const SelectComp = styled(Select)`

@@ -20,6 +20,7 @@ interface SelectProps extends ComponentProps<"select"> {
   placeholder?: string;
   control?: any;
   error?: any;
+  width?: string;
 }
 
 export const Select = forwardRef<HTMLInputElement, SelectProps>(
@@ -33,26 +34,21 @@ export const Select = forwardRef<HTMLInputElement, SelectProps>(
       isLoading,
       placeholder,
       control,
+      width
     }
   ) => {
     const { control: Control } = useFormContext();
-
-    const onSearch = (value: string) => {
-      console.log('search:', value);
-    };
-
 
     return (
       <Controller
         name={name || "select"}
         control={control || Control}
         render={({ field }) => (
-          <Container>
+          <Container $width={width}>
             <p className="label-input">{label}</p>
             <SelectComp
               allowClear
               showSearch
-              onSearch={onSearch}
               optionFilterProp="label"
               loading={isLoading}
               options={options}

@@ -44,4 +44,5 @@ export const Label = styled.p`
   font-size: 0.875rem;
   color: ${({ theme }) => theme.colors.gray[900]};
   margin-bottom: 2px;
+  white-space: nowrap;
 `;

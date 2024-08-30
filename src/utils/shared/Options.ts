@@ -12,3 +12,12 @@ export const estadoCivilOpt = [
   { value: "V", label: "Viúvo(a)" },
   { value: "O", label: "Outro" },
 ]
+
+export const StatusOpts = [
+  { value: "AGENDADO", label: "Agendado" },
+  { value: "CANCELADO", label: "Cancelado" },
+  { value: "CONFIRMADO", label: "Confirmado" },
+  { value: "EM_ATENDIMENTO", label: "Em atendimento" },
+  { value: "REALIZADO", label: "Realizado" },
+  { value: "NAO_COMPARECEU", label: "Não compareceu" },
+]

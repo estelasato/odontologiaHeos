@@ -2,7 +2,7 @@ import { FormProvider } from "react-hook-form";
 import Modal from "..";
 import { Container, GridComp } from "./styles";
 import { AddressForm, defaultAddressValues } from "@/components/AddressForm";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Input } from "@/components/Form/Input";
 import { Grid } from "@/config/grid";
 // import masks from "@/utils/masks";
@@ -12,6 +12,7 @@ import { useModalEmployee } from "./useModalEmployee";
 import { Select } from "@/components/Form/Select";
 import { GenderOpt, estadoCivilOpt } from "@/utils/shared/Options";
 import { Switch } from "@/components/Switch";
+import { defaultValuesEmployee } from "@/validators/employeeValidator";
 
 interface ModalEmployeeProps {
   modalRef: React.RefObject<any>;
@@ -28,24 +29,23 @@ export const ModalEmployee = ({ modalRef }: ModalEmployeeProps) => {
     reset,
     register,
   } = employeeForm;
-  console.log(errors);
 
-  useEffect(() => {
-    console.log(values)
+  const handleValues = (values: any) => {
+    setValues(values);
     if (values && Object.keys(values).length > 0) {
       reset(values);
     } else {
-      reset();
+      reset(defaultValuesEmployee);
       reset(defaultAddressValues);
     }
-  }, [values]);
+  }
 
   return (
     <Modal
       width={"1020px"}
       ref={modalRef}
       title={values ? "Edição" : "Cadastro"}
-      getValues={setValues}
+      getValues={(e) => handleValues(e)}
     >
       <FormProvider {...employeeForm}>
         <Container onSubmit={handleSubmit(onSubmit)}>
@@ -124,6 +124,7 @@ export const ModalEmployee = ({ modalRef }: ModalEmployeeProps) => {
               label="Salário"
               error={errors.salario?.message}
               mask="currency"
+              name="salario"
             />
             <Input
               {...register("pis")}

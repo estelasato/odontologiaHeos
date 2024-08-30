@@ -1,4 +1,4 @@
-import { ChangeEvent, ComponentProps, forwardRef, useCallback } from "react";
+import { ChangeEvent, ComponentProps, forwardRef, useCallback, useEffect } from "react";
 import { Control, Controller, useFormContext } from "react-hook-form";
 
 import { ErrorMessage } from "@/components/ErrorMessage";
@@ -71,6 +71,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       if (customHandleBlur) customHandleBlur(e);
     };
 
+    useEffect(() => {
+      if (mask && value && name) {
+        console.log(masks[mask](`${value}`), 'aa')
+        setValue(name, masks[mask](`${value}`));
+      }
+    }, [mask, name])
+
     return (
       <Controller
         name={name || "name"}
@@ -92,7 +99,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               InputProps={{ readOnly: disabled }}
               variant="standard"
               type={isPassword ? "password" : type}
-              inputRef={ref}
+              ref={ref}
             />
             {!!error && <ErrorMessage error={error} />}
           </Container>

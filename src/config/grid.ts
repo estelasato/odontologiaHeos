@@ -22,7 +22,7 @@ export const Grid = styled.div<GridProps>`
       ? $template
       : `repeat(auto-fill, minmax(${$minWidth || '200px'}, ${$maxWidth || '1fr'}))`};
 
-  @media(max-width: ${({ $customMedia }) => $customMedia || '800px'}) {
+  @media(max-width: ${({ $customMedia }) => $customMedia || '820px'}) {
     grid-template-columns: ${({ $template, $templateMd }) => $template && ($templateMd || '1fr 1fr')};
   }
 

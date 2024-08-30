@@ -31,7 +31,7 @@ export const FooterModal = ({
       </Content>
 
       <Content>
-        <Button isLoading={isLoading} className="btn-cancel" variant="link" onClick={() => modalRef?.current?.close()}>
+        <Button isLoading={isLoading} className="btn-cancel" variant="link" onClick={() => modalRef &&  modalRef?.current?.close()}>
           Cancelar
         </Button>
         <Button onClick={handleSubmit}>Salvar</Button>

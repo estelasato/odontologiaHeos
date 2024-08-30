@@ -7,6 +7,7 @@ interface SearchContainerProps {
   buttonLabel?: string;
   onSearch?: (value: string) => void;
   label?: string;
+  onClick?: () => void;
 }
 
 export const SearchContainer = ({
@@ -14,6 +15,7 @@ export const SearchContainer = ({
   buttonLabel,
   onSearch,
   label,
+  onClick
 }: SearchContainerProps) => {
   return (
     <Container>
@@ -23,7 +25,7 @@ export const SearchContainer = ({
         onSearch={onSearch}
       />
 
-      <Button variant="link" onClick={() => modalRef?.current?.open()}>
+      <Button variant="link" onClick={() => onClick ? onClick() : modalRef?.current?.open()}>
         {buttonLabel ? buttonLabel : "+ Adicionar"}
       </Button>
     </Container>

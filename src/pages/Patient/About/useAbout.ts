@@ -1,25 +1,30 @@
-import { RefObject, useState } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { modalRefProps } from "..";
 import {
   PatientFormSchema,
   PatientsSchema,
   defaultValuesPatient,
 } from "@/validators/patientValidator";
 import patientService, { PatientProps } from "@/services/patientService";
-import { usePatient } from "@/pages/Patients/usePatient";
+import { useNavigate, useParams } from "react-router-dom";
 
-export const useModalPatient = (modalRef: RefObject<modalRefProps>) => {
+export const useAbout = () => {
+  const {id} = useParams()
   const [values, setValues] = useState<any>(null);
-  const isCreate = !values;
+  const isCreate = !id;
 
   const patientForm = useForm<PatientFormSchema>({
     resolver: zodResolver(PatientsSchema),
     defaultValues: defaultValuesPatient,
+  });
+
+  const { data: patientData } = useQuery({
+    queryKey: ["patientData", id],
+    queryFn: () => id && patientService.getPatientById(parseInt(id)),
   });
 
   const { mutateAsync: createPatient, isPending: pendingCreate } = useMutation({
@@ -27,6 +32,11 @@ export const useModalPatient = (modalRef: RefObject<modalRefProps>) => {
     mutationFn: async (data: PatientProps) => {
       return patientService.createPatient(data);
     },
+    onSuccess: (data) => {
+      if (!!data.id) {
+        navigate(`/patient/${data.id}`)
+      }
+    }
   });
 
   const { mutateAsync: updatePatient, isPending: pendingEdit } = useMutation({
@@ -36,23 +46,19 @@ export const useModalPatient = (modalRef: RefObject<modalRefProps>) => {
     },
   });
 
-  const { data: patientData } = useQuery({
-    queryKey: ["patientData", values],
-    queryFn: () => values?.id && patientService.getPatientById(values?.id),
-  });
-
-  const { refetch } = usePatient();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate()
 
   const onSubmit = async (data?: any) => {
     try {
       if (isCreate) {
         await createPatient(data);
-      } else {
+        navigate('/patients')
+        } else {
         await updatePatient(data);
       }
+      queryClient.resetQueries({ queryKey: ["patientData", id] });
       toast.success("Salvo com sucesso");
-      refetch();
-      modalRef.current?.close();
     } catch (e) {
       console.log(e);
       toast.error("Ocorreu um erro!");

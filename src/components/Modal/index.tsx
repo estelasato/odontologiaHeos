@@ -31,13 +31,13 @@ const ComponenteModal: React.ForwardRefRenderFunction<
 
   useImperativeHandle(ref, () => ({
     open: (data) => {
-      if (data) setInitialData(data)
+      setInitialData(data)
       setIsOpen(true)
     },
     close: () => {
       setInitialData(null)
-      setIsOpen(false)
       getValues && getValues(null)
+      setIsOpen(false)
     },
     getInitialData: () => initialData
   }));

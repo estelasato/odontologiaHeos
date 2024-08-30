@@ -21,6 +21,7 @@ export const Registrations = () => {
       <TabsCont>
         {tabs.map((tab, index) => (
           <LabelCont
+            $enable
             $selected={step === index}
             key={index}
             onClick={() => setStep(index)}

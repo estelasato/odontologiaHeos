@@ -15,16 +15,19 @@ export const TabsCont = styled.div`
 export const LabelCont = styled.div<{
   $selected: boolean;
   $disabled?: boolean;
+  $enable?: boolean;
 }>`
   font-size: 14px;
   font-weight: 700;
-  cursor: pointer;
+  cursor: ${({ $enable }) => ($enable ? "pointer" : "not-allowed")};
   position: relative;
+
+  color: ${({ $enable, theme }) => ($enable ? theme.colors.text : theme.colors.gray[100])};
 
   ${({ $selected, theme }) =>
     $selected === true &&
     css`
-      color: ${theme.colors.primary.main};
+      color: ${theme.colors.primary.main };
 
       &::before {
         flex-shrink: 0;

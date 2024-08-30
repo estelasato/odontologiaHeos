@@ -17,8 +17,6 @@ export interface PatientProps extends AddressType{
   ativo: number
   idCidade?: number
 }
-
-
 class PatientService {
   async getAllPatients() {
     const { data: response } = await api.get("patient");

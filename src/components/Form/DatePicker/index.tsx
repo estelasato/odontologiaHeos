@@ -16,6 +16,7 @@ interface DateProps{
   minDate?: any;
   defaultValue?: Date;
   className?: string;
+  hasTime?: boolean;
 };
 
 export const DatePicker = forwardRef<HTMLInputElement, DateProps>(
@@ -26,6 +27,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DateProps>(
   minDate,
   className,
   defaultValue = undefined,
+  hasTime = false,
   ...props
 }, ref) => {
   const { control, setValue } = useFormContext();
@@ -45,6 +47,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DateProps>(
         name={name}
         defaultValue={defaultValue ? new Date(defaultValue as any) : undefined}
         render={({ field: { value, ...fieldProps } }) => {
+
           return (
             <>
               <Calendar
@@ -52,9 +55,13 @@ export const DatePicker = forwardRef<HTMLInputElement, DateProps>(
                 {...fieldProps}
                 ref={ref as any}
                 selected={value ? new Date(value) : undefined}
-                dateFormat="dd/MM/yyyy"
+                dateFormat={hasTime ? "dd/MM/yyyy HH:mm" : "dd/MM/yyyy"}
                 locale={ptBR as any}
                 className="custom-datepicker-input"
+                timeInputLabel="Horário:"
+                showTimeInput={hasTime}
+                timeFormat="HH:mm"
+                timeIntervals={15}
               />
 
               {error && <ErrorMessage error={error} />}

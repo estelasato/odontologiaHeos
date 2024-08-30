@@ -1,30 +1,29 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Table from "@/components/Table";
 import { modalRefProps } from "@/components/Modal";
+import { PatientProps } from "@/services/patientService";
 import { SearchContainer } from "@/components/SearchContainer";
 import { ModalConfirmation } from "@/components/Modal/ModalConfirm";
-import masks from "@/utils/masks";
-import { Container } from "../Employees/styles";
 
-import { ResponsibleProps } from "@/services/responsiblePartyService";
-import { useProfessional } from "./useProfessional";
-import { ModalProfessional } from "@/components/Modal/ModalProfessional";
+import masks from "@/utils/masks";
+import { FilterList } from "@/utils/shared/FilterList";
+import { Container } from "../Employees/styles";
+import { usePatient } from "./usePatient";
 import { TableIconColumn } from "../shared/iconsTable";
 
-interface ProfessionalProps {
+interface PatientTypes {
   onClick?: (data: any) => void;
 }
 
-export const Professional = ({ onClick }: ProfessionalProps) => {
-  const modalRef = useRef<modalRefProps>(null);
+export const Patients = ({ onClick }: PatientTypes ) => {
   const modalRemoveRef = useRef<modalRefProps>(null);
 
-  const { professionalList, handleRemove } = useProfessional(modalRemoveRef);
+  const [selectData, setSelectData] = useState<PatientProps>();
+  const [list, setList] = useState<PatientProps[]>([])
 
-  const [selectData, setSelectData] = useState<ResponsibleProps>();
-  const [professionals, setProfessionals] = useState<ResponsibleProps[]>([]);
-
+  const { patientList, handleRemove } = usePatient(modalRemoveRef);
 
   const columns = useMemo(
     () => [
@@ -57,7 +56,7 @@ export const Professional = ({ onClick }: ProfessionalProps) => {
         meta: { alignText: "right" },
         cell: (row: any) => (
           <TableIconColumn
-            handleEdit={() => modalRef.current?.open(row.row.original)}
+            handleEdit={() => navigate(`/patient/${row.row.original.id}`)}
             handleRemove={() => {
               setSelectData(row.row.original);
               modalRemoveRef.current?.open();
@@ -71,6 +70,7 @@ export const Professional = ({ onClick }: ProfessionalProps) => {
 
   const handleClickRow = (data?: any) => {
     selectData?.id === data.id ? setSelectData(undefined) : setSelectData(data);
+    onClick && onClick(selectData);
   };
 
   useEffect(() => {
@@ -78,30 +78,39 @@ export const Professional = ({ onClick }: ProfessionalProps) => {
   }, [selectData]);
 
   useEffect(() => {
-    professionals && setProfessionals(professionalList);
-  }, [professionalList]);
+    patientList && setList(patientList);
+  }, [patientList])
+
+  const handleSearch = (e: any) => {
+    if (e) {
+      const filtered = FilterList(patientList as any, e, ["id", "nome"]);
+      setList(filtered || []);
+    } else setList(patientList);
+  };
+
+  const navigate = useNavigate();
   return (
     <Container>
       <ModalConfirmation
         modalRef={modalRemoveRef}
-        title="Remover profissional?"
-        message={`Tem certeza que deseja remover ${
+        title="Remover paciente?"
+        message={`Tem certeza que deseja remover o paciente ${
           selectData?.nome || ""
         }?`}
         onConfirm={() => selectData?.id && handleRemove(selectData?.id)}
       />
-      <ModalProfessional modalRef={modalRef} />
-      <h1>Profissionais</h1>
+      {/* <ModalPatient modalRef={modalRef} /> */}
+      <h1>Pacientes</h1>
       <SearchContainer
-        modalRef={modalRef}
-        onSearch={(e) => console.log(e, "search")}
+        onClick={() => navigate('/patient')}
+        onSearch={(e) => handleSearch(e)}
       />
       <Table
         cols={columns}
-        data={professionalList || []}
-        onClickRow={onClick ? (data) => handleClickRow(data) : undefined}
-
+        data={list || []}
+        // onOpenRow={(data) => navigate(`/patient/${data.id}`)}
+        onClickRow={(data) => onClick ?  handleClickRow(data) : navigate(`/patient/${data.id}`)}
       />
     </Container>
   );
-}
+};
