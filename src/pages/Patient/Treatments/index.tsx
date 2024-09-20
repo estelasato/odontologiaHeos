@@ -13,12 +13,10 @@ import { Container } from "@/pages/Employees/styles";
 
 import { useTreatments } from "./useTreatments";
 import { TreatmentsProps } from "@/services/treatmentsServices";
-
-// interface CityTypes {
-//   onClickRow?: (data: any) => void;
-// }
+import { ModalTreatment } from "@/components/Modal/ModalTreatment";
 
 export const Treatments = () => {
+
   const modalRef = useRef<modalRefProps>(null);
   const modalRemoveRef = useRef<modalRefProps>(null);
   const [selectedTreatment, setSelectedTreatment] = useState<TreatmentsProps>();
@@ -68,12 +66,11 @@ export const Treatments = () => {
     []
   );
 
-  const handleClickRow = (data?: any) => {
-    console.log(data);
-    selectedTreatment?.id === data.id
-      ? setSelectedTreatment(undefined)
-      : setSelectedTreatment(data);
-  };
+  // const handleClickRow = (data?: any) => {
+  //   selectedTreatment?.id === data.id
+  //     ? setSelectedTreatment(undefined)
+  //     : setSelectedTreatment(data);
+  // };
 
   // useEffect(() => {
   //   onClickRow && onClickRow(selectedCity);
@@ -100,15 +97,17 @@ export const Treatments = () => {
           selectedTreatment?.id && handleRemove(selectedTreatment?.id)
         }
       />
+      {/* <ModalProfessional modalRef={modalRef} /> */}
+      <ModalTreatment modalRef={modalRef}/>
       <Container>
         <SearchContainer
-          modalRef={modalRef}
+          // modalRef={modalRef}
           onSearch={(e) => handleSearch(e)}
         />
         <Table
           cols={columns}
           data={treatments || []}
-          onClickRow={(data) => handleClickRow(data)}
+          // onClickRow={(data) => handleClickRow(data)}
           // onClickRow={onClickRow ? (data) => handleClickRow(data) : undefined}
         />
       </Container>

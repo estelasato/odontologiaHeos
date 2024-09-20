@@ -20,7 +20,7 @@ export const ModalInsertCity = ({ modalRef, selectData }: ModalInsertCityProps) 
   }
 
   return (
-    <Modal ref={modalRef} width="90%">
+    <Modal ref={modalRef} width="90%" title="Cidades">
       <Container>
         <City onClickRow={(e) => setData(e)}/>
         <Button className="select-btn" onClick={() => handleSelect()}>Inserir cidade</Button>

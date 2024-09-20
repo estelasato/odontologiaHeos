@@ -35,7 +35,6 @@ export const About = () => {
       reset(defaultAddressValues);
     }
   }, [patientData, id]);
-
   return (
     <FormProvider {...patientForm}>
       {id && !patientData && (

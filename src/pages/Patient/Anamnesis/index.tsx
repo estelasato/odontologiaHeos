@@ -13,11 +13,11 @@ import { Container } from "@/pages/Employees/styles";
 import { ModalAnamnesis } from "@/components/Modal/ModalAnamnesis";
 import { AnamnesisProps } from "@/services/anamnesisService";
 
-// interface CityTypes {
-//   onClickRow?: (data: any) => void;
-// }
+interface AnamnesisType {
+  onClickRow?: (data: any) => void;
+}
 
-export const Anamnesis = () => {
+export const Anamnesis = ({ onClickRow }: AnamnesisType) => {
   const modalRef = useRef<modalRefProps>(null);
   const modalRemoveRef = useRef<modalRefProps>(null);
   const [selectedAnamnesis, setSelectedAnamnesis] = useState<AnamnesisProps>();
@@ -64,15 +64,14 @@ export const Anamnesis = () => {
   );
 
   const handleClickRow = (data?: any) => {
-    console.log(data);
     selectedAnamnesis?.id === data.id
       ? setSelectedAnamnesis(undefined)
       : setSelectedAnamnesis(data);
   };
 
-  // useEffect(() => {
-  //   onClickRow && onClickRow(selectedCity);
-  // }, [selectedCity]);
+  useEffect(() => {
+    onClickRow && onClickRow(selectedAnamnesis);
+  }, [selectedAnamnesis]);
 
   useEffect(() => {
     anamnesisList && setAnamnesis(anamnesisList);
@@ -104,8 +103,7 @@ export const Anamnesis = () => {
         <Table
           cols={columns}
           data={anamnesis || []}
-          onClickRow={(data) => handleClickRow(data)}
-          // onClickRow={onClickRow ? (data) => handleClickRow(data) : undefined}
+          onClickRow={onClickRow ? (data) => handleClickRow(data) : undefined}
         />
       </Container>
     </>

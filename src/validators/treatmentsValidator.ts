@@ -2,9 +2,15 @@ import * as zod from "zod";
 
 export const TreatmentsSchema = zod.object({
   id: zod.any().optional(),
-  obs: zod.string().optional(),
+  // obs: zod.string().optional(),
   queixas: zod.string().optional(),
   idPaciente: zod.number(),
+  idAnamnese: zod.number(),
+  dataInicio: zod.any().optional(),
+  dataFim: zod.any().optional(),
+  descricao: zod.string().optional(),
+  dente: zod.string().optional(),
+  idProfissional: zod.number(),
 })
 
 export interface Treatmentsype {
@@ -15,6 +21,8 @@ export interface Treatmentsype {
   dataInicio?: Date | string
   dente: string
   descricao?: string
+  idAnamnese: number,
+
 }
 
 export type TreatmentsFormSchema = zod.infer<typeof TreatmentsSchema>;
@@ -27,4 +35,5 @@ export const TreatmentsDefaultValue = {
   dataInicio: undefined,
   dente: '',
   descricao: '',
+  idAnamnese: undefined,
 }

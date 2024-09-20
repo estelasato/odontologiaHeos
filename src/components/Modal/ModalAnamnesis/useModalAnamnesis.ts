@@ -3,22 +3,27 @@ import { modalRefProps } from ".."
 import { toast } from "react-toastify"
 import { useForm } from "react-hook-form"
 import { useParams } from "react-router-dom"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useMutation } from "@tanstack/react-query"
-import { AnamnesisFormSchema, AnamnesisDefaultValue, AnamnesisSchema } from "@/validators/anamnesisValidator"
+import { useMutation, useQuery } from "@tanstack/react-query"
+import { AnamnesisDefaultValue } from "@/validators/anamnesisValidator"
 import anamnesisService, { AnamnesisProps } from "@/services/anamnesisService"
 import { useAnamnesis } from "@/pages/Patient/Anamnesis/useAnamnesis"
 
 
 export const useModalAnamnesis = (
-  isCreate = false,
+  values: any,
   modalRef: RefObject<modalRefProps>
 ) => {
   const {id} = useParams();
+  const isCreate = !values;
 
-  const anamnesisForm = useForm<AnamnesisFormSchema>({
-    resolver: zodResolver(AnamnesisSchema),
-    defaultValues: AnamnesisDefaultValue,
+  const { data: AnamnesisData } = useQuery({
+    queryKey: ['AnamnesisData', values],
+    queryFn: async () => values?.id && anamnesisService.getById(values?.id)
+  })
+
+  const anamnesisForm = useForm({
+    // resolver: zodResolver(AnamnesisSchema),
+    defaultValues: id ? AnamnesisData : AnamnesisDefaultValue,
   });
 
   const { mutateAsync: create } = useMutation({
@@ -34,9 +39,11 @@ export const useModalAnamnesis = (
   const { refetch } = useAnamnesis();
 
   const onSubmit = async (data?: any) => {
+    console.log(data, 'data')
     try {
       if (isCreate) {
-        await create(data);
+        const anamnesis = await create(data);
+        console.log(anamnesis)
       } else await update(data)
       toast.success("Salvo com sucesso!");
       refetch();
@@ -49,5 +56,6 @@ export const useModalAnamnesis = (
   return {
     anamnesisForm,
     onSubmit,
+    AnamnesisData,
   }
 }

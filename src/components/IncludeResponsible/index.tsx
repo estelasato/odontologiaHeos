@@ -4,7 +4,7 @@ import { Button } from "../Button";
 import { useFormContext } from "react-hook-form";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { modalRefProps } from "../Modal";
-import { Content, ResponsibleCont } from "./styles";
+import { ButtonContainer, Content, ResponsibleCont } from "./styles";
 import { ModalInsertResponsible } from "../Modal/ModalInsertResponsible";
 import { ResponsibleProps } from "@/services/responsiblePartyService";
 import { toast } from "react-toastify";
@@ -102,12 +102,11 @@ export const IncludeResponsible = ({ listData }: { listData?: ResponsibleProps[]
             </div>
           </>
         ))}
-        <div
-          className="resp-btn"
+        <ButtonContainer
           onClick={() => responsibleRef?.current?.open()}
         >
           <Button variant="link">+ Adicionar responsável</Button>
-        </div>
+        </ButtonContainer>
       </Grid>
     </ResponsibleCont>
   );

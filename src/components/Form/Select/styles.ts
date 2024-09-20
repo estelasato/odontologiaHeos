@@ -7,7 +7,7 @@ export const Container = styled.div<{ $width?: string }>`
   gap: 3px;
   border: none;
   max-width: ${({ $width }) => $width || "100%"};
-  min-width: ${({ $width }) => !$width && "200px"};
+  min-width: ${({ $width }) => !$width && "auto"};
 `;
 
 export const SelectComp = styled(Select)`

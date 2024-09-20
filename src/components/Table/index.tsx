@@ -26,6 +26,7 @@ export interface TableProps {
   setPagination?: (page: any) => void;
   numberData?: { rows?: number; columns?: number };
   onClickRow?: (data: any) => void;
+  variant?: "default" | "compact";
 }
 
 const Table: React.FunctionComponent<TableProps> = ({
@@ -36,6 +37,7 @@ const Table: React.FunctionComponent<TableProps> = ({
   dataPagination,
   // setPagination,
   // numberData
+  variant="default",
   onClickRow,
 }) => {
   const [selectedRow, setSelectedRow] = useState(undefined);
@@ -65,7 +67,7 @@ const Table: React.FunctionComponent<TableProps> = ({
 
   return (
     <div>
-      <TableGrid>
+      <TableGrid $variant={variant}>
         <Thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>

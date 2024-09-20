@@ -3,7 +3,7 @@ import { modalRefProps } from ".."
 import { useForm } from "react-hook-form"
 import { BasicFormSchema, BasicSchema, defaultValuesBasicForm } from "@/validators/basicFormValidator"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import basicServices, { BasicProps } from "@/services/basicServices"
 import { useBasicForm } from "@/pages/shared/useBasicForm"
 import { toast } from "react-toastify"
@@ -31,6 +31,7 @@ export const useModalBasicForm = (
   })
 
   const { refetch } = useBasicForm(type);
+  const queryClient = useQueryClient();
 
   const onSubmit = async (data?: any) => {
     try {
@@ -38,6 +39,15 @@ export const useModalBasicForm = (
         await create(data);
       } else await update(data)
       toast.success("Salvo com sucesso!");
+
+      switch (type) {
+        case 'illness':
+          queryClient.invalidateQueries({ queryKey: ['illnessOptions'] });
+          break;
+        case 'medications':
+          queryClient.invalidateQueries({ queryKey: ['medOptions'] });
+          break;
+      }
       refetch();
       modalRef.current?.close();
     } catch (e) {

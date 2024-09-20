@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 type TdProps = {
   active?: boolean;
@@ -6,7 +6,7 @@ type TdProps = {
   $alignTr?: string;
 };
 
-export const TableGrid = styled.table`
+export const TableGrid = styled.table<{ $variant?: "default" | "compact"}>`
   border-collapse: collapse;
   width: 100%;
   table-layout: auto;
@@ -36,6 +36,23 @@ export const TableGrid = styled.table`
       font-weight: bold;
     }
   }
+
+  ${({ $variant }) => $variant === "compact" && css`
+    th {
+      padding: 0;
+      font-weight: 600;
+      padding-bottom: 8px;
+      font-size: 0.875rem;
+    }
+    td {
+      font-size: 0.875rem;
+      padding: 8px 0;
+      /* border-bottom: 1px solid ${({ theme }) => theme.colors.primary.main}; */
+    }
+    tr {
+      background-color: ${({ theme }) => theme.colors.bg.main};
+    }
+  `}
 `;
 
 export const Thead = styled.thead`

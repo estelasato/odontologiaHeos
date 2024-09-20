@@ -10,7 +10,11 @@ import { SearchContainer } from "@/components/SearchContainer";
 import Table from "@/components/Table";
 import { FilterList } from "@/utils/shared/FilterList";
 
-export const Illnesses = () => {
+interface IIllness {
+  onClick?: (data: any) => void;
+}
+
+export const Illnesses = ({ onClick }: IIllness) => {
   const modalRef = useRef<modalRefProps>(null);
   const modalRemoveRef = useRef<modalRefProps>(null);
   const [selectData, setSelectData] = useState<BasicProps>();
@@ -22,6 +26,12 @@ export const Illnesses = () => {
     () => columnsBasicForm({ setSelectData, modalRef, modalRemoveRef }),
     []
   );
+
+  const handleClickRow = (data?: any) => {
+    selectData?.id === data.id ? setSelectData(undefined) : setSelectData(data);
+    onClick && onClick(data?.id ? data : undefined);
+  };
+
   useEffect(() => {
     list && setIllnesses(list);
   }, [list]);
@@ -48,6 +58,7 @@ export const Illnesses = () => {
         cols={cols}
         data={illnesses || []}
         onOpenRow={(data) => modalRef.current?.open(data)}
+        onClickRow={handleClickRow}
       />
     </Container>
   );

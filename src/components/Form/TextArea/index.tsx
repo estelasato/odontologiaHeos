@@ -32,12 +32,12 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
       <Controller
         name={name || 'textarea'}
         {...props}
-
         control={control}
         render={({ field }) =>
-          <Container className={className}>
+          <Container $width={width} className={className}>
             <p className="label-input">{label}</p>
             <Input.TextArea
+              rows={rows}
               {...field}
               ref={ref}
               size="middle"

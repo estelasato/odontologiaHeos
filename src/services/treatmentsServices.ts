@@ -8,6 +8,8 @@ export interface TreatmentsProps{
   dataInicio?: Date | string
   dente: string
   descricao?: string
+  dtCadastro?: string
+  dtUltAlt?: string
 }
 
 interface TreatmentsFilter {
