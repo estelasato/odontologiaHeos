@@ -13,7 +13,7 @@ export const useTreatments = (
   const {id} = useParams();
 
   const { data: tratmentsList, refetch } = useQuery({
-    queryKey: ["tratmentsList"],
+    queryKey: ["tratmentsList", id],
     queryFn: () => id && treatmentsServices.getAll({ idPaciente: Number(id) })
   })
 

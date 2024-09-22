@@ -31,11 +31,11 @@ export const IncludeMed = ({ listData }: IncludeMedProps) => {
       }
     },
     {
-      header: "motivo",
+      header: "Motivo",
       accessorKey: "motivo"
     },
     {
-      header: "frequência",
+      header: "Frequência",
       accessorKey: "frequencia"
     },
     {

@@ -10,7 +10,11 @@ import { SearchContainer } from "@/components/SearchContainer";
 import Table from "@/components/Table";
 import { FilterList } from "@/utils/shared/FilterList";
 
-export const Allergy = () => {
+interface IMedication {
+  onClick?: (data: any) => void;
+}
+
+export const Allergy = ({ onClick }: IMedication) => {
   const modalRef = useRef<modalRefProps>(null);
   const modalRemoveRef = useRef<modalRefProps>(null);
   const [selectData, setSelectData] = useState<BasicProps>();
@@ -21,6 +25,11 @@ export const Allergy = () => {
     () => columnsBasicForm({ setSelectData, modalRef, modalRemoveRef }),
     []
   );
+
+  const handleClickRow = (data?: any) => {
+    selectData?.id === data.id ? setSelectData(undefined) : setSelectData(data);
+    onClick && onClick(data?.id ? data : undefined);
+  };
 
   useEffect(() => {
     list && setAllergies(list);
@@ -50,6 +59,7 @@ export const Allergy = () => {
         cols={cols}
         data={allergies || []}
         onOpenRow={(data) => modalRef.current?.open(data)}
+        onClickRow={handleClickRow}
       />
     </Container>
   )

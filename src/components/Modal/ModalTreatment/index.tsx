@@ -13,6 +13,7 @@ import { Button } from "@/components/Button";
 import { ModalInsertAnamnesis } from "../ModalInsertAnamnesis";
 import { FooterModal } from "../Footer";
 import { TreatmentsProps } from "@/services/treatmentsServices";
+import { TreatmentsDefaultValue } from "@/validators/treatmentsValidator";
 
 interface ModalTreatmentProps {
   modalRef: RefObject<any>;
@@ -20,13 +21,14 @@ interface ModalTreatmentProps {
 
 export const ModalTreatment = ({ modalRef }: ModalTreatmentProps) => {
   const [values, setValues] = useState<TreatmentsProps | null>(null);
-  const { treatmentForm, professionalOpts, onSubmit } = useModalTreatment();
+  const { treatmentForm, professionalOpts, onSubmit, minDate } =
+    useModalTreatment();
   const {
     reset,
     register,
     setValue,
     formState: { errors },
-    handleSubmit
+    handleSubmit,
   } = treatmentForm;
   const modalAnamnesisRef = useRef<modalRefProps>();
 
@@ -39,12 +41,11 @@ export const ModalTreatment = ({ modalRef }: ModalTreatmentProps) => {
 
   useEffect(() => {
     if (values) {
-      reset(values)
+      reset(values);
     } else {
-      reset()
+      reset(TreatmentsDefaultValue);
     }
-
-  }, [values])
+  }, [values]);
 
   return (
     <Modal ref={modalRef} title="Tratamento" getValues={setValues}>
@@ -56,19 +57,26 @@ export const ModalTreatment = ({ modalRef }: ModalTreatmentProps) => {
         <Container>
           <Input disabled {...register("id")} label="Código" width="100px" />
           <Grid>
-            <DatePicker {...register("dataInicio")} label="Data de início" />
-            <DatePicker {...register("dataFim")} label="Data de término" />
+            <DatePicker
+              {...register("dataInicio")}
+              label="Data de início"
+              error={errors.dataInicio?.message}
+            />
+            <DatePicker
+              {...register("dataFim")}
+              label="Data de término"
+              minDate={minDate}
+              error={errors.dataFim?.message}
+            />
           </Grid>
-          <TextArea {...register("descricao")} label="Descrição" />
-          {/* <Input {...register('dente')} label="Nº Dente" width="100px"/> */}
+          <TextArea {...register("descricao")} label="Descrição"/>
 
           <Select
             {...register("dente")}
             label="Dente"
             options={toothsOptions}
+            error={errors.dente?.message}
           />
-
-          {/* <Input {...register('idProfissional')} disabled/> */}
           <Select
             {...register("idProfissional")}
             label="Profissional"
@@ -85,7 +93,7 @@ export const ModalTreatment = ({ modalRef }: ModalTreatmentProps) => {
               variant="link"
               onClick={() => modalAnamnesisRef.current?.open()}
             >
-              + Anamnese
+              Selecionar
             </Button>
           </Box>
 

@@ -2,11 +2,11 @@ import api from "@/config/api";
 
 export interface TreatmentsProps{
   id?: number
-  idPaciente: number
+  idPaciente?: number
   idProfissional: number
   dataFim?: Date | string
   dataInicio?: Date | string
-  dente: string
+  dente?: string
   descricao?: string
   dtCadastro?: string
   dtUltAlt?: string

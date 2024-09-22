@@ -12,6 +12,7 @@ import { AnamnesisDefaultValue, IllnessAnamnesisType } from "@/validators/anamne
 import { IncludeIllness } from "@/components/IncludeIllness";
 import { useMediaQuery } from "react-responsive";
 import { IncludeMed } from "@/components/IncludeMed";
+import { IncludeAllergies } from "@/components/IncludeAllergies";
 
 interface ModalBasic {
   modalRef: React.RefObject<any>;
@@ -75,6 +76,8 @@ export const ModalAnamnesis = ({ modalRef }: ModalBasic) => {
 
           <IncludeIllness listData={AnamnesisData?.doencas}/>
           <IncludeMed listData={AnamnesisData?.medicamentos}/>
+          <IncludeAllergies listData={AnamnesisData?.alergias}/>
+
           <FooterModal
             modalRef={modalRef}
             dtCadastro={values?.dtCadastro}

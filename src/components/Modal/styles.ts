@@ -59,7 +59,7 @@ export const Content = styled.div<{ $width?: string }>`
   }
 `;
 
-export const Title = styled.div`
+export const Title = styled.p`
   color: ${({ theme }) => theme.colors.primary.main};
   font-size: 25px;
   font-style: normal;

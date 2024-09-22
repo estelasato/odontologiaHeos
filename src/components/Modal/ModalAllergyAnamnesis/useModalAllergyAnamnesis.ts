@@ -1,26 +1,31 @@
 import { RefObject, useEffect, useMemo, useState } from "react"
 import { modalRefProps } from ".."
-import { useFormContext } from "react-hook-form"
-import { useParams } from "react-router-dom"
-import { IllnessAnamnesisSchema } from "@/validators/anamnesisValidator"
+import { useFormContext } from "react-hook-form";
+import { useParams } from "react-router-dom";
+import { AllergyAnamnesisSchema } from "@/validators/anamnesisValidator";
 
-export const useModalIllnessAnamnesis = (
+
+export const useModalAllergyAnamnesis = (
   modalRef: RefObject<modalRefProps>,
   list: any[],
   setList: (list: any[]) => void
 ) => {
   const [fieldErrors, setFieldErrors] = useState<any>(null);
   const [values, setValues] = useState<any>(null);
-  const {id} = useParams();
-  const {setValue} = useFormContext();
+  const { id } = useParams();
+  const { setValue } = useFormContext();
 
   const index = useMemo(() => {
-    return values ? (list?.length > 0 ? values?.index : list?.length ): list?.length;
+    return values
+      ? list?.length > 0
+        ? values?.index
+        : list?.length
+      : list?.length;
   }, [values]);
 
   const onSubmit = (data: any) => {
     setFieldErrors(null);
-    const parseData = IllnessAnamnesisSchema.safeParse(data.doencas[index])
+    const parseData = AllergyAnamnesisSchema.safeParse(data.alergias[index])
     if (!parseData.success) {
       const errors = parseData.error.issues;
       const r = errors.reduce((acc: any, e: any) => {
@@ -30,11 +35,12 @@ export const useModalIllnessAnamnesis = (
       }, {})
       setFieldErrors(r);
     } else {
+      setFieldErrors(null);
       let newL = [...list];
       if (values) {
-        newL[values.index] = data.doencas[index];
+        newL[values.index] = data.alergias[index];
       } else {
-        newL.push(data.doencas[index]);
+        newL.push(data.alergias[index]);
       }
       setList(newL);
       modalRef.current?.close();
@@ -43,15 +49,14 @@ export const useModalIllnessAnamnesis = (
 
   useEffect(() => {
     console.log(values)
-    setFieldErrors(null);
-    setValue(`doencas.${index}.idDoenca`, values?.idDoenca || undefined);
-    setValue(`doencas.${index}.gravidade`, values?.gravidade || '');
-    setValue(`doencas.${index}.cronica`, (typeof values?.cronica != 'boolean') ? null : values?.cronica);
-    setValue(`doencas.${index}.complicacoes`, values?.complicacoes || '');
-    setValue(`doencas.${index}.obs`, values?.obs || '');
-    setValue(`doencas.${index}.tratamento`, values?.tratamento || '');
     setValue("idPaciente", id ? Number(id) : undefined);
+    setValue(`alergias.${index}.idAlergia`, values?.idAlergia || undefined);
+    setValue(`alergias.${index}.gravidade`, values?.gravidade || '');
+    setValue(`alergias.${index}.complicacoes`, values?.complicacoes || '');
+    setValue(`alergias.${index}.tratamento`, values?.tratamento || '');
+    setValue(`alergias.${index}.obs`, values?.obs || '');
   }, [values]);
+
 
   return {
     onSubmit,

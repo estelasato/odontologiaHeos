@@ -41,7 +41,8 @@ export const Treatments = () => {
         header: "Data de término",
         accessorKey: "dataFim",
         cell: (row: any) => {
-          return <>{masks.convertToDateString(row.getValue() as string) || '-'}</>;
+          const data = row.getValue() as string;
+          return <>{data ? masks.convertToDateString(data) : '-'}</>;
         },
       },
       {
@@ -66,16 +67,6 @@ export const Treatments = () => {
     []
   );
 
-  // const handleClickRow = (data?: any) => {
-  //   selectedTreatment?.id === data.id
-  //     ? setSelectedTreatment(undefined)
-  //     : setSelectedTreatment(data);
-  // };
-
-  // useEffect(() => {
-  //   onClickRow && onClickRow(selectedCity);
-  // }, [selectedCity]);
-
   useEffect(() => {
     tratmentsList && setTreatments(tratmentsList);
   }, [tratmentsList]);
@@ -83,6 +74,7 @@ export const Treatments = () => {
   const handleSearch = (e: any) => {
     if (e) {
       const filtered = FilterList(tratmentsList as any, e, ["id", "idAnamnese", "dataInicio", "dataFim"]);
+      console.log(e, filtered, 'aag')
       setTreatments(filtered || []);
     } else setTreatments(tratmentsList);
   };
@@ -103,6 +95,7 @@ export const Treatments = () => {
         <SearchContainer
           // modalRef={modalRef}
           onSearch={(e) => handleSearch(e)}
+          onClick={() => modalRef.current?.open()}
         />
         <Table
           cols={columns}

@@ -4,9 +4,11 @@ export const TreatmentsSchema = zod.object({
   id: zod.any().optional(),
   // obs: zod.string().optional(),
   queixas: zod.string().optional(),
-  idPaciente: zod.number(),
-  idAnamnese: zod.number(),
-  dataInicio: zod.any().optional(),
+  // idPaciente: zod.number(),
+  idAnamnese: zod.number({message: 'Campo obrigatório'}).min(1, 'Campo obrigatório'),
+  dataInicio: zod.any().refine((val) => val !== undefined && val !== null, {
+    message: 'Campo obrigatório',
+  }),
   dataFim: zod.any().optional(),
   descricao: zod.string().optional(),
   dente: zod.string().optional(),
@@ -19,7 +21,7 @@ export interface Treatmentsype {
   idProfissional: number
   dataFim?: Date | string
   dataInicio?: Date | string
-  dente: string
+  dente?: string
   descricao?: string
   idAnamnese: number,
 

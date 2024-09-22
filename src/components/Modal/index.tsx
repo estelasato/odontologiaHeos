@@ -19,12 +19,13 @@ interface ModalProps {
   title?: string;
   width?: string;
   getValues?: (data?: any) => void;
+  className?: string;
 }
 
 const ComponenteModal: React.ForwardRefRenderFunction<
   modalRefProps | null,
   ModalProps
-  > = ({ getValues, children, title, width, ...rest }: ModalProps, ref) => {
+  > = ({ getValues, children, title, width, className, ...rest }: ModalProps, ref) => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [initialData, setInitialData] = useState(null);
@@ -58,7 +59,7 @@ const ComponenteModal: React.ForwardRefRenderFunction<
 
   return createPortal(
     <div>
-      <Container>
+      <Container className={className}>
         <Content
           {...rest}
           onClick={(e: any) => e.stopPropagation()}
