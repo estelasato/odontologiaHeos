@@ -15,20 +15,37 @@ import { useTreatments } from "./useTreatments";
 import { TreatmentsProps } from "@/services/treatmentsServices";
 import { ModalTreatment } from "@/components/Modal/ModalTreatment";
 
-export const Treatments = () => {
+interface ITreatmentsProps {
+  onClickRow?: (data: any) => void;
+}
 
+export const Treatments = ({ onClickRow }: ITreatmentsProps) => {
   const modalRef = useRef<modalRefProps>(null);
   const modalRemoveRef = useRef<modalRefProps>(null);
   const [selectedTreatment, setSelectedTreatment] = useState<TreatmentsProps>();
   const [treatments, setTreatments] = useState<TreatmentsProps[]>([]);
 
-  const { tratmentsList, handleRemove } = useTreatments(modalRemoveRef);
+  const { tratmentsList, handleRemove, isLoading } =
+    useTreatments(modalRemoveRef);
 
   const columns = useMemo(
     () => [
       {
         header: "Código",
         accessorKey: "id",
+      },
+      {
+        header: "Descrição",
+        accessorKey: "descricao",
+        cell: (row: any) => {
+          const value = row.getValue() as string;
+          return <div style={{
+            maxWidth: "200px",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+          }}>{value}</div>;
+        },
       },
       {
         header: "Data de início",
@@ -42,7 +59,7 @@ export const Treatments = () => {
         accessorKey: "dataFim",
         cell: (row: any) => {
           const data = row.getValue() as string;
-          return <>{data ? masks.convertToDateString(data) : '-'}</>;
+          return <>{data ? masks.convertToDateString(data) : "-"}</>;
         },
       },
       {
@@ -67,14 +84,28 @@ export const Treatments = () => {
     []
   );
 
+  const handleClickRow = (data?: any) => {
+    selectedTreatment?.id === data.id
+      ? setSelectedTreatment(undefined)
+      : setSelectedTreatment(data);
+  };
+
+  useEffect(() => {
+    onClickRow && onClickRow(selectedTreatment);
+  }, [selectedTreatment]);
+
   useEffect(() => {
     tratmentsList && setTreatments(tratmentsList);
   }, [tratmentsList]);
 
   const handleSearch = (e: any) => {
     if (e) {
-      const filtered = FilterList(tratmentsList as any, e, ["id", "idAnamnese", "dataInicio", "dataFim"]);
-      console.log(e, filtered, 'aag')
+      const filtered = FilterList(tratmentsList as any, e, [
+        "id",
+        "idAnamnese",
+        "dataInicio",
+        "dataFim",
+      ]);
       setTreatments(filtered || []);
     } else setTreatments(tratmentsList);
   };
@@ -90,7 +121,7 @@ export const Treatments = () => {
         }
       />
       {/* <ModalProfessional modalRef={modalRef} /> */}
-      <ModalTreatment modalRef={modalRef}/>
+      <ModalTreatment modalRef={modalRef} />
       <Container>
         <SearchContainer
           // modalRef={modalRef}
@@ -98,10 +129,11 @@ export const Treatments = () => {
           onClick={() => modalRef.current?.open()}
         />
         <Table
+          isLoading={isLoading}
           cols={columns}
           data={treatments || []}
           // onClickRow={(data) => handleClickRow(data)}
-          // onClickRow={onClickRow ? (data) => handleClickRow(data) : undefined}
+          onClickRow={onClickRow ? (data) => handleClickRow(data) : undefined}
         />
       </Container>
     </>

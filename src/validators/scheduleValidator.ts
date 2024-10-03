@@ -2,14 +2,14 @@ import * as zod from "zod";
 
 export const ScheduleSchema = zod.object({
   id: zod.any().optional(),
-  idPaciente: zod.coerce.number().int().positive(),
-  idProfissional: zod.coerce.number().int().positive(),
+  idPaciente: zod.coerce.number({ message: "Campo obrigatório" }).min(1, 'Campo obrigatório'),
+  idProfissional: zod.coerce.number({ message: "Campo obrigatório" }).min(1, 'Campo obrigatório'),
   horario: zod
   .string({ message: "Campo obrigatório" })
   .or(zod.date({ message: "Campo obrigatório" })),
-  duracao: zod.number().int().positive(),
-  obs: zod.string().optional(),
-  status: zod.string().optional(),
+  duracao: zod.number({ message: 'Campo obrigatório'}).min(1, 'Campo obrigatório').int().positive({message: 'Campo inválido'}),
+  obs: zod.string().optional().nullable(),
+  status: zod.string().optional().nullable(),
 
   paciente: zod.string().optional().nullable(),
   profissional: zod.string().optional().nullable(),

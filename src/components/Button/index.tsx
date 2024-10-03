@@ -11,6 +11,7 @@ interface ButtonProps {
   fullWidth?: boolean,
   children?: React.ReactNode,
   className?: string,
+  spaceLabel?: boolean,
 }
 
 export function Button({
@@ -21,10 +22,12 @@ export function Button({
   fullWidth = false,
   children,
   className,
+  spaceLabel,
   ...rest
 }: ButtonProps) {
   return (
     <Container
+      $spaceLabel={spaceLabel}
       className={className || 'button-component'}
       type={type}
       $variant={variant}

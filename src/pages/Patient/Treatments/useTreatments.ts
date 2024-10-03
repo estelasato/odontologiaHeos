@@ -12,7 +12,7 @@ export const useTreatments = (
 ) => {
   const {id} = useParams();
 
-  const { data: tratmentsList, refetch } = useQuery({
+  const { data: tratmentsList, refetch, isLoading } = useQuery({
     queryKey: ["tratmentsList", id],
     queryFn: () => id && treatmentsServices.getAll({ idPaciente: Number(id) })
   })
@@ -36,5 +36,6 @@ export const useTreatments = (
     tratmentsList,
     handleRemove,
     refetch,
+    isLoading,
   }
 }

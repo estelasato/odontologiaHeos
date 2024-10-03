@@ -1,4 +1,10 @@
-import { ChangeEvent, ComponentProps, forwardRef, useCallback, useEffect } from "react";
+import {
+  ChangeEvent,
+  ComponentProps,
+  forwardRef,
+  useCallback,
+  useEffect,
+} from "react";
 import { Control, Controller, useFormContext } from "react-hook-form";
 
 import { ErrorMessage } from "@/components/ErrorMessage";
@@ -20,6 +26,8 @@ interface InputProps extends ComponentProps<"input"> {
   control?: Control<any>;
   handleChange?: (value: ChangeEvent<HTMLInputElement>) => void;
   isPassword?: boolean;
+  variant?: "invisible";
+  className?: string;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -41,6 +49,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       onBlur,
       disabled,
       isPassword = false,
+      className,
+      variant,
       ...props
     },
     ref
@@ -73,10 +83,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
     useEffect(() => {
       if (mask && value && name) {
-        console.log(masks[mask](`${value}`), 'aa')
+        console.log(masks[mask](`${value}`), "aa");
         setValue(name, masks[mask](`${value}`));
       }
-    }, [mask, name])
+    }, [mask, name]);
 
     return (
       <Controller
@@ -84,7 +94,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {...props}
         control={control || Control}
         render={({ field: { onChange, value } }) => (
-          <Container $width={width} $disabled={disabled}>
+          <Container
+            className={className}
+            $width={width}
+            $disabled={disabled}
+            $variant={variant}
+          >
             <p className="label-input">{label}</p>
             <StyledInput
               placeholder={placeholder}

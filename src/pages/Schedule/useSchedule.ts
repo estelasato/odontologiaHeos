@@ -1,78 +1,58 @@
-import { queryClient } from "@/App";
-import scheduleServices, {
-  returnSchedule,
-  ScheduleProps,
-} from "@/services/scheduleServices";
+import scheduleServices from "@/services/scheduleServices";
+import { ProcessedEvent } from "@aldabil/react-scheduler/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { differenceInMinutes } from "date-fns";
 import { useEffect, useState } from "react";
-import { withDragAndDropProps } from "react-big-calendar/lib/addons/dragAndDrop";
 import { toast } from "react-toastify";
 
 export const useSchedule = () => {
-  const [schedules, setSchedules] = useState<any[]>([])
+  const [schedules, setSchedules] = useState<ProcessedEvent[]>([])
 
-  const { data: scheduleList, refetch } = useQuery({
+  const { data: scheduleList, refetch, isLoading } = useQuery({
     queryKey: ["scheduleList"],
     queryFn: () => {
       return scheduleServices.getAllSchedules();
     },
-    select(data) {
-      const list = data?.map((s: returnSchedule) => {
-        const end = new Date(s.horario);
-        end.setMinutes(end.getMinutes() + (s.duracao || 0));
-        return {
-          start: new Date(s.horario),
-          end,
-          title: `${s.nomePaciente} - ${s.status}`,
-          resource: {
-            ...s
-          },
-        };
-      });
-      return list || [];
-    },
   });
 
   useEffect(() => {
-    scheduleList && setSchedules(scheduleList)
-  }, [])
+    const data = scheduleList ? scheduleList?.map((s: any) => {
+      const end = new Date(s.horario);
+      end.setMinutes(end.getMinutes() + (s.duracao || 0));
+      return {
+        ...s,
+        start: new Date(s.horario),
+        end,
+        title: `${s.nomePaciente} - ${s.status}`,
+        event_id: s.id || schedules.length + 1,
+      }
+    }) : []
+    setSchedules(data as any)
+  }, [scheduleList])
 
-  const { mutateAsync: updateSchedule } = useMutation({
+  const { mutateAsync: updateSchedule, isPending: isPendingUpdate } = useMutation({
     mutationKey: ["updateSchedule"],
     mutationFn: async (data: any) => {
       return scheduleServices.update(data.id, data.values);
     },
-    onSuccess: (data) => {
-      const cache = queryClient.getQueryData<ScheduleProps[]>(["scheduleList"]);
-      if (cache && data) {
-        queryClient.setQueryData(['scheduleList'], {
-          ...cache,
-          ...data
-        })
-      }
-    }
   })
 
-  const handleDrop: withDragAndDropProps['onEventDrop'] = async(data) => {
-    const values = {
-      ...data.event.resource,
-      horario: data.start,
-      duracao: differenceInMinutes(data.end, data.start)
-    }
+  const handleDrop = async(data: any) => {
+    console.log(data, 'handleDrop')
     try {
-      await updateSchedule({id:  data.event.resource.id, values});
+      await updateSchedule({id:  data.event_id, values: data});
+      // queryClient.invalidateQueries({ queryKey: ["scheduleList"] });
       toast.success('Consulta atualizada')
     } catch (e) {
       toast.error('Erro ao atualizar consulta')
     }
   }
 
-
   return {
     refetch,
     handleDrop,
     schedules,
     setSchedules,
+    isPendingUpdate,
+    isLoading,
   };
 };

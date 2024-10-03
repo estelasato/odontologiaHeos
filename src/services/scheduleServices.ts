@@ -39,6 +39,11 @@ class ScheduleServices {
     const { data: response } = await api.put(`schedule/${id}`, data);
     return response;
   }
+
+  async getById(id: number) {
+    const { data: response } = await api.get(`schedule/${id}`);
+    return response;
+  }
 }
 
 export default new ScheduleServices();

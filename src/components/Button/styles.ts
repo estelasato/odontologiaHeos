@@ -4,6 +4,7 @@ interface IButtonContainer {
   $isFullWidth: boolean,
   $isDisabled: boolean,
   $variant?: 'link' | 'secondary',
+  $spaceLabel?: boolean,
 }
 
 export type VariantsType = {
@@ -30,6 +31,8 @@ export const Container = styled.button<IButtonContainer>`
   -webkit-transition: 0.2s ease all;
 
   background-color: ${({ theme }) => theme.colors.primary.main};
+
+  margin-top: ${(props) => props.$spaceLabel ? '21px' : '0'};
 
   #spinner {
     margin: 0 auto;

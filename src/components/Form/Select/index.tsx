@@ -21,6 +21,8 @@ interface SelectProps extends ComponentProps<"select"> {
   control?: any;
   error?: any;
   width?: string;
+  className?: string;
+  minWidth?: string;
 }
 
 export const Select = forwardRef<HTMLInputElement, SelectProps>(
@@ -34,7 +36,9 @@ export const Select = forwardRef<HTMLInputElement, SelectProps>(
       isLoading,
       placeholder,
       control,
-      width
+      width,
+      className,
+      minWidth,
     }
   ) => {
     const { control: Control } = useFormContext();
@@ -44,7 +48,7 @@ export const Select = forwardRef<HTMLInputElement, SelectProps>(
         name={name || "select"}
         control={control || Control}
         render={({ field }) => (
-          <Container $width={width}>
+          <Container $width={width} className={className} $minW={minWidth}>
             <p className="label-input">{label}</p>
             <SelectComp
               allowClear

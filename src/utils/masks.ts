@@ -84,6 +84,20 @@ const masks: MaskFunctions = {
 
     return "0,00";
   },
+  partialCurrency: (value) => {
+    const string = value.toString();
+
+    if (string.replace(/\D/g, "") !== "")
+      return (parseInt(string.replace(/\D/g, ""), 10) / 100).toLocaleString(
+        "pt-BR",
+        {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2, // Garante sempre 2 casas decimais
+        }
+      );
+
+    return "0,00";
+  },
   currencyAllPlatforms: (value) => {
     if (Number(value)) {
       const [currency, cents] = (Number(value) / 100)

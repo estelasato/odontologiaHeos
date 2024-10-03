@@ -21,7 +21,7 @@ interface ModalTreatmentProps {
 
 export const ModalTreatment = ({ modalRef }: ModalTreatmentProps) => {
   const [values, setValues] = useState<TreatmentsProps | null>(null);
-  const { treatmentForm, professionalOpts, onSubmit, minDate } =
+  const { treatmentForm, professionalOpts, onSubmit, minDate, anamnesisOpt } =
     useModalTreatment();
   const {
     reset,
@@ -83,11 +83,12 @@ export const ModalTreatment = ({ modalRef }: ModalTreatmentProps) => {
             options={professionalOpts}
           />
           <Box>
-            <Input
+            <Select
               width="100px"
               {...register("idAnamnese")}
               label="Anamnese"
               error={errors.idAnamnese?.message}
+              options={anamnesisOpt}
             />
             <Button
               variant="link"

@@ -21,3 +21,13 @@ export const StatusOpts = [
   { value: "REALIZADO", label: "Realizado" },
   { value: "NAO_COMPARECEU", label: "Não compareceu" },
 ]
+
+export const BudgetStatusOpts = [
+  { value: "APROVADO", label: "Aprovado" }, // APROVADO MAS N INICIOU
+  { value: "PENDENTE", label: "Pendente" },
+  { value: "REJEITADO", label: "Rejeitado" }, // N APROVADO
+  { value: "EM_ANDAMENTO", label: "Em andamento" },
+  { value: "CONCLUÍDO", label: "Concluído" },
+  { value: "CANCELADO", label: "Cancelado" }, // APROVADO INICIADO MAS N CONCLUIDO
+
+]

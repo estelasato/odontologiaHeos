@@ -3,7 +3,7 @@ import { modalRefProps } from ".."
 import { toast } from "react-toastify"
 import { useForm } from "react-hook-form"
 import { useParams } from "react-router-dom"
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { AnamnesisDefaultValue } from "@/validators/anamnesisValidator"
 import anamnesisService, { AnamnesisProps } from "@/services/anamnesisService"
 import { useAnamnesis } from "@/pages/Patient/Anamnesis/useAnamnesis"
@@ -37,14 +37,15 @@ export const useModalAnamnesis = (
   })
 
   const { refetch } = useAnamnesis();
+  const queryClient = useQueryClient();
 
   const onSubmit = async (data?: any) => {
-    console.log(data, 'data')
     try {
       if (isCreate) {
         const anamnesis = await create(data);
         console.log(anamnesis)
       } else await update(data)
+      queryClient.invalidateQueries({queryKey: ['anamnesisOpt', id]});
       toast.success("Salvo com sucesso!");
       refetch();
       modalRef.current?.close();

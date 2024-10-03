@@ -13,6 +13,10 @@ declare module "@tanstack/react-table" {
     alignHeader?: "right" | "center";
     alignText?: "right" | "center"; // padrão left
     justifyContent?: "right" | "center";
+    minWidth?: string;
+    isHidden?: boolean;
+    maxWidth?: string;
+    width?: string;
   }
 }
 
@@ -37,7 +41,7 @@ const Table: React.FunctionComponent<TableProps> = ({
   dataPagination,
   // setPagination,
   // numberData
-  variant="default",
+  variant = "default",
   onClickRow,
 }) => {
   const [selectedRow, setSelectedRow] = useState(undefined);
@@ -66,16 +70,23 @@ const Table: React.FunctionComponent<TableProps> = ({
   };
 
   return (
-    <div>
+    <div style={{ width: "100%" }}>
       <TableGrid $variant={variant}>
         <Thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
-                const alignTr = header.column.columnDef.meta?.alignHeader;
-
+                // const alignTr = ?.alignHeader;
+                const meta = header.column.columnDef?.meta ?? {};
+                const { alignHeader, width } = meta;
                 return (
-                  <Th key={header.id} $align={alignTr}>
+                  <Th
+                    key={header.id}
+                    $align={alignHeader}
+                    style={{
+                      width: width || "auto",
+                    }}
+                  >
                     {flexRender(
                       header.column.columnDef.header,
                       header.getContext()

@@ -1,7 +1,7 @@
+import { useState } from "react";
 import { FormProvider } from "react-hook-form";
 import Modal from "..";
 import { useModalSchedule } from "./useModalSchedule";
-import { Container } from "./style";
 import { Input } from "@/components/Form/Input";
 import { Button } from "@/components/Button";
 import { DatePicker } from "@/components/Form/DatePicker";
@@ -11,14 +11,16 @@ import { StatusOpts } from "@/utils/shared/Options";
 import { Grid } from "@/config/grid";
 
 import { ModalInsertPatient } from "../ModalInsertPatient";
-
 import { ModalInsertProfessional } from "../ModalInsertProfessional";
 import { FooterModal } from "../Footer";
+import { Container } from "./style";
 
 interface ModalScheduleProps {
   modalRef: React.RefObject<any>;
 }
 export const ModalSchedule = ({ modalRef }: ModalScheduleProps) => {
+  const [values, setValues] = useState<any>();
+
   const {
     scheduleForm,
     setPatientData,
@@ -27,11 +29,23 @@ export const ModalSchedule = ({ modalRef }: ModalScheduleProps) => {
     insertProfessionalRef,
     minOpts,
     onSubmit,
-  } = useModalSchedule(true, modalRef);
-  const { register, handleSubmit } = scheduleForm;
+    professionalOpts,
+    patientOpts,
+  } = useModalSchedule(!values, modalRef, values);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = scheduleForm;
+  console.log(errors);
 
   return (
-    <Modal ref={modalRef} title={"Agendamento"} width="650px">
+    <Modal
+      getValues={setValues}
+      ref={modalRef}
+      title={"Agendamento"}
+      width="650px"
+    >
       <FormProvider {...scheduleForm}>
         <ModalInsertPatient
           modalRef={insertPatientRef}
@@ -48,43 +62,48 @@ export const ModalSchedule = ({ modalRef }: ModalScheduleProps) => {
             width="100px"
             disabled={true}
           />
-          <Grid $alignItems="flex-end" $template="100px 1fr 1fr">
-            <Input
+          <Grid $template="1fr 1fr">
+            <Select
               {...register("idPaciente")}
-              label="Código"
-              width="100px"
-              disabled={true}
+              label="Paciente"
+              options={patientOpts}
+              error={errors.idPaciente?.message}
             />
-            <Input {...register("paciente")} label="Paciente" disabled={true} />
-            <Button onClick={() => insertPatientRef.current?.open()}>
-              Selecionar Paciente
+            <Button spaceLabel onClick={() => insertPatientRef.current?.open()}>
+              + Paciente
             </Button>
           </Grid>
 
-          <Grid $alignItems="flex-end" $template="100px 1fr 1fr">
-            <Input
+          <Grid $template="1fr 1fr">
+            <Select
               {...register("idProfissional")}
-              label="Código"
-              width="100px"
-              disabled={true}
-            />
-            <Input
-              {...register("profissional")}
               label="Profissional"
-              disabled={true}
+              options={professionalOpts}
+              error={errors.idProfissional?.message}
             />
-            <Button onClick={() => insertProfessionalRef.current?.open()}>
-              Selecionar Profissional
+            <Button
+              spaceLabel
+              onClick={() => insertProfessionalRef.current?.open()}
+            >
+              + Profissional
             </Button>
           </Grid>
 
           <Grid $template="1fr 150px 1fr">
-            <DatePicker label="Data e hora" {...register("horario")} hasTime />
+            <DatePicker
+              label="Data e hora"
+              {...register("horario")}
+              hasTime
+              minDate={new Date()}
+              minTime={new Date()}
+              error={errors.horario?.message}
+            />
             <Select
               {...register("duracao")}
               label="Duração"
               options={minOpts}
               width="150px"
+              error={errors.duracao?.message}
             />
             <Select
               {...register("status")}

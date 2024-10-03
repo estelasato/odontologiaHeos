@@ -16,9 +16,10 @@ export const ModalInsertPatient = ({ modalRef, selectData }: ModalInsertPatientP
   const [data, setData] = useState<PatientProps | undefined>();
 
   const handleSelect = () => {
-    if (data) {
+    if (data && !!data.ativo) {
       selectData(data)
-    } else toast.error('Selecione um paciente')
+      modalRef.current?.close()
+    } else toast.error('Selecione um paciente ativo')
   }
 
   return (

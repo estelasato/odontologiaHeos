@@ -1,9 +1,10 @@
 import { useProfessional } from "@/pages/Professional/useProfessional";
+import anamnesisService from "@/services/anamnesisService";
 import { ProfessionalProps } from "@/services/professionalService";
 import treatmentsServices from "@/services/treatmentsServices";
 import { TreatmentsDefaultValue, TreatmentsFormSchema, TreatmentsSchema } from "@/validators/treatmentsValidator";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
@@ -51,6 +52,12 @@ export const useModalTreatment = () => {
     setMinDate(startDate)
   }, [startDate])
 
+  const { data: anamnesisOpt} = useQuery({
+    queryKey: ['anamnesisOpt', id],
+    queryFn: () => anamnesisService.getAll({idPaciente: Number(id)}),
+    select: (data) => data.map((a: any) => ({value: a.id, label: a.id}))
+  })
+
   const onSubmit = async (data: TreatmentsFormSchema) => {
     try {
       await saveTreatment(data)
@@ -65,6 +72,7 @@ export const useModalTreatment = () => {
     treatmentForm,
     professionalOpts,
     onSubmit,
-    minDate
+    minDate,
+    anamnesisOpt,
   };
 };

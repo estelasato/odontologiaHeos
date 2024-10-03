@@ -5,6 +5,7 @@ import { About } from "./About";
 import { Anamnesis } from "./Anamnesis";
 import { useParams } from "react-router-dom";
 import { Treatments } from "./Treatments";
+import { Budgets } from "./Budgets";
 
 export const Patient = () => {
   const {id} = useParams();
@@ -14,6 +15,7 @@ export const Patient = () => {
     { label: "Sobre", component: <About />, enable: true },
     { label: "Tratamentos", component: <Treatments />, enable: id ?? false },
     { label: "Anamneses", component: <Anamnesis />, enable: id ?? false},
+    { label: "Orçamentos", component: <Budgets />, enable: id ?? false },
   ];
 
   return (

@@ -47,6 +47,11 @@ export const GlobalStyles = createGlobalStyle`
     padding: 0;
     box-sizing: border-box;
     font-family: -apple-system, BlinkMacSystemFont, Roboto, GeneralSans, sans-serif;
+
+    .MuiModal-root {
+    display: none !important;
+    z-index: 0 !important;
+  }
   }
 
   body {
