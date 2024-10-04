@@ -49,7 +49,20 @@ export const useAbout = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate()
 
+  function needResponsible (birthdate: Date) {
+    const date = new Date();
+    date.setFullYear(date.getFullYear() - 18);
+    const result = birthdate.getFullYear() > date.getFullYear()
+    return result
+  }
+
   const onSubmit = async (data?: any) => {
+    if (needResponsible(data?.dtNascimento)) {
+      if (!data?.responsaveis || data.responsaveis.length === 0) {
+        toast.error("Menor de idade precisa de um responsável");
+        return;
+      }
+    }
     try {
       if (isCreate) {
         await createPatient(data);

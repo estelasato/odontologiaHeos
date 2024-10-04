@@ -10,6 +10,7 @@ export const Container = styled.form`
 export const Box = styled.div`
   display: flex;
   gap: 12px;
+  width: 100%;
   align-items: flex-end;
 
 `;

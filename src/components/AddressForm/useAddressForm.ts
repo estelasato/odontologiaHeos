@@ -14,7 +14,7 @@ export const useAddressForm = () => {
   })
 
   const cityOpt = useMemo(() => {
-    const data = listCities?.map((c: CityProps) => {
+    const data = listCities?.filter((c: CityProps) => c.ativo)?.map((c: CityProps) => {
       return {value: c.id, label: c.cidade}
     })
     return data

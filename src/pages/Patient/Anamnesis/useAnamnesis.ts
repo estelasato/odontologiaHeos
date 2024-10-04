@@ -66,7 +66,7 @@ export const useAnamnesis = (modalRemoveRef?: RefObject<modalRefProps>, onClickR
 
   const handleSearch = (e: any) => {
     if (e) {
-      const filtered = FilterList(anamnesisList as any, e, ["id", "createdAt"]);
+      const filtered = FilterList(anamnesisList as any, e, ["id", "createdAt", "queixas"]);
       setAnamnesis(filtered || []);
     } else setAnamnesis(anamnesisList);
   };

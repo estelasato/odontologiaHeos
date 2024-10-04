@@ -84,7 +84,7 @@ export const ModalTreatment = ({ modalRef }: ModalTreatmentProps) => {
           />
           <Box>
             <Select
-              width="100px"
+              minWidth="150px"
               {...register("idAnamnese")}
               label="Anamnese"
               error={errors.idAnamnese?.message}

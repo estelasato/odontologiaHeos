@@ -11,7 +11,15 @@ export const ResponsibleSchema = AddressValidator.extend({
     .string()
     .optional()
     .nullable()
-    .transform((value) => value && masks.unmask(value)),
+    .transform((value) => value && masks.unmask(value))
+    .refine((value) => {
+      if (value && !validarCPF(value)) {
+        return false;
+      }
+      return true;
+    }, {
+      message: "CPF inválido",
+    }),
   rg: zod
     .string()
     .optional()

@@ -11,6 +11,7 @@ import { ResponsibleProps } from "@/services/responsiblePartyService";
 import { useProfessional } from "./useProfessional";
 import { ModalProfessional } from "@/components/Modal/ModalProfessional";
 import { TableIconColumn } from "../shared/iconsTable";
+import { FilterList } from "@/utils/shared/FilterList";
 
 interface ProfessionalProps {
   onClick?: (data: any) => void;
@@ -78,8 +79,17 @@ export const Professional = ({ onClick }: ProfessionalProps) => {
   }, [selectData]);
 
   useEffect(() => {
-    professionals && setProfessionals(professionalList);
+    professionalList && setProfessionals(professionalList);
   }, [professionalList]);
+
+  const handleSearch = (e: any) => {
+    if (e) {
+      const filtered = FilterList(professionalList as any, e, ["id", "nome"]);
+      setProfessionals(filtered || []);
+    } else setProfessionals(professionalList);
+  };
+
+
   return (
     <Container>
       <ModalConfirmation
@@ -94,11 +104,11 @@ export const Professional = ({ onClick }: ProfessionalProps) => {
       <h1>Profissionais</h1>
       <SearchContainer
         modalRef={modalRef}
-        onSearch={(e) => console.log(e, "search")}
+        onSearch={(e) => handleSearch(e)}
       />
       <Table
         cols={columns}
-        data={professionalList || []}
+        data={professionals || []}
         onClickRow={onClick ? (data) => handleClickRow(data) : undefined}
 
       />

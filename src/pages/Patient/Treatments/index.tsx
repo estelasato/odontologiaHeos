@@ -102,6 +102,7 @@ export const Treatments = ({ onClickRow }: ITreatmentsProps) => {
     if (e) {
       const filtered = FilterList(tratmentsList as any, e, [
         "id",
+        "descricao",
         "idAnamnese",
         "dataInicio",
         "dataFim",

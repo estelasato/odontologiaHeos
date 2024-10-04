@@ -27,7 +27,7 @@ export const useIncludeAllergies = (listData?: any[]) => {
       return await basicServices.getAll('allergy')
     },
     select: (data) => {
-      const options = data?.map((i: BasicProps) => (
+      const options = data?.filter((a: BasicProps) => a.ativo)?.map((i: BasicProps) => (
         {value: i.id, label: i.nome}
       ))
       return options

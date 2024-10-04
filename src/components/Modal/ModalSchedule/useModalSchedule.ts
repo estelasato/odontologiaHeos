@@ -43,7 +43,11 @@ export const useModalSchedule = (
       return patientService.getAllPatients();
     },
     select: (data) => {
-      return data.map((d: any) => ({ label: d.nome, value: d.id }));
+      if (data) {
+        return data
+          ?.filter((a: PatientProps) => a.ativo)
+          .map((d: PatientProps) => ({ label: d.nome, value: d.id }));
+      } else return [];
     },
   });
 
@@ -53,7 +57,11 @@ export const useModalSchedule = (
       return professionalService.getAll();
     },
     select: (data) => {
-      return data.map((d: any) => ({ label: d.nome, value: d.id }));
+      if (data) {
+        return data
+          ?.filter((a: ProfessionalProps) => a.ativo)
+          .map((d: ProfessionalProps) => ({ label: d.nome, value: d.id }));
+      } else return [];
     },
   });
 
@@ -88,55 +96,55 @@ export const useModalSchedule = (
   const { refetch } = useSchedule();
 
   // const validSchedule = (data: scheduleSchema) => {
-    // const dtInicio = new Date(data.horario);
-    // const dtFim  =  new Date(dtInicio.getTime() + data.duracao * 60000);
+  // const dtInicio = new Date(data.horario);
+  // const dtFim  =  new Date(dtInicio.getTime() + data.duracao * 60000);
 
-    // const findSchedule = schedules.find((s) => {
-    //   const sInicio = new Date(s.horario);
-    //   const sFim = new Date(sInicio.getTime() + s.duracao * 60000);
+  // const findSchedule = schedules.find((s) => {
+  //   const sInicio = new Date(s.horario);
+  //   const sFim = new Date(sInicio.getTime() + s.duracao * 60000);
 
-    //   if (dtFim >= sInicio && dtInicio <= sFim) {
-    //     console.log('achou', s)
-    //     return s;
-    //   }
-      // if ((h >= dtInicio && h <= dtFim) || (h <= dtInicio && h >= dtFim)) return h
-      // return (h >= dtInicio && h <= dtFim) || (dtInicio >= h && dtInicio <= new Date(s.horario));
-    // })
-    // console.log(data, '-', dtInicio, '-', dtFim, '-', findSchedule);
-    // if (findSchedule) {
-    //   if ((findSchedule.idPaciente === data.idPaciente) || (findSchedule.idProfissional === data.idProfissional)) {
+  //   if (dtFim >= sInicio && dtInicio <= sFim) {
+  //     console.log('achou', s)
+  //     return s;
+  //   }
+  // if ((h >= dtInicio && h <= dtFim) || (h <= dtInicio && h >= dtFim)) return h
+  // return (h >= dtInicio && h <= dtFim) || (dtInicio >= h && dtInicio <= new Date(s.horario));
+  // })
+  // console.log(data, '-', dtInicio, '-', dtFim, '-', findSchedule);
+  // if (findSchedule) {
+  //   if ((findSchedule.idPaciente === data.idPaciente) || (findSchedule.idProfissional === data.idProfissional)) {
 
-    //     return toast.error("Já existe uma consulta marcada para esse horário");
-    //   } return toast.success("marcado");
-    // }
-    // console.log(findSchedule);
+  //     return toast.error("Já existe uma consulta marcada para esse horário");
+  //   } return toast.success("marcado");
+  // }
+  // console.log(findSchedule);
   //   return
   // }
 
-    // TODO: sempre verificar se ja tem horario marcado, e com mesmo paciente ou dentista
+  // TODO: sempre verificar se ja tem horario marcado, e com mesmo paciente ou dentista
   const onSubmit = async (data: scheduleSchema) => {
-     try {
-       if (data && new Date(data.horario) < new Date()) {
-         return toast.error("Não é possível agendar em datas passadas");
-       }
+    try {
+      if (data && new Date(data.horario) < new Date()) {
+        return toast.error("Não é possível agendar em datas passadas");
+      }
 
-       let value = { ...data };
-       if (!data?.status) {
-         value.status = "AGENDADO";
-       }
-       if (isCreate) {
-         await createSchedule(value);
-       } else {
-         await updateState(value);
-       }
-       refetch();
-       queryClient.invalidateQueries({ queryKey: ["scheduleList"] });
-       toast.success("Salvo com sucesso");
-       modalRef?.current?.close();
-     } catch (e) {
-       console.log(e);
-       toast.error("Ocorreu um erro!");
-     }
+      let value = { ...data };
+      if (!data?.status) {
+        value.status = "AGENDADO";
+      }
+      if (isCreate) {
+        await createSchedule(value);
+      } else {
+        await updateState(value);
+      }
+      refetch();
+      queryClient.invalidateQueries({ queryKey: ["scheduleList"] });
+      toast.success("Salvo com sucesso");
+      modalRef?.current?.close();
+    } catch (e) {
+      console.log(e);
+      toast.error("Ocorreu um erro!");
+    }
   };
 
   const minOpts = useMemo(() => {

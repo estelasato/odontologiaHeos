@@ -1,14 +1,25 @@
 import masks from "@/utils/masks";
 import * as zod from "zod";
 import { AddressValidator } from "./addressValidator";
+import { handleSearch } from "@/utils/shared/FilterList";
+import { validarCPF } from "@/utils/validaDoc";
 
 export const EmployeeSchema = AddressValidator.extend({
   id: zod.coerce.number().optional().nullable(),
   nome: zod.string().min(1,'Campo obrigatório'),
   cpf: zod
   .string()
+  .optional()
   .nullable()
-  .transform((value) => value && masks.unmask(value)).nullable(),
+  .transform((value) => value && masks.unmask(value))
+  .refine((value) => {
+    if (value && !validarCPF(value)) {
+      return false;
+    }
+    return true;
+  }, {
+    message: "CPF inválido",
+  }),
   rg: zod.string().optional().nullable().transform((value) => value && masks.unmask(value)).nullable(),
   dtNascimento: zod.string(({ message: 'Campo obrigatório'})).or(zod.date({ message: 'Campo obrigatório'})),
   email: zod.string().optional(),
@@ -35,7 +46,26 @@ export const EmployeeSchema = AddressValidator.extend({
 
   ativo: zod.boolean().optional().transform((value) => !!value ? 1 : 0),
   idCidade: zod.number().optional().nullable(),
-})
+}).superRefine((data, ctx) => {
+  if (data.idCidade) {
+    if (handleSearch(data.pais) === handleSearch("Brasil")) {
+      if (!data.cpf) {
+        ctx.addIssue({
+          code: zod.ZodIssueCode.custom,
+          message: "Campo obrigatório",
+          path: ["cpf"],
+        });
+      }
+      if (data.cpf && !validarCPF(data.cpf)) {
+        ctx.addIssue({
+          code: zod.ZodIssueCode.custom,
+          message: "CPF inválido",
+          path: ["cpf"],
+        });
+      }
+    }
+  }
+});
 
 export type EmployeeFormSchema = zod.infer<typeof EmployeeSchema>
 

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { FormProvider } from "react-hook-form";
 
 import { AddressForm, defaultAddressValues } from "@/components/AddressForm";
@@ -35,6 +35,13 @@ export const About = () => {
       reset(defaultAddressValues);
     }
   }, [patientData, id]);
+
+  const maxDate = useMemo(() => {
+    const date = new Date();
+    date.setMonth(date.getMonth() - 6);
+    return date;
+  }, []);
+
   return (
     <FormProvider {...patientForm}>
       {id && !patientData && (
@@ -81,7 +88,7 @@ export const About = () => {
           />
           <DatePicker
             {...register("dtNascimento")}
-            // name="dtNascimento"
+            maxDate={maxDate}
             label="Data de Nascimento"
             error={errors.dtNascimento?.message}
             defaultValue={patientData?.dtNascimento}

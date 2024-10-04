@@ -54,7 +54,7 @@ export const useModalState = (
   const { countryList } = useCountry();
 
   const countryOptions = useMemo(() => {
-    return countryList?.map((country: CountryProps) => ({
+    return countryList.filter((a: CountryProps) => a.ativo)?.map((country: CountryProps) => ({
       value: country.id,
       label: country.pais,
     }));

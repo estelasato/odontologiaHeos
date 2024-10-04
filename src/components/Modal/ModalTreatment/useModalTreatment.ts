@@ -24,7 +24,7 @@ export const useModalTreatment = () => {
   const professionalOpts = useMemo(() => {
     const list = professionals || professionalList;
     if (list) {
-      return list?.map((p: ProfessionalProps) => ({
+      return list.filter((a: ProfessionalProps) => a.ativo)?.map((p: ProfessionalProps) => ({
         value: p.id,
         label: p.nome,
       }));
@@ -55,7 +55,7 @@ export const useModalTreatment = () => {
   const { data: anamnesisOpt} = useQuery({
     queryKey: ['anamnesisOpt', id],
     queryFn: () => anamnesisService.getAll({idPaciente: Number(id)}),
-    select: (data) => data.map((a: any) => ({value: a.id, label: a.id}))
+    select: (data) => data.map((a: any) => ({value: a.id, label: a.queixas}))
   })
 
   const onSubmit = async (data: TreatmentsFormSchema) => {

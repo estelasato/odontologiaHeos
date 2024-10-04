@@ -121,8 +121,8 @@ export const ModalSchedule = ({ modalRef }: ModalScheduleProps) => {
           />
 
           <FooterModal
-            dtCadastro={new Date()}
-            dtUltAlt={new Date()}
+            dtCadastro={values?.dtCadastro}
+            dtUltAlt={values?.dtCadastro}
             handleSubmit={handleSubmit(onSubmit)}
           />
         </Container>

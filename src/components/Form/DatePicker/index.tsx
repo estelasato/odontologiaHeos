@@ -18,6 +18,7 @@ interface DateProps {
   hasTime?: boolean;
   minTime?: any;
   maxTime?: any;
+  maxDate?: any;
 }
 
 export const DatePicker = forwardRef<HTMLInputElement, DateProps>(
@@ -32,6 +33,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DateProps>(
       hasTime = false,
       minTime,
       maxTime,
+      maxDate,
       ...props
     },
     ref
@@ -62,6 +64,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DateProps>(
                   {...fieldProps}
                   minTime={minTime}
                   maxTime={maxTime}
+                  maxDate={maxDate}
                   ref={ref as any}
                   selected={value ? new Date(value) : undefined}
                   dateFormat={hasTime ? "dd/MM/yyyy HH:mm" : "dd/MM/yyyy"}

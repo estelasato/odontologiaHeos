@@ -69,6 +69,7 @@ export const Budgets = () => {
 
   const [open, setOpen] = useState(false);
 
+  // TODO: integrar orçamento (edição, busca...)
   return (
     <Container>
       <AnimatePresence>{open && <Budget setOpen={setOpen} data={selectBudget}/>}</AnimatePresence>

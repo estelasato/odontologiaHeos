@@ -54,7 +54,7 @@ export const useModalCity = (
   const { stateList } = useStateData();
 
   const stateOpt = useMemo(() => {
-    return stateList?.map((state: StateProps) => ({
+    return stateList.filter((a: StateProps) => a.ativo)?.map((state: StateProps) => ({
       value: state.id,
       label: state.estado,
     }));

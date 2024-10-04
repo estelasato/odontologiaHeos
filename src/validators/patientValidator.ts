@@ -17,6 +17,13 @@ export const BasicList = zod.object({
   descricao: zod.string().optional(),
 });
 
+export function hasAgeMin (data: string | Date) {
+  const today = new Date();
+  const birtdate = new Date(data);
+  const hasMin = new Date(today.setMonth(today.getMonth() - 6));
+  return birtdate <= hasMin;
+}
+
 export const PatientsSchema = AddressValidator.extend({
   id: zod.any().optional(),
   nome: zod.string().min(1, "Campo obrigatório"),
@@ -24,15 +31,28 @@ export const PatientsSchema = AddressValidator.extend({
     .string()
     .optional()
     .nullable()
-    .transform((value) => value && masks.unmask(value)),
+    .transform((value) => value && masks.unmask(value))
+    .refine((value) => {
+      if (value && !validarCPF(value)) {
+        return false;
+      }
+      return true;
+    }, {
+      message: "CPF inválido",
+    }),
   rg: zod
     .string()
     .optional()
     .nullable()
     .transform((value) => value && masks.unmask(value)),
-  dtNascimento: zod
+    dtNascimento: zod
     .string({ message: "Campo obrigatório" })
-    .or(zod.date({ message: "Campo obrigatório" })),
+    .or(zod.date({ message: "Campo obrigatório" }))
+    .refine((v) => {
+      return hasAgeMin(v);
+    }, {
+      message: "O paciente deve ter no mínimo 6 meses",
+    }),
   email: zod.string().optional(),
   celular: zod
     .string()
