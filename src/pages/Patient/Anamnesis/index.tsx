@@ -40,7 +40,7 @@ export const Anamnesis = ({ onClickRow }: AnamnesisType) => {
         accessorKey: "id",
       },
       {
-        header: "Queixas",
+        header: "Descrição",
         accessorKey: "queixas",
         cell: (row: any) => {
           return <>{row.getValue() || 0}</>;

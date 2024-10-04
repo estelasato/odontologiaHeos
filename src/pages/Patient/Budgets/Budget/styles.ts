@@ -40,3 +40,10 @@ export const Box = styled.div`
     min-width: 200px !important;
   }
 `;
+
+export const BoxPayment = styled.div`
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  justify-content: flex-start;
+`;

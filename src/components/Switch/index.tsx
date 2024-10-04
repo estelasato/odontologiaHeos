@@ -1,4 +1,4 @@
-import { ComponentProps, forwardRef } from "react";
+import { ComponentProps, forwardRef, useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
 import { Container, SwitchComp } from "./styles";
@@ -15,13 +15,19 @@ export const Switch = forwardRef<HTMLInputElement, SwitchTypes>(
   ({ label, handleChange, value = false, name, control, ...props }, ref) => {
     const method = useFormContext();
 
+    useEffect(() => {
+      if (!value) {
+        method.setValue(name || "switch", true);
+      }
+    }, [value])
+
     return (
       <Controller
         {...(props as any)}
         ref={ref}
         name={name || "switch"}
         control={control || method.control}
-        defaultValue={value}
+        defaultValue={value || true}
         render={({ field }) => {
           return (
             <Container>

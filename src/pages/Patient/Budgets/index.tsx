@@ -7,9 +7,12 @@ import { modalRefProps } from "@/components/Modal";
 import { ModalBudgets } from "@/components/Modal/ModalBudgets";
 import Budget from "./Budget";
 import { AnimatePresence } from "framer-motion";
+import { TableIconColumn } from "@/pages/shared/iconsTable";
+import masks from "@/utils/masks";
 
 export const Budgets = () => {
   const { budgets } = useBudgets();
+  const [selectBudget, setSelectBudget] = useState<any>();
 
   const modalRefCreate = useRef<modalRefProps>(null);
 
@@ -33,10 +36,32 @@ export const Budgets = () => {
       {
         header: "Código Anamnese",
         accessorKey: "idAnamnese",
+        meta: {alignText: "center"},
       },
       {
         header: "Última Alteração",
         accessorKey: "dtUltAlt",
+        cell: (row: any) => {
+          const date = row.getValue() as string
+          return <>{masks.convertToDateString(date)}</>;
+        }
+      },
+      {
+        header: "",
+        accessorKey: "delete",
+        meta: { alignText: "right" },
+        cell: (row: any) => (
+          <TableIconColumn
+            handleEdit={() => {
+              setSelectBudget(row.row.original);
+              setOpen(true);
+            }}
+            // handleRemove={() => {
+            //   setSelectedAnamnesis(row.row.original);
+            //   modalRemoveRef.current?.open();
+            // }}
+          />
+        ),
       },
     ],
     []
@@ -46,7 +71,7 @@ export const Budgets = () => {
 
   return (
     <Container>
-      <AnimatePresence>{open && <Budget setOpen={setOpen}/>}</AnimatePresence>
+      <AnimatePresence>{open && <Budget setOpen={setOpen} data={selectBudget}/>}</AnimatePresence>
 
       {!open && (
         <>
@@ -54,7 +79,7 @@ export const Budgets = () => {
           <SearchContainer
             // modalRef={modalRef}
             // onSearch={(e) => handleSearch(e)}
-            onClick={() => setOpen(!open)}
+            onClick={() => {setSelectBudget(null); setOpen(!open)}}
           />
 
           <Table

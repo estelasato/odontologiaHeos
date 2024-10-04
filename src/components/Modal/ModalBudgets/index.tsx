@@ -12,7 +12,7 @@ export const ModalBudgets = ({ modalRef }: IModalBudgets) => {
   const {
     formBudgets,
     // onSubmit
-  } = useModalBudgets(modalRef);
+  } = useModalBudgets();
   const {
     register,
     // handleSubmit,

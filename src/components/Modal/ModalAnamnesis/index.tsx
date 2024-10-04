@@ -70,7 +70,7 @@ export const ModalAnamnesis = ({ modalRef }: ModalBasic) => {
             />
           </Grid>
           <Grid $template="1fr 1fr">
-            <TextArea width="100%" {...register("queixas")} label="Queixas" />
+            <TextArea width="100%" {...register("queixas")} label="Descrição" />
             <TextArea width="100%" {...register("obs")} label="Observação" />
           </Grid>
 

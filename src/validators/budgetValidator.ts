@@ -12,14 +12,13 @@ export const BudgetTreatmSchema = zod.object({
 })
 
 export const BudgetSchema = zod.object({
-  id: zod.string().optional().nullable(),
+  id: zod.any().optional().nullable(),
   // idPaciente: zod.number(),
   idProfissional: zod.number({message: 'Campo obrigatório'}),
   idAnamnese: zod.number({message: 'Campo obrigatório'}),
   idCondPagamento: zod.number({message: 'Campo obrigatório'}),
   status: zod.string({message: 'Campo obrigatório'}),
-  total: zod.string({message: 'Campo obrigatório'}),
-
+  total: zod.any().transform((value) => Number(masks.unmask(value))),
   tratamentos: zod.array(BudgetTreatmSchema).optional().nullable(),
 })
 

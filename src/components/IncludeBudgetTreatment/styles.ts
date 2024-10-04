@@ -38,6 +38,7 @@ export const FooterTable = styled.div`
   gap: 10px;
   padding-right: 12px;
 
+  padding-right: 52px;
   input {
     text-align: end;
   }

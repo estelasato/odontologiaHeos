@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { toast } from "react-toastify";
 
@@ -17,6 +17,7 @@ import { Container, FooterTable, TableCont } from "./styles";
 // import { ColumnDef } from "@tanstack/react-table";
 import Table from "../Table";
 import masks from "@/utils/masks";
+import { TableIconColumn } from "@/pages/shared/iconsTable";
 
 export interface IBudgetTreatm extends TreatmentsProps {
   valor?: number;
@@ -51,14 +52,14 @@ export const IncludeBudgetTreatm = ({
     }
   };
 
-  // const handleRemove = useCallback(
-  //   (id: number) => {
-  //     const newList = list?.filter((r: IBudgetTreatm) => r.id != id);
-  //     setValue("tratamentos", newList);
-  //     setList(newList);
-  //   },
-  //   [list]
-  // );
+  const handleRemove = useCallback(
+    (id: number) => {
+      const newList = list?.filter((r: IBudgetTreatm) => r.id != id);
+      setValue("tratamentos", newList);
+      setList(newList);
+    },
+    [list]
+  );
 
   useEffect(() => {
     if (listData) {
@@ -88,11 +89,11 @@ export const IncludeBudgetTreatm = ({
     // setValue("total", sumTotal);
     calcTotal()
   };
-
+  // TODO: calc total
   const calcTotal = () => {
     let sumTotal = 0;
     console.log(getValues("tratamentos"), "tratamentos");
-    tratamentos.map((e: any, index: number) => {
+    tratamentos.map((e: any) => {
       console.log(e.total, 'e', sumTotal)
       sumTotal += Number(masks.number(e.total))
     });
@@ -189,6 +190,16 @@ export const IncludeBudgetTreatm = ({
           );
         },
         meta: { alignHeader: "right", width: "150px" },
+      },
+      {
+        header: "",
+        accessorKey: "delete",
+        meta: { alignText: "right" },
+        cell: (row: any) => (
+          <TableIconColumn
+            handleRemove={() => handleRemove(row.row.original.id)}
+          />
+        ),
       },
     ],
     [list]

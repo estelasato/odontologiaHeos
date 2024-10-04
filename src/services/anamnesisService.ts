@@ -3,7 +3,7 @@ import api from "@/config/api";
 export interface AnamnesisProps{
   id?: number
   obs?: string
-  queixas?: string
+  queixas: string
   idPaciente: number
 }
 

@@ -11,22 +11,26 @@ export const TableIconColumn = ({ handleEdit, handleRemove }: IconsTableProps) =
 
   return (
     <Container>
-      <div
-        onClick={(e) => {
-          e.stopPropagation();
-          handleEdit && handleEdit()
-        }}
-      >
-        <FiEdit />
-      </div>
-      <div
-        onClick={(e) => {
-          e.stopPropagation();
-          handleRemove && handleRemove()
-        }}
-      >
-        <CgTrash />
-      </div>
+      {handleEdit && (
+        <div
+          onClick={(e) => {
+            e.stopPropagation();
+            handleEdit && handleEdit()
+          }}
+        >
+          <FiEdit />
+        </div>
+      )}
+      {handleRemove && (
+        <div
+          onClick={(e) => {
+            e.stopPropagation();
+            handleRemove && handleRemove()
+          }}
+        >
+          <CgTrash />
+        </div>
+      )}
     </Container>
   );
 };
