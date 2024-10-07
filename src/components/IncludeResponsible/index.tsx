@@ -62,7 +62,7 @@ export const IncludeResponsible = ({
         selectData={(data) => handleInclude(data)}
       />
       <Content>
-        <p className="title">Responsável</p>
+        <p className="title">Responsável (obrigatório para menores de idade)</p>
         <div className="open-icon" onClick={() => setOpen(!open)}>
           {open ? <IoChevronUp /> : <IoChevronDown />}
         </div>

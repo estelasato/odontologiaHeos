@@ -25,6 +25,7 @@ export const EmployeeSchema = AddressValidator.extend({
   email: zod.string().optional(),
   celular: zod
   .string()
+  .min(9, { message: 'Campo obrigatório' })
   .transform((value) => value && masks.unmask(value)),
   sexo: zod.string({message: 'Campo obrigatório'}).min(1, 'Campo obrigatório'),
   estCivil: zod.string().optional().nullable(),

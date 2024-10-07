@@ -133,10 +133,10 @@ export const ModalPaymentTerm = ({ modalRef }: ModalPaymentTermProps) => {
                 <Input
                   {...register("perc")}
                   label="%*"
-                  mask="number"
+                  type="number"
                   error={errors.perc?.message}
                 />
-                <Input {...register("percTotal")} label="% Total" disabled />
+                <Input {...register("percTotal")} type="number" label="% Total" disabled />
               </Grid>
 
               <Grid

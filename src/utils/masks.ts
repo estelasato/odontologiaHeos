@@ -5,8 +5,14 @@ export type MaskFunctions = {
 };
 
 const masks: MaskFunctions = {
-  unmask: (value) => value.replace(/[^a-zA-Z0-9]/g, ""),
-  number: (value) => value.replace(/\D/g, ""),
+  // unmask: (value) => value?.replace(/[^a-zA-Z0-9]/g, ""),
+  unmask: (value) => {
+    return value ? String(value).replace(/[^a-zA-Z0-9]/g, "") : "";
+  },
+  number: (value) => {
+    return value ? String(value)?.replace(/\D/g, "") : ""
+  },
+  // number: (value) => value?.replace(/\D/g, ""),
   state: (value) => value.replace(/\d/, ""),
   hour: (value) =>
     String(value)
@@ -167,6 +173,7 @@ const masks: MaskFunctions = {
   convertToDateString: (value) => {
     return format(new Date(value), "dd/MM/yyyy");
   },
+  // floatNum
 };
 
 export default masks;

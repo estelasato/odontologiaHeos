@@ -12,14 +12,13 @@ interface SwitchTypes extends ComponentProps<any> {
 }
 
 export const Switch = forwardRef<HTMLInputElement, SwitchTypes>(
-  ({ label, handleChange, value = false, name, control, ...props }, ref) => {
+  ({ label, handleChange, value = true, name, control, ...props }, ref) => {
     const method = useFormContext();
 
     useEffect(() => {
-      if (!value) {
-        method.setValue(name || "switch", true);
-      }
-    }, [value])
+      console.log(value)
+      method.setValue(name || "switch", value);
+    }, [value]);
 
     return (
       <Controller
@@ -27,7 +26,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchTypes>(
         ref={ref}
         name={name || "switch"}
         control={control || method.control}
-        defaultValue={value || true}
+        defaultValue={true}
         render={({ field }) => {
           return (
             <Container>
@@ -38,8 +37,8 @@ export const Switch = forwardRef<HTMLInputElement, SwitchTypes>(
                   field.onChange(e);
                   handleChange && handleChange(e);
                 }}
-                $active={field.value === true}
-                defaultChecked={value}
+                $active={field.value == true || field.value == 1}
+                defaultChecked={true}
               />
             </Container>
           );

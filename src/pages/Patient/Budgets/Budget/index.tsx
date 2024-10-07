@@ -15,6 +15,7 @@ import { modalRefProps } from "@/components/Modal";
 import { useEffect, useRef, useState } from "react";
 import { IPaymentTerm } from "@/services/paymentTermService";
 import { toast } from "react-toastify";
+import { IncludeAccReceivable } from "@/components/IncludeAccReceivable";
 
 // Defina as variantes de animação
 const pageVariants = {
@@ -51,7 +52,8 @@ const Budget = ({ setOpen, data }: IBudget) => {
     paymentTermOpt,
     professionalOpt,
     budgetData,
-  } = useBudget(data);
+    isPending,
+  } = useBudget(setOpen, data);
   const {
     register,
     handleSubmit,
@@ -73,6 +75,9 @@ const Budget = ({ setOpen, data }: IBudget) => {
     }
     setSelectData(data);
   }
+
+  const watchStatus = formBudgets.watch("status");
+  if (!watchStatus) setValue("status", 'PENDENTE');
 
   useEffect(() => {
     reset(budgetData)
@@ -161,10 +166,13 @@ const Budget = ({ setOpen, data }: IBudget) => {
             </Button>
           {/* </Grid> */}
           </BoxPayment>
+
+          <IncludeAccReceivable />
           <FooterModal
             // modalRef={modalRef}
             // dtCadastro={values?.dtCadastro}
             // dtUltAlt={values?.dtUltAlt}
+            isLoading={isPending}
             handleSubmit={handleSubmit(onSubmit)}
           />
         </Container>

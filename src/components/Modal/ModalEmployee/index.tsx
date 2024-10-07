@@ -13,6 +13,7 @@ import { Select } from "@/components/Form/Select";
 import { GenderOpt, estadoCivilOpt } from "@/utils/shared/Options";
 import { Switch } from "@/components/Switch";
 import { defaultValuesEmployee } from "@/validators/employeeValidator";
+import { maxBirthDateAge, minBirthDate } from "@/utils/validAge";
 
 interface ModalEmployeeProps {
   modalRef: React.RefObject<any>;
@@ -58,12 +59,12 @@ export const ModalEmployee = ({ modalRef }: ModalEmployeeProps) => {
             />
             <Input
               {...register("nome")}
-              label="Nome"
+              label="Nome*"
               error={errors.nome?.message}
             />
             <Select
               {...register("sexo")}
-              label="Sexo"
+              label="Sexo*"
               error={errors.sexo?.message}
               options={GenderOpt}
             />
@@ -78,13 +79,15 @@ export const ModalEmployee = ({ modalRef }: ModalEmployeeProps) => {
             <DatePicker
               {...register("dtNascimento")}
               // name="dtNascimento"
-              label="Data de Nascimento"
+              minDate={minBirthDate()}
+              label="Data de Nascimento*"
+              maxDate={maxBirthDateAge()}
               error={errors.dtNascimento?.message}
               defaultValue={values?.dtNascimento}
             />
             <Input
               {...register("celular")}
-              label="Celular"
+              label="Celular*"
               error={errors.celular?.message}
               mask="cell"
             />
@@ -116,19 +119,19 @@ export const ModalEmployee = ({ modalRef }: ModalEmployeeProps) => {
           <GridComp $template="2fr 1fr 1fr 1fr 1fr">
             <Input
               {...register("cargo")}
-              label="Cargo"
+              label="Cargo*"
               error={errors.cargo?.message}
             />
             <Input
               {...register("salario")}
-              label="Salário"
+              label="Salário*"
               error={errors.salario?.message}
               mask="currency"
               name="salario"
             />
             <Input
               {...register("pis")}
-              label="PIS"
+              label="PIS*"
               error={errors.pis?.message}
               mask="pis"
             />

@@ -15,6 +15,8 @@ import { FooterModal } from "../Footer";
 
 import { Container, GridComp } from "./styles";
 import { IncludeHabits } from "@/components/IncludeHabits";
+import { defaultValuesPatient } from "@/validators/patientValidator";
+import { minBirthDate } from "@/utils/validAge";
 
 interface ModalPatientProps {
   modalRef: RefObject<any>;
@@ -30,13 +32,12 @@ export const ModalPatient = ({ modalRef }: ModalPatientProps) => {
     reset,
     register,
   } = patientForm;
-  console.log(errors);
 
   useEffect(() => {
     if (values) {
       reset(values);
     } else {
-      reset();
+      reset(defaultValuesPatient as any);
       reset(defaultAddressValues);
     }
   }, [values]);
@@ -81,6 +82,7 @@ export const ModalPatient = ({ modalRef }: ModalPatientProps) => {
             <DatePicker
               {...register("dtNascimento")}
               // name="dtNascimento"
+              minDate={minBirthDate()}
               label="Data de Nascimento"
               error={errors.dtNascimento?.message}
               defaultValue={values?.dtNascimento}

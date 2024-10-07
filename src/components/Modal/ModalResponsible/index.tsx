@@ -27,8 +27,8 @@ export const ModalResponsible = ({ modalRef }: ModalResponsibleProps) => {
     reset,
     register,
   } = responsibleForm;
-  console.log(errors);
 
+  console.log(errors, 'error respo');
   useEffect(() => {
     if (values) {
       reset(values);
@@ -56,7 +56,7 @@ export const ModalResponsible = ({ modalRef }: ModalResponsibleProps) => {
             />
             <Input
               {...register("nome")}
-              label="Nome"
+              label="Nome*"
               error={errors.nome?.message}
             />
             <Select
@@ -76,13 +76,13 @@ export const ModalResponsible = ({ modalRef }: ModalResponsibleProps) => {
             <DatePicker
               {...register("dtNascimento")}
               // name="dtNascimento"
-              label="Data de Nascimento"
+              label="Data de Nascimento*"
               error={errors.dtNascimento?.message}
               defaultValue={values?.dtNascimento}
             />
             <Input
               {...register("celular")}
-              label="Celular"
+              label="Celular*"
               error={errors.celular?.message}
               mask="cell"
             />
@@ -116,7 +116,7 @@ export const ModalResponsible = ({ modalRef }: ModalResponsibleProps) => {
             />
 
             <Switch
-              value={values?.ativo}
+              value={values?.ativo != false ? true : false}
               {...register("ativo")}
               label="Ativo"
             />

@@ -26,11 +26,11 @@ export const ModalCountry = ({ modalRef }: ModalProps) => {
   } = countryForm;
 
   const defaultValues = {
-    id: 0,
+    id: undefined,
     pais: "",
     ddi: "",
     sigla: "",
-    ativo: undefined,
+    ativo: true,
     dtCadastro: "",
     dtUltAlt: "",
   };
@@ -38,7 +38,9 @@ export const ModalCountry = ({ modalRef }: ModalProps) => {
   useEffect(() => {
     if (values) {
       reset(values);
-    } else reset(defaultValues);
+    } else {
+      reset(defaultValues as any);
+    }
   }, [values]);
 
   return (
@@ -59,7 +61,7 @@ export const ModalCountry = ({ modalRef }: ModalProps) => {
             />
             <Input
               {...register("pais")}
-              label="País"
+              label="País*"
               error={errors.pais?.message}
             />
           </Box>

@@ -16,7 +16,7 @@ export const ProfessionalSchema = AddressValidator.extend({
     .string({ message: "Campo obrigatório" })
     .or(zod.date({ message: "Campo obrigatório" })),
   email: zod.string().optional(),
-  celular: zod.string().transform((value) => value && masks.unmask(value)),
+  celular: zod.string().min(9, {message: 'Campo obrigatório'}).transform((value) => value && masks.unmask(value)),
   sexo: zod
     .string({ message: "Campo obrigatório" })
     .min(1, "Campo obrigatório"),
@@ -27,7 +27,7 @@ export const ProfessionalSchema = AddressValidator.extend({
   formacoes: zod.string().optional().nullable(),
   certificacoes: zod.string().optional(),
 
-  ativo: zod
+  ativo: zod.coerce
     .boolean()
     .optional()
     .transform((value) => (!!value ? 1 : 0)),

@@ -11,6 +11,7 @@ import {
 } from "@/validators/patientValidator";
 import patientService, { PatientProps } from "@/services/patientService";
 import { useNavigate, useParams } from "react-router-dom";
+import { validAge } from "@/utils/validAge";
 
 export const useAbout = () => {
   const {id} = useParams()
@@ -49,15 +50,9 @@ export const useAbout = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate()
 
-  function needResponsible (birthdate: Date) {
-    const date = new Date();
-    date.setFullYear(date.getFullYear() - 18);
-    const result = birthdate.getFullYear() > date.getFullYear()
-    return result
-  }
-
   const onSubmit = async (data?: any) => {
-    if (needResponsible(data?.dtNascimento)) {
+    console.log(typeof data?.dtNascimento  )
+    if (validAge(data?.dtNascimento)) {
       if (!data?.responsaveis || data.responsaveis.length === 0) {
         toast.error("Menor de idade precisa de um responsável");
         return;

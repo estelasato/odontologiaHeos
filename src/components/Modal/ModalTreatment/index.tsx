@@ -22,7 +22,7 @@ interface ModalTreatmentProps {
 export const ModalTreatment = ({ modalRef }: ModalTreatmentProps) => {
   const [values, setValues] = useState<TreatmentsProps | null>(null);
   const { treatmentForm, professionalOpts, onSubmit, minDate, anamnesisOpt } =
-    useModalTreatment();
+    useModalTreatment(modalRef);
   const {
     reset,
     register,

@@ -25,6 +25,7 @@ export const About = () => {
     formState: { errors },
     reset,
     register,
+    setValue,
   } = patientForm;
 
   useEffect(() => {
@@ -33,6 +34,7 @@ export const About = () => {
     } else {
       reset();
       reset(defaultAddressValues);
+      setValue('ativo', 1);
     }
   }, [patientData, id]);
 
@@ -60,7 +62,7 @@ export const About = () => {
             />
             <Input
               {...register("nome")}
-              label="Nome"
+              label="Nome*"
               error={errors.nome?.message}
             />
           </Grid>
@@ -68,7 +70,7 @@ export const About = () => {
           <Grid $template="3fr 1fr" $templateMd="2fr 1fr 1fr">
             <Select
               {...register("sexo")}
-              label="Sexo"
+              label="Sexo*"
               error={errors.sexo?.message}
               options={GenderOpt}
             />
@@ -89,7 +91,7 @@ export const About = () => {
           <DatePicker
             {...register("dtNascimento")}
             maxDate={maxDate}
-            label="Data de Nascimento"
+            label="Data de Nascimento*"
             error={errors.dtNascimento?.message}
             defaultValue={patientData?.dtNascimento}
           />

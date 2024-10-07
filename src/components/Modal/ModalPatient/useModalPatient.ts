@@ -8,7 +8,6 @@ import { modalRefProps } from "..";
 import {
   PatientFormSchema,
   PatientsSchema,
-  defaultValuesPatient,
 } from "@/validators/patientValidator";
 import patientService, { PatientProps } from "@/services/patientService";
 import { usePatient } from "@/pages/Patients/usePatient";
@@ -19,7 +18,6 @@ export const useModalPatient = (modalRef: RefObject<modalRefProps>) => {
 
   const patientForm = useForm<PatientFormSchema>({
     resolver: zodResolver(PatientsSchema),
-    defaultValues: defaultValuesPatient,
   });
 
   const { mutateAsync: createPatient, isPending: pendingCreate } = useMutation({

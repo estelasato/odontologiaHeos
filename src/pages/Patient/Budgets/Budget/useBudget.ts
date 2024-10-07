@@ -2,6 +2,7 @@ import anamnesisService from "@/services/anamnesisService";
 import budgetsService, { IBudget } from "@/services/budgetsService";
 import paymentTermService from "@/services/paymentTermService";
 import professionalService from "@/services/professionalService";
+import masks from "@/utils/masks";
 import { BudgetSchema, BudgetType } from "@/validators/budgetValidator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -9,12 +10,11 @@ import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
-export const useBudget = (values?: IBudget) => {
+export const useBudget = (setOpen?: any, values?: IBudget) => {
   const { id } = useParams();
   const formBudgets = useForm<BudgetType>({
     resolver: zodResolver(BudgetSchema),
   });
-
   const { data: anamnesisOpt } = useQuery({
     queryKey: ["anamnesisOpt", id],
     queryFn: () => anamnesisService.getAll({ idPaciente: Number(id) }),
@@ -32,8 +32,8 @@ export const useBudget = (values?: IBudget) => {
     select: (data) => {
       if (data) {
         return data
-          .filter((a: any) => a.ativo) // Filtra apenas os ativos
-          .map((a: any) => ({ value: a.id, label: a.nome })); // Mapeia para o formato desejado
+          ?.filter((a: any) => a.ativo) // Filtra apenas os ativos
+          ?.map((a: any) => ({ value: a.id, label: a.nome })); // Mapeia para o formato desejado
       }
       return [];
     },
@@ -52,36 +52,40 @@ export const useBudget = (values?: IBudget) => {
     },
   });
 
-  const { mutateAsync: createBudget } = useMutation({
+  const { mutateAsync: createBudget, isPending: pendingCreate } = useMutation({
     mutationKey: ["createBudget"],
     mutationFn: (data: any) => budgetsService.create(data),
   });
 
-  const { mutateAsync: updateBudget } = useMutation({
+  const { mutateAsync: updateBudget, isPending: pendingUpdate } = useMutation({
     mutationKey: ["updateBudget"],
     mutationFn: (params: { id: number; data: any }) =>
       budgetsService.update(params.id, params.data),
   });
 
   // corrigir orçamento
-  console.log(formBudgets.formState.errors, formBudgets.getValues());
+  // console.log(formBudgets.formState.errors, formBudgets.getValues());
+  // console.log(formBudgets.formState.errors, "errors");
   const onSubmit = async (data: BudgetType) => {
     const newData = {
       ...data,
-      total: data?.total || 0,
+      total: data.total,
       idPaciente: Number(id),
-      tratamentos: data.tratamentos?.map((item) => ({
+      tratamentos: data.tratamentos?.map((item: any) => ({
         ...item,
-        idTratamento: item.id,
+        idTratamento: item.idTratamento,
+        total: Number(masks.number(`${item.total}`)),
+        valor: Number(masks.number(`${item.valor}`)),
       })),
     };
-    console.log(newData, "newData");
-    if (data.tratamentos?.length == 0)
+    if (!data.tratamentos || data.tratamentos?.length == 0)
       return toast.error("Insira ao menos um tratamento");
+    // console.log(newData, "newData");
     try {
       if (values && values.id) {
         await updateBudget({ id: values.id, data: newData });
       } else await createBudget(newData);
+      setOpen && setOpen(false);
       refetch();
       toast.success("Orçamento salvo com sucesso");
     } catch (error) {
@@ -96,5 +100,6 @@ export const useBudget = (values?: IBudget) => {
     paymentTermOpt,
     professionalOpt,
     budgetData,
+    isPending: pendingCreate || pendingUpdate,
   };
 };

@@ -11,6 +11,7 @@ import Modal from "..";
 import { useModalCity } from "./useModalCity";
 import { Box, Container } from "../ModalCountry/styles";
 import { FooterModal } from "../Footer";
+import { Grid } from "@/config/grid";
 
 export const ModalCity = ({ modalRef }: any) => {
   const [values, setValues] = useState<StateProps | null>(null);
@@ -29,7 +30,7 @@ export const ModalCity = ({ modalRef }: any) => {
     id: undefined,
     cidade: "",
     ddd: "",
-    ativo: undefined,
+    ativo: 1,
     dtCadastro: "",
     dtUltAlt: "",
   };
@@ -38,7 +39,7 @@ export const ModalCity = ({ modalRef }: any) => {
     if (values) {
       console.log(values);
       reset(values);
-    } else reset(defaultValues);
+    } else reset(defaultValues as any);
   }, [values]);
 
   return (
@@ -58,21 +59,8 @@ export const ModalCity = ({ modalRef }: any) => {
             />
             <Input
               {...register("cidade")}
-              label="Cidade"
+              label="Cidade*"
               error={errors.cidade?.message}
-            />
-          </Box>
-          <Box>
-            <Input
-              {...register("ddd")}
-              label="DDD"
-              error={errors.ddd?.message}
-            />
-            <Select
-              {...register("idEstado")}
-              label="Estado"
-              options={stateOpt}
-              error={errors.idEstado?.message}
             />
             <Switch
               value={values?.ativo}
@@ -80,13 +68,25 @@ export const ModalCity = ({ modalRef }: any) => {
               label="Ativo"
             />
           </Box>
+          <Grid $template="1fr 2fr">
+            <Input
+              {...register("ddd")}
+              label="DDD"
+              error={errors.ddd?.message}
+            />
+            <Select
+              {...register("idEstado")}
+              label="Estado*"
+              options={stateOpt}
+              error={errors.idEstado?.message}
+            />
+          </Grid>
 
           <FooterModal
             dtCadastro={values?.dtCadastro}
             dtUltAlt={values?.dtUltAlt}
             handleSubmit={handleSubmit(onSubmit)}
           />
-
         </Container>
       </FormProvider>
     </Modal>

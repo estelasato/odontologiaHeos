@@ -122,6 +122,7 @@ export const Schedule = () => {
       </Header>
       <SchedulerCont>
         <Scheduler
+          alwaysShowAgendaDays={false}
           hourFormat="24"
           translations={traducao}
           view="week"

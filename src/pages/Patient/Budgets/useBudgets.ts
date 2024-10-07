@@ -4,11 +4,11 @@ import { useParams } from "react-router-dom"
 
 
 export const useBudgets = () => {
-  const {idPaciente} = useParams();
+  const {id} = useParams();
 
   const {data: budgets} = useQuery({
-    queryKey: ['budgets', idPaciente],
-    queryFn: () => budgetsService.getAll({idPaciente: Number(idPaciente)}),
+    queryKey: ['budgets', id],
+    queryFn: () => budgetsService.getAll({idPaciente: Number(id)}),
   })
 
   return {

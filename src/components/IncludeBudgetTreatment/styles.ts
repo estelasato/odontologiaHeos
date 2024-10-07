@@ -44,7 +44,7 @@ export const FooterTable = styled.div`
   }
 `;
 
-export const TableCont = styled.form`
+export const TableCont = styled.div`
   display: flex;
   width: 100%;
 `;

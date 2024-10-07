@@ -56,7 +56,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     ref
   ) => {
     // const isPasswordInput = type === "password";
-    const { setValue, control: Control } = useFormContext();
+    const { setValue, control: Control, getValues } = useFormContext();
 
     const handleInputChange = useCallback(
       (e: ChangeEvent<HTMLInputElement>) => {
@@ -82,9 +82,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     };
 
     useEffect(() => {
-      if (mask && value && name) {
-        console.log(masks[mask](`${value}`), "aa");
-        setValue(name, masks[mask](`${value}`));
+      if (name) {
+        const defaultV = getValues(name);
+        if (mask && name) {
+          // console.log(masks[mask](`${value}`), "aa", defaultV);
+          setValue(name, masks[mask](`${defaultV}`));
+        }
+
       }
     }, [mask, name]);
 

@@ -5,12 +5,14 @@ import treatmentsServices from "@/services/treatmentsServices";
 import { TreatmentsDefaultValue, TreatmentsFormSchema, TreatmentsSchema } from "@/validators/treatmentsValidator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useMemo, useState } from "react";
+import { RefObject, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { modalRefProps } from "..";
+import { useTreatments } from "@/pages/Patient/Treatments/useTreatments";
 
-export const useModalTreatment = () => {
+export const useModalTreatment = (modalRef: RefObject<modalRefProps>) => {
   const {id} = useParams();
   const queryClient = useQueryClient();
   const { professionalList } = useProfessional();
@@ -23,8 +25,8 @@ export const useModalTreatment = () => {
 
   const professionalOpts = useMemo(() => {
     const list = professionals || professionalList;
-    if (list) {
-      return list.filter((a: ProfessionalProps) => a.ativo)?.map((p: ProfessionalProps) => ({
+    if (list && list.length > 0) {
+      return list?.filter((a: ProfessionalProps) => a.ativo)?.map((p: ProfessionalProps) => ({
         value: p.id,
         label: p.nome,
       }));
@@ -58,10 +60,13 @@ export const useModalTreatment = () => {
     select: (data) => data.map((a: any) => ({value: a.id, label: a.queixas}))
   })
 
+  const {refetch} = useTreatments();
   const onSubmit = async (data: TreatmentsFormSchema) => {
     try {
       await saveTreatment(data)
+      refetch()
       queryClient.invalidateQueries({queryKey: ['treatmentsList', id]})
+      modalRef.current?.close()
       toast.success('Salvo com sucesso')
     } catch(e) {
       toast.error('Ocorreu um erro')

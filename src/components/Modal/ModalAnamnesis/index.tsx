@@ -48,7 +48,7 @@ export const ModalAnamnesis = ({ modalRef }: ModalBasic) => {
   const mobileScreen = useMediaQuery({maxWidth: 500})
 
   const filterSubmit = (data: any) => {
-    const doencas = data.doencas.filter((d: IllnessAnamnesisType) => d.idDoenca);
+    const doencas = data.doencas?.filter((d: IllnessAnamnesisType) => d.idDoenca);
     onSubmit({ ...data, doencas });
   }
 

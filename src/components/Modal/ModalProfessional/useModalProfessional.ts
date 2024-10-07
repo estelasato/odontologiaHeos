@@ -36,7 +36,7 @@ export const useModalProfessional = (
   })
 
   const { refetch } = useProfessional();
-
+console.log(professionalForm.formState.errors)
   const onSubmit = async (data?: any) => {
     try {
       console.log(data)

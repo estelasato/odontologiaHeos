@@ -3,6 +3,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 
 import countryServices from "@/services/countryServices";
 import { modalRefProps } from "@/components/Modal";
+import stateServices from "@/services/stateServices";
 
 export default function useCountry(
   modalRemoveRef?: React.RefObject<modalRefProps>
@@ -14,6 +15,12 @@ export default function useCountry(
       return countryServices.getAllCountries();
     },
   });
+  const { data: stateList } = useQuery({
+    queryKey: ["stateList"],
+    queryFn: () => {
+      return stateServices.getAllStates();
+    },
+  });
 
   const { mutateAsync: deleteCountry } = useMutation({
     mutationFn: (id: number) => countryServices.deleteCountry(id),
@@ -21,6 +28,8 @@ export default function useCountry(
 
   const handleRemove = async(id: number) => {
     try {
+      const r = stateList?.find((s: any) => s.idPais === id)
+      if (r) return toast.error('Existem estados cadastrados para este país')
       await deleteCountry(id)
       modalRemoveRef?.current?.close()
       refetch()

@@ -62,13 +62,10 @@ export const PatientsSchema = AddressValidator.extend({
     .string({ message: "Campo obrigatório" })
     .min(1, "Campo obrigatório"),
   estCivil: zod.string().optional().nullable(),
-  obs: zod.string().optional(),
+  obs: zod.string().optional().nullable(),
   profissao: zod.string().optional(),
   indicacao: zod.string().optional(),
-  ativo: zod
-    .boolean()
-    .optional()
-    .transform((value) => (!!value ? 1 : 0)),
+  ativo: zod.coerce.boolean().optional().transform((value) => !!value ? 1 : 0),
   idCidade: zod.number().optional().nullable(),
   idResponsavel: zod.number().optional().nullable(),
 

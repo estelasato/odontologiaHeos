@@ -26,6 +26,8 @@ export interface IBudgetTreatm extends TreatmentsProps {
   total?: number;
   descricao?: string;
   id?: number;
+  idTratamento?: number;
+
 }
 export const IncludeBudgetTreatm = ({
   listData,
@@ -38,7 +40,8 @@ export const IncludeBudgetTreatm = ({
   const { register, setValue, getValues } = useFormContext();
 
   const handleInclude = (data: TreatmentsProps) => {
-    const exist = list?.find((r: TreatmentsProps) => r.id === data.id);
+    console.log(data, list)
+    const exist = list?.find((r: IBudgetTreatm) => r.idTratamento === data.id);
     if (data.dataFim) {
       const df = new Date(data.dataFim);
       const today = new Date();
@@ -46,7 +49,7 @@ export const IncludeBudgetTreatm = ({
     }
     if (exist) toast.error("Tratamento já incluso");
     else {
-      setList((prev: any) => [...prev, data]);
+      setList((prev: any) => [...prev, {...data, id: undefined, idTratamento: data.id}]);
 
       treatmentRef.current?.close();
     }
@@ -54,7 +57,7 @@ export const IncludeBudgetTreatm = ({
 
   const handleRemove = useCallback(
     (id: number) => {
-      const newList = list?.filter((r: IBudgetTreatm) => r.id != id);
+      const newList = list?.filter((r: IBudgetTreatm) => r.idTratamento != id);
       setValue("tratamentos", newList);
       setList(newList);
     },
@@ -69,7 +72,7 @@ export const IncludeBudgetTreatm = ({
 
   useEffect(() => {
     list?.map((r: IBudgetTreatm, i: number) => {
-      setValue(`tratamentos.${i}.id`, r.id); // puxa do tratamento
+      setValue(`tratamentos.${i}.idTratamento`, r.idTratamento); // puxa do tratamento
       setValue(`tratamentos.${i}.descricao`, r.descricao); // puxa do tratamento
       setValue(`tratamentos.${i}.valor`, r.valor);
       setValue(`tratamentos.${i}.obs`, r.obs);
@@ -105,7 +108,7 @@ export const IncludeBudgetTreatm = ({
     () => [
       {
         header: "Código",
-        accessorKey: "id",
+        accessorKey: "idTratamento",
       },
       {
         header: "Tratamento",
@@ -174,7 +177,7 @@ export const IncludeBudgetTreatm = ({
         },
       },
       {
-        header: "Total",
+        header: "Subtotal",
         accessorKey: "total",
         cell: (row: any) => {
           const i = row.row.index;
@@ -197,7 +200,7 @@ export const IncludeBudgetTreatm = ({
         meta: { alignText: "right" },
         cell: (row: any) => (
           <TableIconColumn
-            handleRemove={() => handleRemove(row.row.original.id)}
+            handleRemove={() => handleRemove(row.row.original.idTratamento)}
           />
         ),
       },
@@ -225,6 +228,7 @@ export const IncludeBudgetTreatm = ({
 
           <FooterTable>
             <Input
+              handleChange={() => console.log(getValues(), 'aaa')}
               // handleChange={() => updateValues()}
               {...register("total")}
               variant="invisible"

@@ -42,8 +42,8 @@ export const useModalPaymTerms = (
     select: (data) => {
       if (data) {
         return data
-          .filter((a: any) => a.status) // Filtra apenas os ativos
-          .map((a: any) => ({ value: a.id, label: a.descricao })); // Mapeia para o formato desejado
+          ?.filter((a: any) => a.status) // Filtra apenas os ativos
+          ?.map((a: any) => ({ value: a.id, label: a.descricao })); // Mapeia para o formato desejado
       }
       return [];
     },

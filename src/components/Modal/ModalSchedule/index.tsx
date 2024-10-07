@@ -37,7 +37,6 @@ export const ModalSchedule = ({ modalRef }: ModalScheduleProps) => {
     handleSubmit,
     formState: { errors },
   } = scheduleForm;
-  console.log(errors);
 
   return (
     <Modal
@@ -65,7 +64,7 @@ export const ModalSchedule = ({ modalRef }: ModalScheduleProps) => {
           <Grid $template="1fr 1fr">
             <Select
               {...register("idPaciente")}
-              label="Paciente"
+              label="Paciente*"
               options={patientOpts}
               error={errors.idPaciente?.message}
             />
@@ -77,7 +76,7 @@ export const ModalSchedule = ({ modalRef }: ModalScheduleProps) => {
           <Grid $template="1fr 1fr">
             <Select
               {...register("idProfissional")}
-              label="Profissional"
+              label="Profissional*"
               options={professionalOpts}
               error={errors.idProfissional?.message}
             />
@@ -91,7 +90,7 @@ export const ModalSchedule = ({ modalRef }: ModalScheduleProps) => {
 
           <Grid $template="1fr 150px 1fr">
             <DatePicker
-              label="Data e hora"
+              label="Data e hora*"
               {...register("horario")}
               hasTime
               minDate={new Date()}
@@ -100,7 +99,7 @@ export const ModalSchedule = ({ modalRef }: ModalScheduleProps) => {
             />
             <Select
               {...register("duracao")}
-              label="Duração"
+              label="Duração*"
               options={minOpts}
               width="150px"
               error={errors.duracao?.message}

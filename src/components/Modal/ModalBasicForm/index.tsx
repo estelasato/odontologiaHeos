@@ -32,8 +32,7 @@ export const ModalBasicForm = ({ type, modalRef }: ModalBasic) => {
     if (values) {
       reset(values);
     } else {
-      reset();
-      reset(defaultValuesBasicForm);
+      reset(defaultValuesBasicForm as any);
     }
   }, [values]);
 
@@ -45,7 +44,7 @@ export const ModalBasicForm = ({ type, modalRef }: ModalBasic) => {
     >
       <FormProvider {...basicForm}>
         <Container>
-          <Grid $template="1fr 3fr">
+          <Grid $template="1fr 3fr" $templateMd="1fr 2fr" >
             <Input
               {...register("id")}
               label="Código"
@@ -54,7 +53,7 @@ export const ModalBasicForm = ({ type, modalRef }: ModalBasic) => {
             />
             <Input
               {...register("nome")}
-              label="Nome"
+              label="Nome*"
               error={errors.nome?.message}
             />
           </Grid>

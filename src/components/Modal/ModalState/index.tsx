@@ -11,6 +11,7 @@ import { useModalState } from "./useModalState";
 import Modal from "..";
 import { FooterModal } from "../Footer";
 import { Box, Container } from "./styles";
+import { Grid } from "@/config/grid";
 
 export const ModalState = ({ modalRef }: any) => {
   const [values, setValues] = useState<StateProps | null>(null);
@@ -25,6 +26,7 @@ export const ModalState = ({ modalRef }: any) => {
     formState: { errors },
     reset,
     register,
+    setValue,
   } = stateForm;
 
   const defaultValues = {
@@ -40,7 +42,10 @@ export const ModalState = ({ modalRef }: any) => {
   useEffect(() => {
     if (values) {
       reset(values);
-    } else reset(defaultValues);
+    } else {
+      reset(defaultValues);
+      setValue('ativo', 1)
+    }
   }, [values]);
 
   return (
@@ -60,17 +65,8 @@ export const ModalState = ({ modalRef }: any) => {
             />
             <Input
               {...register("estado")}
-              label="Estado"
+              label="Estado*"
               error={errors.estado?.message}
-            />
-          </Box>
-          <Box>
-            <Input {...register("uf")} label="UF" error={errors.uf?.message} />
-            <Select
-              {...register("idPais")}
-              label="País"
-              options={countryOptions}
-              error={errors.idPais?.message}
             />
             <Switch
               value={values?.ativo}
@@ -78,6 +74,16 @@ export const ModalState = ({ modalRef }: any) => {
               label="Ativo"
             />
           </Box>
+          <Grid $template="1fr 2fr">
+            <Input {...register("uf")} label="UF*" error={errors.uf?.message} />
+            <Select
+              {...register("idPais")}
+              label="País*"
+              minWidth="200px"
+              options={countryOptions}
+              error={errors.idPais?.message}
+            />
+          </Grid>
 
           <FooterModal
             dtCadastro={values?.dtCadastro}

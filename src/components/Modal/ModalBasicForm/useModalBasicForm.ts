@@ -1,7 +1,7 @@
 import { RefObject } from "react"
 import { modalRefProps } from ".."
 import { useForm } from "react-hook-form"
-import { BasicFormSchema, BasicSchema, defaultValuesBasicForm } from "@/validators/basicFormValidator"
+import { BasicFormSchema, BasicSchema } from "@/validators/basicFormValidator"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import basicServices, { BasicProps } from "@/services/basicServices"
@@ -17,7 +17,6 @@ export const useModalBasicForm = (
 
   const basicForm = useForm<BasicFormSchema>({
     resolver: zodResolver(BasicSchema),
-    defaultValues: defaultValuesBasicForm,
   });
 
   const { mutateAsync: create } = useMutation({
@@ -32,7 +31,7 @@ export const useModalBasicForm = (
 
   const { refetch } = useBasicForm(type);
   const queryClient = useQueryClient();
-
+  console.log(basicForm.formState.errors)
   const onSubmit = async (data?: any) => {
     try {
       if (isCreate) {

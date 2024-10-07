@@ -22,7 +22,7 @@ export const Content = styled.div`
   @media (max-width: 500px) {
     /* justify-content: space-around; */
     & > .btn-cancel {
-      padding: 0;
+      padding: 0 10px;
     }
   }
 `;

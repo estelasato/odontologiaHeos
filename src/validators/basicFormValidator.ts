@@ -13,5 +13,5 @@ export const defaultValuesBasicForm = {
   id: undefined,
   nome: '',
   descricao: '',
-  ativo: undefined,
+  ativo: true,
 }

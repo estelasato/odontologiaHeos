@@ -12,6 +12,7 @@ import { Switch } from "@/components/Switch";
 import { FooterModal } from "../Footer";
 import { useModalProfessional } from "./useModalProfessional";
 import { Container, GridComp } from "./styles";
+import { maxBirthDateAge, minBirthDate } from "@/utils/validAge";
 
 interface ModalResponsibleProps {
   modalRef: RefObject<any>;
@@ -30,8 +31,8 @@ export const ModalProfessional = ({ modalRef }: ModalResponsibleProps) => {
     formState: { errors },
     reset,
     register,
+    setValue,
   } = professionalForm;
-  console.log(errors);
 
   useEffect(() => {
     if (values) {
@@ -39,6 +40,7 @@ export const ModalProfessional = ({ modalRef }: ModalResponsibleProps) => {
     } else {
       reset();
       reset(defaultAddressValues);
+      setValue("ativo", 1);
     }
   }, [values]);
 
@@ -60,12 +62,12 @@ export const ModalProfessional = ({ modalRef }: ModalResponsibleProps) => {
             />
             <Input
               {...register("nome")}
-              label="Nome"
+              label="Nome*"
               error={errors.nome?.message}
             />
             <Select
               {...register("sexo")}
-              label="Sexo"
+              label="Sexo*"
               error={errors.sexo?.message}
               options={GenderOpt}
             />
@@ -80,13 +82,15 @@ export const ModalProfessional = ({ modalRef }: ModalResponsibleProps) => {
             <DatePicker
               {...register("dtNascimento")}
               // name="dtNascimento"
-              label="Data de Nascimento"
+              maxDate={maxBirthDateAge()}
+              minDate={minBirthDate()}
+              label="Data de Nascimento*"
               error={errors.dtNascimento?.message}
               defaultValue={values?.dtNascimento}
             />
             <Input
               {...register("celular")}
-              label="Celular"
+              label="Celular*"
               error={errors.celular?.message}
               mask="cell"
             />
@@ -118,7 +122,7 @@ export const ModalProfessional = ({ modalRef }: ModalResponsibleProps) => {
           <Grid $template="1fr 2fr 2fr 2fr">
             <Input
               {...register("cro")}
-              label="CRO"
+              label="CRO*"
               error={errors.cro?.message}
             />
             <Input

@@ -1,12 +1,13 @@
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { modalRefProps } from "..";
 import { zodResolver } from "@hookform/resolvers/zod";
 import countryServices from "@/services/countryServices";
 import useCountry from "@/pages/Registrations/Country/useCountry";
 import { CountryForm, countrySchema } from "@/validators/locationValidator";
+import { handleExist } from "@/utils/shared/FilterList";
 
 export const options = [
   { label: "Sim", value: 1 },
@@ -37,9 +38,20 @@ export const useModalCountry = (
     },
   });
 
-  const onSubmit = async (data?: CountryForm) => {
+  const queryClient = useQueryClient();
+
+  const onSubmit = async (data: CountryForm) => {
     try {
       if (isCreate) {
+        const listCountry = queryClient.getQueriesData({
+          queryKey: ["countryList"],
+        });
+        const exist = handleExist(
+          listCountry[0]?.[1] as any,
+          data?.pais,
+          "pais"
+        );
+        if (exist) return toast.error("País já cadastrado");
         await createCountry(data);
       } else {
         await updateCountry(data);

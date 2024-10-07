@@ -26,7 +26,8 @@ export const Budgets = () => {
         header: "Total",
         accessorKey: "total",
         cell: (row: any) => {
-          return <>{row.getValue()}</>;
+          const value = row.getValue() as any;
+          return <>{masks.currencyAllPlatforms(value)}</>;
         },
       },
       {
