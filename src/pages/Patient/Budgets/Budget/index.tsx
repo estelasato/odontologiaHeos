@@ -66,7 +66,7 @@ const Budget = ({ setOpen, data }: IBudget) => {
   const [selectData, setSelectData] = useState<any>();
 
   useEffect(() => {
-    setValue("idCondPagamento", selectData?.id);
+    if (selectData) setValue("idCondPagamento", selectData?.id);
   }, [selectData]);
 
   const handlePaymentTerm = (data: IPaymentTerm) => {

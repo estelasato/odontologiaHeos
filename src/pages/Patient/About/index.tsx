@@ -44,13 +44,17 @@ export const About = () => {
     return date;
   }, []);
 
+  // if (!id && !patientData) {
+  //   return (
+  //   <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+  //     <Spinner size={15} />
+  //   </div>
+
+  //   )
+  // }
+
   return (
     <FormProvider {...patientForm}>
-      {id && !patientData && (
-        <div>
-          <Spinner size={15} />
-        </div>
-      )}
       <Container onSubmit={handleSubmit(onSubmit)}>
         <Grid $template="60% 40%" $templateMd="1fr">
           <Grid $template="1fr 3fr" $templateMd="1fr 3fr">

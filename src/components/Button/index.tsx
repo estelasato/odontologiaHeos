@@ -35,7 +35,7 @@ export function Button({
       $isDisabled={isLoading || disabled}
       {...rest}
     >
-      {isLoading ? <Spinner size={14} /> : children}
+      {(isLoading && variant != 'link') ? <Spinner size={14} /> : children}
     </Container>
   )
 }

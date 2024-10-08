@@ -79,7 +79,7 @@ export const ModalTreatment = ({ modalRef }: ModalTreatmentProps) => {
           />
           <Select
             {...register("idProfissional")}
-            label="Profissional"
+            label="Profissional*"
             options={professionalOpts}
           />
           <Box>

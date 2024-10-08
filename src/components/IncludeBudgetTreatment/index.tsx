@@ -68,7 +68,7 @@ export const IncludeBudgetTreatm = ({
     if (listData) {
       setList(listData);
     }
-  }, [listData]);
+  }, []);
 
   useEffect(() => {
     list?.map((r: IBudgetTreatm, i: number) => {
