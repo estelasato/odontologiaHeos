@@ -20,11 +20,15 @@ interface IDataTable {
   formaPagamento: string
   dtVencimento: Date
   valorParcela: number
+  situacao: 1 | 0
+  idFormaPag: number
 }
 export const useIncludeAccReceivable = () => {
-  const { watch } = useFormContext()
+  const { watch, setValue } = useFormContext()
   const watchPaymentTerm = watch('idCondPagamento')
   const watchTotal = watch('total')
+  const watchStataus = watch('status')
+  console.log(watchTotal)
   const [dataTable, setDataTable] = useState<IDataTable[]>([])
 
   const {data: paymentTermData, isLoading} = useQuery({
@@ -49,6 +53,12 @@ export const useIncludeAccReceivable = () => {
     return date
   }
 
+  const getSituation = useMemo(() => {
+    if (watchStataus != 'PENDENTE' || watchStataus != 'Cancelado') {
+      return 0
+    } else return 1
+  }, [watchStataus])
+
   useEffect(() => {
     if (watchPaymentTerm && paymentTermData) {
       const contasRec: IDataTable[] = []
@@ -60,12 +70,15 @@ export const useIncludeAccReceivable = () => {
           formaPagamento: `${p.idFormaPag} - ${namePayMethod}`,
           dtVencimento: calcDate(p.dias),
           valorParcela: installmValue || 0,
+          situacao: getSituation,
+          idFormaPag: p.idFormaPag
         })
       })
 
       setDataTable(contasRec)
+      setValue('contasReceber', contasRec)
     }
-  }, [watchPaymentTerm, watchTotal])
+  }, [watchPaymentTerm, watchTotal, watchStataus])
 
   return {
     isLoading,

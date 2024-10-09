@@ -48,3 +48,10 @@ export const TableCont = styled.div`
   display: flex;
   width: 100%;
 `;
+
+
+export const Box = styled.div`
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+`;

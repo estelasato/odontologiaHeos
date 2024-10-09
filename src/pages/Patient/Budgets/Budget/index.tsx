@@ -12,9 +12,7 @@ import { FooterModal } from "@/components/Modal/Footer";
 import { IncludeBudgetTreatm } from "@/components/IncludeBudgetTreatment";
 import { ModalInsertPaymentTerms } from "@/components/Modal/ModalInsertPaymTerms";
 import { modalRefProps } from "@/components/Modal";
-import { useEffect, useRef, useState } from "react";
-import { IPaymentTerm } from "@/services/paymentTermService";
-import { toast } from "react-toastify";
+import { useRef } from "react";
 import { IncludeAccReceivable } from "@/components/IncludeAccReceivable";
 
 // Defina as variantes de animação
@@ -53,36 +51,16 @@ const Budget = ({ setOpen, data }: IBudget) => {
     professionalOpt,
     budgetData,
     isPending,
+    handlePaymentTerm,
+    setTratamentosList,
   } = useBudget(setOpen, data);
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
-    reset
   } = formBudgets;
 
   const modalInsertRef = useRef<modalRefProps>(null);
-  const [selectData, setSelectData] = useState<any>();
-
-  useEffect(() => {
-    if (selectData) setValue("idCondPagamento", selectData?.id);
-  }, [selectData]);
-
-  const handlePaymentTerm = (data: IPaymentTerm) => {
-    if (!data.status) {
-      return toast.error("Selecione uma condição ativa");
-    }
-    setSelectData(data);
-  }
-
-  const watchStatus = formBudgets.watch("status");
-  if (!watchStatus) setValue("status", 'PENDENTE');
-
-  useEffect(() => {
-    reset(budgetData)
-    console.log(budgetData, 'data');
-  }, [budgetData])
 
   return (
     <motion.div
@@ -126,29 +104,23 @@ const Budget = ({ setOpen, data }: IBudget) => {
           </Box>
 
           <Grid $alignItems="flex-start" $template="1fr 1fr">
-            {/* <Grid $template="1fr 60px" $templateMd="1fr 60px" $templateSm="1fr 60px" $alignItems="flex-end"> */}
             <Select
-              // width="120px"
               {...register("idAnamnese")}
               label="Anamnese"
               error={errors.idAnamnese?.message}
               options={anamnesisOpt || []}
             />
-            {/* <Button variant="link">+</Button>
-            </Grid> */}
 
-            {/* <Grid $template="1fr 60px" $templateMd="1fr 60px" $templateSm="1fr 60px" $alignItems="flex-end"> */}
             <Select
               {...register("idProfissional")}
               label="Profissional"
               error={errors.idProfissional?.message}
               options={professionalOpt || []}
             />
-            {/* <Button variant="link">+</Button>
-            </Grid> */}
+
           </Grid>
 
-          <IncludeBudgetTreatm listData={budgetData?.tratamentos || []}/>
+          <IncludeBudgetTreatm listData={budgetData?.tratamentos || []} setTreatments={setTratamentosList} />
           <BoxPayment>
             <Select
               width="300px"

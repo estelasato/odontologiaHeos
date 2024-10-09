@@ -9,9 +9,10 @@ export const AccReceivableSchema = z.object({
   desconto: z.number().optional().nullable(),
   multa: z.number().optional().nullable(),
   juros: z.number().optional().nullable(),
-  valorParcela: z.string().or(z.number()).transform((value) => masks.unmask(`${value}`)).optional().nullable(),
+  valorParcela: z.string().or(z.number()).transform((value) => masks.number(`${value}`)).optional().nullable(),
   valorRecebido: z.string().or(z.number()).optional().nullable().transform((value) => masks.unmask(`${value}`)).optional().nullable(),
-  situacao: z.string().optional().nullable(),
+  situacao: z.number().optional().nullable(),
+  idFormaPag: z.number(),
 
   dtVencimento: z.date({message: 'Campo obrigatório'}),
   dtRecebimento: z.date().optional().nullable(),

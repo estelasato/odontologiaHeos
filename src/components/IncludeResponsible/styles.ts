@@ -15,7 +15,7 @@ export const ButtonContainer = styled.div`
   display: flex;
   gap: 8px;
   padding-top: 4px;
-  align-self: flex-start;
+  align-self: flex-end;
   & > button {
     font-weight: 400;
     height: 38px;

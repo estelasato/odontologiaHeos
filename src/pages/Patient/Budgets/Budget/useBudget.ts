@@ -1,17 +1,23 @@
 import anamnesisService from "@/services/anamnesisService";
-import budgetsService, { IBudget } from "@/services/budgetsService";
-import paymentTermService from "@/services/paymentTermService";
+import budgetsService, { IBudget, IBudgetTreatm } from "@/services/budgetsService";
+import paymentTermService, {
+  IPaymentTerm,
+} from "@/services/paymentTermService";
 import professionalService from "@/services/professionalService";
 import masks from "@/utils/masks";
 import { BudgetSchema, BudgetType } from "@/validators/budgetValidator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export const useBudget = (setOpen?: any, values?: IBudget) => {
   const { id } = useParams();
+  const [selectData, setSelectData] = useState<any>();
+  const [tratamentosList, setTratamentosList] = useState<IBudgetTreatm[]>()
+
   const formBudgets = useForm<BudgetType>({
     resolver: zodResolver(BudgetSchema),
   });
@@ -62,7 +68,7 @@ export const useBudget = (setOpen?: any, values?: IBudget) => {
     mutationFn: (params: { id: number; data: any }) =>
       budgetsService.update(params.id, params.data),
   });
-
+console.log(formBudgets.formState.errors)
   // corrigir orçamento
   // console.log(formBudgets.formState.errors, formBudgets.getValues());
   // console.log(formBudgets.formState.errors, "errors");
@@ -71,16 +77,16 @@ export const useBudget = (setOpen?: any, values?: IBudget) => {
       ...data,
       total: data.total,
       idPaciente: Number(id),
-      tratamentos: data.tratamentos?.map((item: any) => ({
+      tratamentos: tratamentosList?.map((item: any) => ({
         ...item,
         idTratamento: item.idTratamento,
         total: Number(masks.number(`${item.total}`)),
         valor: Number(masks.number(`${item.valor}`)),
       })),
     };
-    if (!data.tratamentos || data.tratamentos?.length == 0)
+    if (!tratamentosList || tratamentosList?.length == 0)
       return toast.error("Insira ao menos um tratamento");
-    // console.log(newData, "newData");
+    console.log(newData, "newData");
     try {
       if (values && values.id) {
         await updateBudget({ id: values.id, data: newData });
@@ -93,6 +99,27 @@ export const useBudget = (setOpen?: any, values?: IBudget) => {
     }
   };
 
+  const { setValue, reset } = formBudgets;
+
+  useEffect(() => {
+    if (selectData) setValue("idCondPagamento", selectData?.id);
+  }, [selectData]);
+
+  const handlePaymentTerm = (data: IPaymentTerm) => {
+    if (!data.status) {
+      return toast.error("Selecione uma condição ativa");
+    }
+    setSelectData(data);
+  };
+
+  const watchStatus = formBudgets.watch("status");
+  if (!watchStatus) setValue("status", "PENDENTE");
+
+  useEffect(() => {
+    reset(budgetData);
+    console.log(budgetData, "data");
+  }, [budgetData]);
+
   return {
     formBudgets,
     onSubmit,
@@ -101,5 +128,7 @@ export const useBudget = (setOpen?: any, values?: IBudget) => {
     professionalOpt,
     budgetData,
     isPending: pendingCreate || pendingUpdate,
+    handlePaymentTerm,
+    setTratamentosList,
   };
 };

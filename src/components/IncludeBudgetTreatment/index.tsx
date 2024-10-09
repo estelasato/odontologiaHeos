@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { toast } from "react-toastify";
 
 // import { FaRegTrashCan } from "react-icons/fa6";
 import { IoChevronDown } from "react-icons/io5";
@@ -10,14 +9,15 @@ import { IoChevronUp } from "react-icons/io5";
 import { TreatmentsProps } from "@/services/treatmentsServices";
 import { Input } from "../Form/Input";
 import { Button } from "../Button";
-import { modalRefProps } from "../Modal";
 import { ModalInsertTreatment } from "../Modal/ModalInsertTreatment";
 import { ButtonContainer, Content } from "../IncludeResponsible/styles";
-import { Container, FooterTable, TableCont } from "./styles";
+import { Box, Container, FooterTable, TableCont } from "./styles";
 // import { ColumnDef } from "@tanstack/react-table";
 import Table from "../Table";
 import masks from "@/utils/masks";
 import { TableIconColumn } from "@/pages/shared/iconsTable";
+import { Grid } from "@/config/grid";
+import { useIncludeBudget } from "./useIncludeBudget";
 
 export interface IBudgetTreatm extends TreatmentsProps {
   valor?: number;
@@ -27,82 +27,25 @@ export interface IBudgetTreatm extends TreatmentsProps {
   descricao?: string;
   id?: number;
   idTratamento?: number;
-
 }
 export const IncludeBudgetTreatm = ({
   listData,
+  setTreatments,
 }: {
   listData?: IBudgetTreatm[];
+  setTreatments: (data: any) => void;
 }) => {
   const [open, setOpen] = useState(true);
-  const treatmentRef = useRef<modalRefProps>();
-  const [list, setList] = useState<any>([]);
-  const { register, setValue, getValues } = useFormContext();
-
-  const handleInclude = (data: TreatmentsProps) => {
-    console.log(data, list)
-    const exist = list?.find((r: IBudgetTreatm) => r.idTratamento === data.id);
-    if (data.dataFim) {
-      const df = new Date(data.dataFim);
-      const today = new Date();
-      today > df && toast.error("Este tratamento já foi finalizado!");
-    }
-    if (exist) toast.error("Tratamento já incluso");
-    else {
-      setList((prev: any) => [...prev, {...data, id: undefined, idTratamento: data.id}]);
-
-      treatmentRef.current?.close();
-    }
-  };
-
-  const handleRemove = useCallback(
-    (id: number) => {
-      const newList = list?.filter((r: IBudgetTreatm) => r.idTratamento != id);
-      setValue("tratamentos", newList);
-      setList(newList);
-    },
-    [list]
-  );
-
-  useEffect(() => {
-    if (listData) {
-      setList(listData);
-    }
-  }, []);
-
-  useEffect(() => {
-    list?.map((r: IBudgetTreatm, i: number) => {
-      setValue(`tratamentos.${i}.idTratamento`, r.idTratamento); // puxa do tratamento
-      setValue(`tratamentos.${i}.descricao`, r.descricao); // puxa do tratamento
-      setValue(`tratamentos.${i}.valor`, r.valor);
-      setValue(`tratamentos.${i}.obs`, r.obs);
-      setValue(`tratamentos.${i}.qtd`, r.qtd || 1);
-
-    });
-  }, [list]);
-
-  const tratamentos = getValues("tratamentos");
-  const updateValues = (i?: number) => {
-    if (!!!i) {
-      const { valor, qtd } = getValues(`tratamentos.${i}`);
-      const total = Number(masks.number(valor)) * Number(qtd);
-
-      setValue(`tratamentos.${i}.total`, total);
-    }
-    // setValue("total", sumTotal);
-    calcTotal()
-  };
-  // TODO: calc total
-  const calcTotal = () => {
-    let sumTotal = 0;
-    console.log(getValues("tratamentos"), "tratamentos");
-    tratamentos.map((e: any) => {
-      console.log(e.total, 'e', sumTotal)
-      sumTotal += Number(masks.number(e.total))
-    });
-    console.log(sumTotal, 'aa')
-    setValue("total", sumTotal);
-  };
+  const {
+    handleEdit,
+    handleRemove,
+    handleInsertForm,
+    handleUpdateSubtotal,
+    handleSave,
+    treatmentRef,
+    list,
+  } = useIncludeBudget(setTreatments, listData);
+  const { register } = useFormContext();
 
   const cols = useMemo(
     () => [
@@ -113,86 +56,37 @@ export const IncludeBudgetTreatm = ({
       {
         header: "Tratamento",
         accessorKey: "descricao",
-        cell: (row: any) => {
-          const i = row.row.index;
-          return (
-            <Input
-              className="column-treatment-table"
-              placeholder="Descrição"
-              variant="invisible"
-              {...register(`tratamentos.${i}.descricao`)}
-            />
-          );
-        },
       },
       {
         header: "Obs",
         accessorKey: "obs",
-        cell: (row: any) => {
-          const i = row.row.index;
-          return (
-            <Input
-              className="column-treatment-table"
-              placeholder="Obs."
-              variant="invisible"
-              {...register(`tratamentos.${i}.obs`)}
-            />
-          );
-        },
       },
       {
         header: "Valor",
         accessorKey: "valor",
-        meta: { width: "100px" },
+        meta: { width: "100px", alignHeader: "right", alignText: "right" },
         cell: (row: any) => {
-          const i = row.row.index;
+          const v = row.getValue();
           return (
-            <Input
-              className="column-treatment-table"
-              handleChange={() => updateValues(i)}
-              placeholder="0,00"
-              variant="invisible"
-              mask="partialCurrency"
-              {...register(`tratamentos.${i}.valor`)}
-            />
+            <div className="column-treatment-table">
+              {masks.currency(`${v}`)}
+            </div>
           );
         },
       },
       {
         header: "Qtd",
         accessorKey: "qtd",
-        meta: { width: "100px", alignHeader: "right" },
-        cell: (row: any) => {
-          setList;
-          const i = row.row.index;
-          return (
-            <Input
-              className="qty-treatment-table"
-              handleChange={() => updateValues(i)}
-              placeholder="1"
-              variant="invisible"
-              {...register(`tratamentos.${i}.qtd`)}
-            />
-          );
-        },
+        meta: { width: "100px", alignHeader: "right", alignText: "right" },
       },
       {
         header: "Subtotal",
         accessorKey: "total",
         cell: (row: any) => {
-          const i = row.row.index;
-          return (
-            <Input
-              handleChange={() => calcTotal()}
-              className="total-treatment-table"
-              placeholder="0,00"
-              variant="invisible"
-              {...register(`tratamentos.${i}.total`)}
-              mask="partialCurrency"
-            />
-          );
+          const v = row.getValue();
+          return masks.currency(`${v}`);
         },
-        meta: { alignHeader: "right", width: "150px" },
+        meta: { alignHeader: "right", width: "150px", alignText: "right" },
       },
       {
         header: "",
@@ -200,6 +94,7 @@ export const IncludeBudgetTreatm = ({
         meta: { alignText: "right" },
         cell: (row: any) => (
           <TableIconColumn
+            handleEdit={() => handleEdit(row.row.index)}
             handleRemove={() => handleRemove(row.row.original.idTratamento)}
           />
         ),
@@ -212,7 +107,7 @@ export const IncludeBudgetTreatm = ({
     <Container>
       <ModalInsertTreatment
         modalRef={treatmentRef}
-        selectData={(data) => handleInclude(data)}
+        selectData={(data) => handleInsertForm(data)}
       />
       <Content>
         <p className="title">Tratamentos</p>
@@ -221,27 +116,72 @@ export const IncludeBudgetTreatm = ({
         </div>
       </Content>
 
-      <TableCont>{open && <Table cols={cols} data={list} />}</TableCont>
+      <Grid
+        $alignItems="flex-end"
+        $template="2fr 1fr"
+        $templateMd="2 1fr"
+        $templateSm="1fr"
+      >
+        <Grid
+          $template="80px 1fr"
+          $templateMd="80px 1fr"
+          $templateSm="80px 1fr"
+        >
+          <Input {...register("idTratamento")} disabled label="Código" />
+          <Box>
+            <Input {...register("tratamento")} label="Tratamento" disabled />
+            <Button onClick={() => treatmentRef.current?.open()}>+</Button>
+          </Box>
+        </Grid>
+        <Input {...register("obs")} label="Obs" />
+
+        <Grid
+          $minWidth="100px"
+          $template="1fr 1fr 1fr"
+          $templateMd="1fr 1fr 1fr"
+          $templateSm="1fr 1fr 1fr"
+        >
+          <Input
+            handleChange={() => handleUpdateSubtotal()}
+            {...register("valor")}
+            label="Valor"
+            mask="currency"
+            placeholder="0,00"
+          />
+          <Input
+            type="number"
+            {...register("qtd")}
+            label="Qtd"
+            handleChange={() => handleUpdateSubtotal()}
+          />
+          <Input
+            {...register("subtotal")}
+            label="total"
+            mask="currency"
+            placeholder="0,00"
+          />
+        </Grid>
+
+        <ButtonContainer onClick={() => handleSave()}>
+          <Button variant="link">Salvar tratamento</Button>
+        </ButtonContainer>
+      </Grid>
+
+      <div style={{ width: "100%" }}>
+        <TableCont>{open && <Table cols={cols} data={list || []} />}</TableCont>
+        <hr />
+      </div>
+
       {list?.length > 0 && (
-        <>
-          <hr />
-
-          <FooterTable>
-            <Input
-              handleChange={() => console.log(getValues(), 'aaa')}
-              // handleChange={() => updateValues()}
-              {...register("total")}
-              variant="invisible"
-              placeholder="0,00"
-              mask="currency"
-            />
-          </FooterTable>
-        </>
+        <FooterTable>
+          <Input
+            {...register("total")}
+            variant="invisible"
+            placeholder="0,00"
+            mask="currency"
+          />
+        </FooterTable>
       )}
-
-      <ButtonContainer onClick={() => treatmentRef.current?.open()}>
-        <Button variant="link">Selecionar tratamento</Button>
-      </ButtonContainer>
     </Container>
   );
 };
