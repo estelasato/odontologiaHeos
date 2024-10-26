@@ -24,10 +24,11 @@ export const SearchContainer = ({
         className="searchbar-comp"
         onSearch={onSearch}
       />
-
-      <Button variant="link" onClick={() => onClick ? onClick() : modalRef?.current?.open()}>
-        {buttonLabel ? buttonLabel : "+ Adicionar"}
-      </Button>
+      {(modalRef || onClick) && (
+        <Button variant="link" onClick={() => onClick ? onClick() : modalRef?.current?.open()}>
+          {buttonLabel ? buttonLabel : "+ Adicionar"}
+        </Button>
+      )}
     </Container>
   );
 };

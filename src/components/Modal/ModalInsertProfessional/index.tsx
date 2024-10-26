@@ -27,7 +27,7 @@ export const ModalInsertProfessional = ({ modalRef, selectData }: ModalInsertPro
         <Professional onClick={(e) => setData(e)}/>
 
         <div>
-          <Button className="select-btn" onClick={() => handleSelect()}>Selecionar paciente</Button>
+          <Button className="select-btn" onClick={() => handleSelect()}>Selecionar profissional</Button>
         </div>
       </Container>
     </Modal>

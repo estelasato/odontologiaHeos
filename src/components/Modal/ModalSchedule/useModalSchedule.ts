@@ -33,7 +33,10 @@ export const useModalSchedule = (
   const { data: scheduleData } = useQuery({
     queryKey: ["scheduleData", values],
     queryFn: () => {
-      return values?.id && scheduleServices.getById(values?.id);
+      return (
+        values?.id &&
+        scheduleServices.getById(values?.idProfissional, values?.horario)
+      );
     },
   });
 
@@ -64,15 +67,14 @@ export const useModalSchedule = (
       } else return [];
     },
   });
-
+  // setValue('duracao', 30);
   useEffect(() => {
     scheduleData
       ? reset(scheduleData)
       : reset({
-          id: 0,
           idPaciente: undefined,
           idProfissional: undefined,
-          horario: new Date(),
+          horario: undefined,
           duracao: undefined,
           obs: "",
           status: "Agendado",
@@ -89,49 +91,57 @@ export const useModalSchedule = (
   const { mutateAsync: updateState } = useMutation({
     mutationKey: ["updateState"],
     mutationFn: async (params: any) => {
-      return scheduleServices.update(params.id, params);
+      return scheduleServices.update(params);
+    },
+  });
+
+  const { mutateAsync: removeSchedule } = useMutation({
+    mutationKey: ["removeSchedule"],
+    mutationFn: async (params: {
+      idProfissional: number;
+      horario: Date | string;
+    }) => {
+      return scheduleServices.remove(params.idProfissional, params.horario);
     },
   });
 
   const { refetch } = useSchedule();
 
-  // const validSchedule = (data: scheduleSchema) => {
-  // const dtInicio = new Date(data.horario);
-  // const dtFim  =  new Date(dtInicio.getTime() + data.duracao * 60000);
+  function isOverlap(existingEvent: any, newEvent: any) {
+    const existingStart = new Date(existingEvent.horario);
+    const existingEnd = new Date(existingStart.getTime() + existingEvent.duracao * 60 * 1000); // Convertendo duração para ms
 
-  // const findSchedule = schedules.find((s) => {
-  //   const sInicio = new Date(s.horario);
-  //   const sFim = new Date(sInicio.getTime() + s.duracao * 60000);
+    const newStart = new Date(newEvent.horario);
+    const newEnd = new Date(newStart.getTime() + newEvent.duracao * 60 * 1000);
 
-  //   if (dtFim >= sInicio && dtInicio <= sFim) {
-  //     console.log('achou', s)
-  //     return s;
-  //   }
-  // if ((h >= dtInicio && h <= dtFim) || (h <= dtInicio && h >= dtFim)) return h
-  // return (h >= dtInicio && h <= dtFim) || (dtInicio >= h && dtInicio <= new Date(s.horario));
-  // })
-  // console.log(data, '-', dtInicio, '-', dtFim, '-', findSchedule);
-  // if (findSchedule) {
-  //   if ((findSchedule.idPaciente === data.idPaciente) || (findSchedule.idProfissional === data.idProfissional)) {
+    // Verifica se há sobreposição
+    const sameProfissional = existingEvent.idProfissional === newEvent.idProfissional;
+    const samePatient = existingEvent.idPaciente === newEvent.idPaciente;
+    return (newStart < existingEnd && newEnd > existingStart) && (sameProfissional || samePatient);
+  }
 
-  //     return toast.error("Já existe uma consulta marcada para esse horário");
-  //   } return toast.success("marcado");
-  // }
-  // console.log(findSchedule);
-  //   return
-  // }
+  // Função para verificar se o horário está disponível
+  function isTimeAvailable(events: any, newEvent: any) {
+    console.log(events, newEvent);
+    return !events?.some((event: any) => isOverlap(event, newEvent));
+  }
 
+  const schedules = queryClient.getQueriesData({ queryKey: ["scheduleList"] });
   // TODO: sempre verificar se ja tem horario marcado, e com mesmo paciente ou dentista
   const onSubmit = async (data: scheduleSchema) => {
     try {
+      if (schedules&& schedules.length > 0 && !isTimeAvailable(schedules[0][1], data)) {
+        return toast.error("Insira um horário válido");
+      }
       if (data && new Date(data.horario) < new Date()) {
-        return toast.error("Não é possível agendar em datas passadas");
+        return toast.error("Insira um horário válido");
       }
 
       let value = { ...data };
       if (!data?.status) {
         value.status = "AGENDADO";
       }
+      console.log(value);
       if (isCreate) {
         await createSchedule(value);
       } else {
@@ -147,12 +157,29 @@ export const useModalSchedule = (
     }
   };
 
+  const onRemove = async (data: {
+    idProfissional: number;
+    horario: Date | string;
+  }) => {
+    try {
+      console.log(data);
+      await removeSchedule(data);
+      refetch();
+      queryClient.invalidateQueries({ queryKey: ["scheduleList"] });
+      toast.success("Removido com sucesso");
+      modalRef?.current?.close();
+    } catch (e) {
+      console.log(e);
+      toast.error("Ocorreu um erro!");
+    }
+  };
+
   const minOpts = useMemo(() => {
     const options = [];
     const minutesInDay = 24 * 15; // Total minutes in 24 hours
     const startTime = new Date(0, 0, 0, 0, 0); // Starting at midnight
 
-    for (let i = 5; i <= minutesInDay; i += 5) {
+    for (let i = 15; i <= minutesInDay; i += 15) {
       const newTime = addMinutes(startTime, i);
       const r = (i < 60 ? "" : "H'h'") + (i % 60 === 0 ? "" : " m'm'");
       const label = format(newTime, r);
@@ -188,5 +215,6 @@ export const useModalSchedule = (
     scheduleData,
     professionalOpts,
     patientOpts,
+    onRemove,
   };
 };

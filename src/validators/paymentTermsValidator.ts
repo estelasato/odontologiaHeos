@@ -13,6 +13,8 @@ export const paymentTermsSchema = zod.object({
   id: zod.any().optional(),
   descricao: zod.string().min(1, { message: 'Campo obrigatório' }),
   desconto: zod.number().optional().nullable(),
+  juros: zod.number().optional().nullable(),
+  multa: zod.number().optional().nullable(),
   status: zod.boolean().optional().transform((value) => !!value ? 1 : 0),
 
   idParcela: zod.coerce.number().optional(),

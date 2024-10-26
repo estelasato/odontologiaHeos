@@ -5,7 +5,7 @@ import { useBudget } from "./useBudget";
 import { Input } from "@/components/Form/Input";
 import { FaChevronLeft } from "react-icons/fa6";
 import { Select } from "@/components/Form/Select";
-import { BudgetStatusOpts } from "@/utils/shared/Options";
+import { BudgetStatusOpts, createBudgetStatusOpts } from "@/utils/shared/Options";
 import { Grid } from "@/config/grid";
 import { Button } from "@/components/Button";
 import { FooterModal } from "@/components/Modal/Footer";
@@ -98,7 +98,7 @@ const Budget = ({ setOpen, data }: IBudget) => {
             <Select
               className="select_status"
               {...register("status")}
-              options={BudgetStatusOpts}
+              options={data ? BudgetStatusOpts : createBudgetStatusOpts}
               label="Status"
             />
           </Box>
@@ -106,29 +106,32 @@ const Budget = ({ setOpen, data }: IBudget) => {
           <Grid $alignItems="flex-start" $template="1fr 1fr">
             <Select
               {...register("idAnamnese")}
-              label="Anamnese"
+              label="Anamnese*"
               error={errors.idAnamnese?.message}
               options={anamnesisOpt || []}
             />
 
             <Select
               {...register("idProfissional")}
-              label="Profissional"
+              label="Profissional*"
               error={errors.idProfissional?.message}
               options={professionalOpt || []}
             />
 
           </Grid>
 
-          <IncludeBudgetTreatm listData={budgetData?.tratamentos || []} setTreatments={setTratamentosList} />
+          <IncludeBudgetTreatm listData={budgetData?.tratamentos || []} setTreatments={(data) => setTratamentosList(data)} />
+
           <BoxPayment>
             <Select
+              disabled={budgetData && budgetData?.status != 'PENDENTE'}
               width="300px"
               {...register("idCondPagamento")}
-              label="Condição de Pagamento"
+              label="Condição de Pagamento*"
               error={errors.idCondPagamento?.message}
               options={paymentTermOpt || []}
             />
+            {!budgetData || budgetData?.status == 'PENDENTE' && (
             <Button
               variant="link"
               spaceLabel
@@ -136,14 +139,16 @@ const Budget = ({ setOpen, data }: IBudget) => {
             >
               +
             </Button>
-          {/* </Grid> */}
+
+            )}
           </BoxPayment>
 
-          <IncludeAccReceivable />
+          <IncludeAccReceivable defaultValues={budgetData}/>
+
           <FooterModal
             // modalRef={modalRef}
-            // dtCadastro={values?.dtCadastro}
-            // dtUltAlt={values?.dtUltAlt}
+            dtCadastro={budgetData?.dtCadastro}
+            dtUltAlt={budgetData?.dtUltAlt}
             isLoading={isPending}
             handleSubmit={handleSubmit(onSubmit)}
           />

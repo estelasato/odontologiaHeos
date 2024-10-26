@@ -8,7 +8,10 @@ import { Input } from "@/components/Form/Input";
 import { TextArea } from "@/components/Form/TextArea";
 import { FormProvider } from "react-hook-form";
 import { useModalAnamnesis } from "./useModalAnamnesis";
-import { AnamnesisDefaultValue, IllnessAnamnesisType } from "@/validators/anamnesisValidator";
+import {
+  AnamnesisDefaultValue,
+  IllnessAnamnesisType,
+} from "@/validators/anamnesisValidator";
 import { IncludeIllness } from "@/components/IncludeIllness";
 import { useMediaQuery } from "react-responsive";
 import { IncludeMed } from "@/components/IncludeMed";
@@ -30,6 +33,7 @@ export const ModalAnamnesis = ({ modalRef }: ModalBasic) => {
     reset,
     register,
     setValue,
+    formState: { errors },
   } = anamnesisForm;
 
   useEffect(() => {
@@ -45,12 +49,14 @@ export const ModalAnamnesis = ({ modalRef }: ModalBasic) => {
     }
   }, [values, AnamnesisData]);
 
-  const mobileScreen = useMediaQuery({maxWidth: 500})
+  const mobileScreen = useMediaQuery({ maxWidth: 500 });
 
   const filterSubmit = (data: any) => {
-    const doencas = data.doencas?.filter((d: IllnessAnamnesisType) => d.idDoenca);
+    const doencas = data.doencas?.filter(
+      (d: IllnessAnamnesisType) => d.idDoenca
+    );
     onSubmit({ ...data, doencas });
-  }
+  };
 
   return (
     <Modal
@@ -61,22 +67,26 @@ export const ModalAnamnesis = ({ modalRef }: ModalBasic) => {
     >
       <FormProvider {...anamnesisForm}>
         <Container>
-          <Grid $template="100px">
+          <Grid $template="100px 1fr">
             <Input
               {...register("id")}
               label="Código"
               disabled={true}
               type="number"
             />
-          </Grid>
-          <Grid $template="1fr 1fr">
-            <TextArea width="100%" {...register("queixas")} label="Descrição" />
-            <TextArea width="100%" {...register("obs")} label="Observação" />
+            <Input
+              width="100%"
+              {...register("queixas")}
+              label="Descrição*"
+              error={errors.queixas?.message}
+            />
           </Grid>
 
-          <IncludeIllness listData={AnamnesisData?.doencas}/>
-          <IncludeMed listData={AnamnesisData?.medicamentos}/>
-          <IncludeAllergies listData={AnamnesisData?.alergias}/>
+          <TextArea width="100%" {...register("obs")} label="Observação" />
+
+          <IncludeIllness listData={AnamnesisData?.doencas} />
+          <IncludeMed listData={AnamnesisData?.medicamentos} />
+          <IncludeAllergies listData={AnamnesisData?.alergias} />
 
           <FooterModal
             modalRef={modalRef}

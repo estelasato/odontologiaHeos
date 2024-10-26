@@ -110,7 +110,7 @@ export const IncludeBudgetTreatm = ({
         selectData={(data) => handleInsertForm(data)}
       />
       <Content>
-        <p className="title">Tratamentos</p>
+        <p className="title">Tratamentos*</p>
         <div className="open-icon" onClick={() => setOpen(!open)}>
           {open ? <IoChevronUp /> : <IoChevronDown />}
         </div>

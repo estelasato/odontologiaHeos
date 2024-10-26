@@ -10,7 +10,7 @@ import masks from "@/utils/masks";
 export const useIncludeBudget = (setTreatments: (data: any) => void, listData?: IBudgetTreatm[]) => {
   const treatmentRef = useRef<modalRefProps>();
   const [list, setList] = useState<any>([]);
-  const { setValue, getValues } = useFormContext();
+  const { setValue, getValues, watch } = useFormContext();
 
   function resetTreatm() {
     setValue("idTratamento", undefined), setValue("tratamento", "");
@@ -31,7 +31,7 @@ export const useIncludeBudget = (setTreatments: (data: any) => void, listData?: 
     if (exist) toast.error("Tratamento já incluso");
     else {
       setValue("idTratamento", data.id),
-        setValue("tratamento", data?.descricao);
+      setValue("tratamento", data?.descricao);
       setValue("obs", "");
       setValue("valor", null);
       setValue("qtd", 1);
@@ -109,13 +109,17 @@ export const useIncludeBudget = (setTreatments: (data: any) => void, listData?: 
     const total = Number(qtd) * Number(masks.number(valor))
     setValue('subtotal', total)
   }
-
+  const watchList = watch('tratamentos')
   useEffect(() => {
-    resetTreatm();
-    setList(listData);
-  }, []);
+    console.log(watchList, 'watch')
 
-  // TODO: calc total
+    // resetTreatm();
+    setList(watchList || []);
+  }, [watchList]);
+  // useEffect(() => {
+  //   resetTreatm();
+  //   setList(listData);
+  // }, []);
 
   useEffect(() => {
     if (list && list.length > 0) {
@@ -124,8 +128,8 @@ export const useIncludeBudget = (setTreatments: (data: any) => void, listData?: 
         sumTotal += Number(masks.number(e.total));
       });
       setValue("total", sumTotal);
+      setTreatments(list)
     }
-    setTreatments(list)
   }, [list]);
 
   return {

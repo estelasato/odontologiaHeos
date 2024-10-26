@@ -6,9 +6,10 @@ export const TreatmentsSchema = zod.object({
   queixas: zod.string().optional(),
   // idPaciente: zod.number(),
   idAnamnese: zod.number({message: 'Campo obrigatório'}).min(1, 'Campo obrigatório'),
-  dataInicio: zod.any().refine((val) => val !== undefined && val !== null, {
-    message: 'Campo obrigatório',
-  }),
+  // dataInicio: zod.any().refine((val) => val !== undefined && val !== null, {
+  //   message: 'Campo obrigatório',
+  // }),
+  dataInicio: zod.any(),
   dataFim: zod.any().optional(),
   descricao: zod.string().optional(),
   dente: zod.string().optional(),

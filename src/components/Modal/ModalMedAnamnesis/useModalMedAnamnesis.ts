@@ -28,7 +28,6 @@ export const useModalMedAnamnesis = (
     setFieldErrors(null);
     const parseData = MedAnamnesisSchema.safeParse(data.medicamentos[index])
     if (!parseData.success) {
-      console.log(parseData, 'ee')
       const errors = parseData.error.issues;
       const r = errors.reduce((acc: any, e: any) => {
         const key = e.path[0]
@@ -64,7 +63,6 @@ export const useModalMedAnamnesis = (
   });
 
   useEffect(() => {
-    console.log(values)
     setValue("idPaciente", id ? Number(id) : undefined);
     setValue(`medicamentos.${index}.idMedicamento`, values?.idMedicamento || undefined);
     setValue(`medicamentos.${index}.dosagem`, values?.dosagem || '');

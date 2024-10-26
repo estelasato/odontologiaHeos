@@ -32,14 +32,14 @@ export const useSchedule = () => {
   const { mutateAsync: updateSchedule, isPending: isPendingUpdate } = useMutation({
     mutationKey: ["updateSchedule"],
     mutationFn: async (data: any) => {
-      return scheduleServices.update(data.id, data.values);
+      return scheduleServices.update(data);
     },
   })
 
   const handleDrop = async(data: any) => {
     console.log(data, 'handleDrop')
     try {
-      await updateSchedule({id:  data.event_id, values: data});
+      await updateSchedule(data);
       // queryClient.invalidateQueries({ queryKey: ["scheduleList"] });
       toast.success('Consulta atualizada')
     } catch (e) {

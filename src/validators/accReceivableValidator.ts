@@ -20,3 +20,4 @@ export const AccReceivableSchema = z.object({
 })
 
 export type AccReceivableType = z.infer<typeof AccReceivableSchema>
+

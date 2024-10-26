@@ -31,7 +31,6 @@ export const useModalBasicForm = (
 
   const { refetch } = useBasicForm(type);
   const queryClient = useQueryClient();
-  console.log(basicForm.formState.errors)
   const onSubmit = async (data?: any) => {
     try {
       if (isCreate) {

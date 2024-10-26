@@ -14,7 +14,6 @@ import { Container, GridComp } from "./styles";
 import { useAbout } from "./useAbout";
 import { FooterModal } from "@/components/Modal/Footer";
 import { useParams } from "react-router-dom";
-import Spinner from "@/components/Spinner";
 
 export const About = () => {
   const { id } = useParams();

@@ -14,6 +14,7 @@ import { Container } from "@/pages/Employees/styles";
 import { useTreatments } from "./useTreatments";
 import { TreatmentsProps } from "@/services/treatmentsServices";
 import { ModalTreatment } from "@/components/Modal/ModalTreatment";
+import { toothsOptions } from "@/utils/toothsOptions";
 
 interface ITreatmentsProps {
   onClickRow?: (data: any) => void;
@@ -63,8 +64,13 @@ export const Treatments = ({ onClickRow }: ITreatmentsProps) => {
         },
       },
       {
-        header: "Código Anamnese",
-        accessorKey: "idAnamnese",
+        header: "Dente",
+        accessorKey: "dente",
+        cell: (row: any) => {
+          const v = row.getValue()
+          const obj = toothsOptions?.find((t) => t.value == v)
+          return <div>{obj?.label || '-'}</div>
+        }
       },
       {
         header: "",

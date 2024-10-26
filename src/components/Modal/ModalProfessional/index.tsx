@@ -107,7 +107,7 @@ export const ModalProfessional = ({ modalRef }: ModalResponsibleProps) => {
             />
             <Input
               {...register("cpfCnpj")}
-              label="CPF/CNPJ"
+              label="CPF/CNPJ *"
               error={errors.cpfCnpj?.message}
               mask="documento"
             />

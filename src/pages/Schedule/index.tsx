@@ -109,7 +109,7 @@ export const Schedule = () => {
     scheduleRef.current?.open();
     return <ModalSchedule modalRef={scheduleRef} />;
   };
-  console.log(schedules);
+  // console.log(schedules);
   // const defaultDate = useMemo(() => new Date(2015, 3, 1), []);
   return (
     <Container>
@@ -128,8 +128,8 @@ export const Schedule = () => {
           view="week"
           agenda
           selectedDate={new Date()}
-          onEventClick={(e) => scheduleRef.current?.open({ id: e.event_id })}
-          onCellClick={handleEvents}
+          onEventClick={(e) => scheduleRef.current?.open({ id: e.event_id, ...e, })}
+          // onCellClick={handleEvents}
           onSelectedDateChange={(date) => console.log(date)}
           locale={ptBR}
           events={schedules}

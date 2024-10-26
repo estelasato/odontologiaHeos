@@ -13,6 +13,8 @@ export interface IPaymentTerm {
   id?: number;
   descricao: string;
   desconto?: number;
+  juros?: number;
+  multa?: number;
   status?: boolean  | number;
   parcelas?: IInstallments[];
   dtCadastro?: string;

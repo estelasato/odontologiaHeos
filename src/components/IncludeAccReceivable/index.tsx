@@ -3,9 +3,14 @@ import { useMemo } from "react"
 import Table from "../Table"
 import { useIncludeAccReceivable } from "./useIncludeAccReceivable"
 import masks from "@/utils/masks"
+import { IBudget } from "@/services/budgetsService"
 
-export const IncludeAccReceivable = () => {
-  const { isLoading, dataTable } = useIncludeAccReceivable()
+interface IIncludeAcc {
+  defaultValues?: IBudget
+}
+
+export const IncludeAccReceivable = ({defaultValues}: IIncludeAcc) => {
+  const { isLoading, dataTable } = useIncludeAccReceivable(defaultValues)
   // console.log(getValues('idCondPagamento'))
 
   const cols = useMemo(() => [
@@ -33,9 +38,15 @@ export const IncludeAccReceivable = () => {
         return `${masks.currencyAllPlatforms(d)}`
       }
     },
+    {
+      accessorKey: 'situacao',
+      header: 'Situação',
+      cell: (r: any) => {
+        const d = r.getValue()
+        return d == 0 ? 'inativo' : 'ativo'
+      }
+    },
   ], [])
-
-
 
   return (
     <Container>

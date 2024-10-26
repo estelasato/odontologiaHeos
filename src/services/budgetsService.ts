@@ -18,6 +18,7 @@ export interface IBudget {
   status: string,
   total: number,
   tratamentos: IBudgetTreatm[]
+  contasReceber?: any[]
 }
 export interface filterBudgtes {
   idPaciente?: number;
@@ -34,7 +35,6 @@ class budgetsService {
     return data
   }
   async update(id:number, params: IBudget) {
-    console.log(params, 'params')
     const {data} = await api.put(`/budgets/${id}`, params )
     return data
   }

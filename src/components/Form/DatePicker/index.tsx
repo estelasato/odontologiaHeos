@@ -1,11 +1,12 @@
-import { forwardRef, useEffect } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import { useFormContext, Controller } from "react-hook-form";
 import "react-datepicker/dist/react-datepicker.css";
 import Calendar from "react-datepicker";
-import ptBR from "date-fns/locale/pt-BR";
+import { ptBR } from "date-fns/locale/pt-BR";
 
 import { ErrorMessage } from "@/components/ErrorMessage";
 import { Container, Label } from "./styles";
+import { setHours, setMinutes } from "date-fns";
 
 interface DateProps {
   label?: string;
@@ -20,6 +21,7 @@ interface DateProps {
   maxTime?: any;
   maxDate?: any;
   handleChange?: (date: any) => void;
+  disabled?: boolean;
 }
 
 export const DatePicker = forwardRef<HTMLInputElement, DateProps>(
@@ -36,6 +38,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DateProps>(
       minTime,
       maxTime,
       maxDate,
+      disabled,
       ...props
     },
     ref
@@ -53,6 +56,19 @@ export const DatePicker = forwardRef<HTMLInputElement, DateProps>(
 
     // const officeEndTime = new Date();
     // officeEndTime.setHours(18, 0); // 6:00 PM
+
+    const [startDate, setStartDate] = useState(
+      setHours(setMinutes(new Date(), 0), 9)
+    );
+
+    // Função para filtrar horários entre 08:00 e 18:00
+    const filterPassedTime = (time: any) => {
+      const selectedDate = new Date(time);
+      const hours = selectedDate.getHours();
+
+      // Permitir apenas horários entre 08:00 e 18:00
+      return hours >= 8 && hours < 19;
+    };
     return (
       <Container className={className}>
         <Label>{label}</Label>
@@ -73,8 +89,9 @@ export const DatePicker = forwardRef<HTMLInputElement, DateProps>(
                   }}
                   minDate={minDate}
                   {...fieldProps}
-                  minTime={minTime}
-                  maxTime={maxTime}
+                  disabled={disabled}
+                  // minTime={minTime}
+                  // maxTime={maxTime}
                   maxDate={maxDate}
                   ref={ref as any}
                   selected={value ? new Date(value) : undefined}
@@ -82,9 +99,11 @@ export const DatePicker = forwardRef<HTMLInputElement, DateProps>(
                   locale={ptBR as any}
                   className="custom-datepicker-input"
                   timeInputLabel="Horário:"
-                  showTimeInput={hasTime}
                   timeFormat="HH:mm"
-                  timeIntervals={15}
+                  timeIntervals={30}
+                  showTimeSelect={hasTime}
+                  filterTime={filterPassedTime}
+
                   // minTime={setMinutes(now, 0)}
                   // maxTime={setHours(setMinutes(now, 45), 23)}
                 />

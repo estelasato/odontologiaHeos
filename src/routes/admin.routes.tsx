@@ -11,6 +11,7 @@ import { LiaUserNurseSolid } from "react-icons/lia";
 import { PiPillBold } from "react-icons/pi";
 import { LuCalendarClock } from "react-icons/lu";
 import { PiUsersThree } from "react-icons/pi";
+import { TbReportMoney } from "react-icons/tb";
 
 export default [
   {
@@ -62,6 +63,11 @@ export default [
     name: 'Hábitos',
     route: '/habits',
     icon: <PiTreeBold size={20}/>
+  },
+  {
+    name: 'Financeiro',
+    route: '/financial',
+    icon: <TbReportMoney size={20}/>
   }
   // {
   //   name: 'Cadastros',

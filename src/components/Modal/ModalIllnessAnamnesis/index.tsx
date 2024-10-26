@@ -30,8 +30,7 @@ export const ModalIllnessAnamnesis = ({
     useModalIllnessAnamnesis(modalRef, list, setList);
   const addIllnessRef = useRef<any>(null);
 
-  const { handleSubmit, register, setValue } = useFormContext();
-
+  const { handleSubmit, register, setValue, formState: {errors} } = useFormContext();
   const { illnessOptions } = useIncludeIllness();
 
   const [selectIllness, setSelectIllness] = useState<BasicProps>();

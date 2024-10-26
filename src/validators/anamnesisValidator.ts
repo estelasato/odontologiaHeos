@@ -18,7 +18,7 @@ export const MedAnamnesisSchema = zod.object({
   obs: zod.string().optional().nullable(),
 })
 export const AllergyAnamnesisSchema = zod.object({
-  id: zod.number().optional(),
+  id: zod.number().optional().nullable(),
   idAlergia: zod.number().min(1, 'Campo obrigatório'),
   obs: zod.string().optional(),
   gravidade: zod.string().optional(),
@@ -28,7 +28,7 @@ export const AllergyAnamnesisSchema = zod.object({
 export const AnamnesisSchema = zod.object({
   id: zod.any().optional(),
   obs: zod.string().optional(),
-  queixas: zod.string().optional(),
+  queixas: zod.string(),
   idPaciente: zod.number(),
 
   doencas: zod.array(IllnessAnamnesisSchema).optional().nullable(),

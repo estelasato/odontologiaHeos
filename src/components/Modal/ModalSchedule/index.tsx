@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FormProvider } from "react-hook-form";
-import Modal from "..";
+import Modal, { modalRefProps } from "..";
 import { useModalSchedule } from "./useModalSchedule";
 import { Input } from "@/components/Form/Input";
 import { Button } from "@/components/Button";
@@ -14,12 +14,17 @@ import { ModalInsertPatient } from "../ModalInsertPatient";
 import { ModalInsertProfessional } from "../ModalInsertProfessional";
 import { FooterModal } from "../Footer";
 import { Container } from "./style";
+import { ModalConfirmation } from "../ModalConfirm";
+import { DatetimePicker } from "@/components/Form/DatetimePicker";
+
 
 interface ModalScheduleProps {
   modalRef: React.RefObject<any>;
 }
 export const ModalSchedule = ({ modalRef }: ModalScheduleProps) => {
   const [values, setValues] = useState<any>();
+
+  const removeRef = useRef<modalRefProps>(null);
 
   const {
     scheduleForm,
@@ -31,12 +36,18 @@ export const ModalSchedule = ({ modalRef }: ModalScheduleProps) => {
     onSubmit,
     professionalOpts,
     patientOpts,
+    onRemove,
   } = useModalSchedule(!values, modalRef, values);
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = scheduleForm;
+
+  useEffect(() => {
+    reset(values);
+  }, [values]);
 
   return (
     <Modal
@@ -45,6 +56,12 @@ export const ModalSchedule = ({ modalRef }: ModalScheduleProps) => {
       title={"Agendamento"}
       width="650px"
     >
+      <ModalConfirmation
+        modalRef={removeRef}
+        message="Tem certeza que deseja remover este agendamento?"
+        onConfirm={() => onRemove({ idProfissional: Number(values?.idProfissional), horario: values?.horario })}
+        title="Remover agendamento"
+      />
       <FormProvider {...scheduleForm}>
         <ModalInsertPatient
           modalRef={insertPatientRef}
@@ -55,12 +72,6 @@ export const ModalSchedule = ({ modalRef }: ModalScheduleProps) => {
           selectData={setProfessionalData}
         />
         <Container>
-          <Input
-            {...register("id")}
-            label="Código"
-            width="100px"
-            disabled={true}
-          />
           <Grid $template="1fr 1fr">
             <Select
               {...register("idPaciente")}
@@ -77,19 +88,24 @@ export const ModalSchedule = ({ modalRef }: ModalScheduleProps) => {
             <Select
               {...register("idProfissional")}
               label="Profissional*"
+              disabled={!!values}
               options={professionalOpts}
               error={errors.idProfissional?.message}
             />
-            <Button
-              spaceLabel
-              onClick={() => insertProfessionalRef.current?.open()}
-            >
-              + Profissional
-            </Button>
+            {!values && (
+              <Button
+                spaceLabel
+                onClick={() => insertProfessionalRef.current?.open()}
+              >
+                + Profissional
+              </Button>
+            )}
           </Grid>
 
           <Grid $template="1fr 150px 1fr">
+            {/* <DatetimePicker/> */}
             <DatePicker
+              disabled={!!values}
               label="Data e hora*"
               {...register("horario")}
               hasTime
@@ -98,6 +114,7 @@ export const ModalSchedule = ({ modalRef }: ModalScheduleProps) => {
               error={errors.horario?.message}
             />
             <Select
+              // disabled
               {...register("duracao")}
               label="Duração*"
               options={minOpts}
@@ -119,6 +136,11 @@ export const ModalSchedule = ({ modalRef }: ModalScheduleProps) => {
             rows={4}
           />
 
+          {values && (
+            <div onClick={() => removeRef.current?.open()}>
+              <Button>Remover agendamento</Button>
+            </div>
+          )}
           <FooterModal
             dtCadastro={values?.dtCadastro}
             dtUltAlt={values?.dtCadastro}

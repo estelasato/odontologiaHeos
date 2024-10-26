@@ -171,6 +171,7 @@ const masks: MaskFunctions = {
     return format(new Date(value), "dd/MM/yyyy - HH:mm");
   },
   convertToDateString: (value) => {
+
     return format(new Date(value), "dd/MM/yyyy");
   },
   // floatNum

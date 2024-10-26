@@ -1,13 +1,17 @@
 import { Select } from "antd";
 import styled from "styled-components";
 
-export const Container = styled.div<{ $width?: string, $minW?: string }>`
+export const Container = styled.div<{ $width?: string, $minW?: string, $disabled?: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 3px;
   border: none;
   max-width: ${({ $width }) => $width || "100%"};
   min-width: ${({ $minW }) => !$minW ? "auto" : $minW };
+
+  & > * {
+    color: ${({ $disabled, theme }) => $disabled && theme.colors.border};
+  }
 `;
 
 export const SelectComp = styled(Select)`

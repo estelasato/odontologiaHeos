@@ -5,7 +5,8 @@ export const defaultTheme = {
       secondary: "#f4f4f4",
     },
     text: '#000000',
-    border: "#E0E3E7",
+    border: "#c8ccd1",
+    // border: "#E0E3E7",
     primary: {
       main: "#65000B",
       medium: "#80232D",

@@ -59,7 +59,7 @@ export const ModalPaymentTerm = ({ modalRef }: ModalPaymentTermProps) => {
       {
         accessorKey: "idFormaPag",
         header: "Cód. Forma Pag.",
-        meta: {alignText: "center"},
+        meta: { alignText: "center" },
       },
       {
         accessorKey: "FormaPagamento",
@@ -97,20 +97,47 @@ export const ModalPaymentTerm = ({ modalRef }: ModalPaymentTermProps) => {
         <Container>
           <h2>{values ? "Edição" : "Cadastro"}</h2>
 
-          <Grid $template="100px 1fr 70px" $templateMd="100px 1fr 70px">
-            <Input {...register("id")} label="Código" disabled />
-            <Input
-              {...register("descricao")}
-              label="Condição de Pagamento*"
-              error={errors.descricao?.message}
-            />
-            <Switch
-              value={values?.status}
-              {...register("status")}
-              label="Ativo"
-            />
-          </Grid>
+          <Grid $template="1fr 1fr" $templateMd="1fr 1fr">
+            <Grid $template="100px 1fr" $templateMd="100px 1fr">
+              <Input {...register("id")} label="Código" disabled />
 
+              <Input
+                {...register("descricao")}
+                label="Condição de Pagamento*"
+                error={errors.descricao?.message}
+              />
+            </Grid>
+
+            <Grid
+              $template="1fr 1fr 1fr 1fr"
+              $templateMd="1fr 1fr 1fr 1fr"
+              $templateSm="1fr 1fr 1fr 1fr"
+            >
+              <Input
+                {...register("desconto")}
+                label="Desconto"
+                type="number"
+                error={errors.desconto?.message}
+              />
+              <Input
+                {...register("juros")}
+                label="Juros"
+                type="number"
+                error={errors.juros?.message}
+              />
+              <Input
+                {...register("multa")}
+                label="Multa"
+                type="number"
+                error={errors.multa?.message}
+              />
+              <Switch
+                value={values?.status}
+                {...register("status")}
+                label="Ativo"
+              />
+            </Grid>
+          </Grid>
           <FormCont>
             <Grid $template="1fr 1fr">
               <Grid
@@ -136,7 +163,12 @@ export const ModalPaymentTerm = ({ modalRef }: ModalPaymentTermProps) => {
                   type="number"
                   error={errors.perc?.message}
                 />
-                <Input {...register("percTotal")} type="number" label="% Total" disabled />
+                <Input
+                  {...register("percTotal")}
+                  type="number"
+                  label="% Total"
+                  disabled
+                />
               </Grid>
 
               <Grid

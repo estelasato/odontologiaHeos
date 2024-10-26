@@ -35,14 +35,19 @@ class ScheduleServices {
     return response;
   }
 
-  async update(id: number, data: any) {
-    const { data: response } = await api.put(`schedule/${id}`, data);
+  async update(data: any) {
+    const { data: response } = await api.put(`schedule/${data.idProfissional}`, data);
     return response;
   }
 
-  async getById(id: number) {
-    const { data: response } = await api.get(`schedule/${id}`);
+  async getById(idProfissional: number, horario: any) {
+    const { data: response } = await api.get(`schedule/${idProfissional}`, { params: { horario } });
     return response;
+  }
+
+  async remove(idProfisisonal: number, horario: Date | string) {
+    console.log(idProfisisonal, horario);
+    await api.delete(`schedule/${idProfisisonal}`, { params: { horario } });
   }
 }
 

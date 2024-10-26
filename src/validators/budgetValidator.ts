@@ -21,6 +21,8 @@ export const BudgetSchema = zod.object({
   status: zod.string({message: 'Campo obrigatório'}),
   total: zod.any().transform((value) => Number(masks.number(value))),
 
+  // desconto: zod.any().transform((value) => Number(masks.number(value))),
+
   // para insercao apenas
   idTratamento: zod.any().optional().nullable(),
   tratamento: zod.string().optional().nullable(),
@@ -30,7 +32,7 @@ export const BudgetSchema = zod.object({
   subtotal: zod.any().optional().nullable(),
 
   tratamentos: zod.array(BudgetTreatmSchema).optional().nullable(),
-  contasReceber: zod.array(AccReceivableSchema).min(1, {message: 'Campo obrigatório'}),
+  contasReceber: zod.array(AccReceivableSchema).optional().nullable(),
 })
 
 export type BudgetTreatmType = zod.infer<typeof BudgetTreatmSchema>

@@ -15,7 +15,7 @@ export const estadoCivilOpt = [
 
 export const StatusOpts = [
   { value: "AGENDADO", label: "Agendado" },
-  { value: "CANCELADO", label: "Cancelado" },
+  // { value: "CANCELADO", label: "Cancelado" },
   { value: "CONFIRMADO", label: "Confirmado" },
   { value: "EM_ATENDIMENTO", label: "Em atendimento" },
   { value: "REALIZADO", label: "Realizado" },
@@ -23,11 +23,16 @@ export const StatusOpts = [
 ]
 
 export const BudgetStatusOpts = [
-  { value: "APROVADO", label: "Aprovado" }, // APROVADO MAS N INICIOU
-  { value: "PENDENTE", label: "Pendente" },
-  { value: "REJEITADO", label: "Rejeitado" }, // N APROVADO
-  { value: "EM_ANDAMENTO", label: "Em andamento" },
-  { value: "CONCLUÍDO", label: "Concluído" },
-  { value: "CANCELADO", label: "Cancelado" }, // APROVADO INICIADO MAS N CONCLUIDO
+  { value: "APROVADO", label: "Aprovado" },
+  // { value: "PENDENTE", label: "Pendente" },
+  // { value: "REJEITADO", label: "Rejeitado" },
+  // { value: "EM_ANDAMENTO", label: "Em andamento" },
+  { value: "CONCLUÍDO", label: "Concluído" }, // se todas as parcelas estiverem pagas
+  { value: "CANCELADO", label: "Cancelado" },
 
+]
+
+export const createBudgetStatusOpts = [
+  { value: "APROVADO", label: "Aprovado" },
+  { value: "PENDENTE", label: "Pendente" },
 ]

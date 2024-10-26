@@ -1,13 +1,12 @@
 import masks from "@/utils/masks";
 import * as zod from "zod";
 import { AddressValidator } from "./addressValidator";
-import { handleSearch } from "@/utils/shared/FilterList";
 import { validarCNPJ, validarCPF } from "@/utils/validaDoc";
 
 export const ProfessionalSchema = AddressValidator.extend({
   id: zod.any().optional(),
   nome: zod.string().min(1, "Campo obrigatório").nonempty("Campo obrigatório"),
-  cpfCnpj: zod.string().transform((value) => value && masks.unmask(value)),
+  cpfCnpj: zod.string().min(11, {message: 'Campo obrigatório'}).transform((value) => value && masks.unmask(value)),
   rg: zod
     .string()
     .optional()
@@ -34,8 +33,8 @@ export const ProfessionalSchema = AddressValidator.extend({
   idCidade: zod.number().optional().nullable(),
 }).superRefine((data, ctx) => {
   console.log(data.cpfCnpj)
-  if (data.idCidade) {
-    if (handleSearch(data.pais) === handleSearch("Brasil")) {
+  // if (data.idCidade) {
+  //   if (handleSearch(data.pais) === handleSearch("Brasil")) {
       if (!data.cpfCnpj) {
         ctx.addIssue({
           code: zod.ZodIssueCode.custom,
@@ -68,8 +67,8 @@ export const ProfessionalSchema = AddressValidator.extend({
           path: ["cpfCnpj"],
         });
       }
-    }
-  }
+  //   }
+  // }
 });
 
 export type ProfessionalFormSchema = zod.infer<typeof ProfessionalSchema>;

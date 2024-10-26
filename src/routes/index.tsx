@@ -12,6 +12,7 @@ import { Medication } from "@/pages/Medication";
 import { Professional } from "@/pages/Professional";
 import { ResponsibleParty } from "@/pages/ResponsibleParty";
 import { Patient } from "@/pages/Patient";
+import { Financial } from "@/pages/Financial";
 
 export default function Router() {
 
@@ -31,6 +32,7 @@ export default function Router() {
         <Route path="/patient" element={<Patient />} />
         <Route path="/professionals" element={<Professional />} />
         <Route path="/responsible" element={<ResponsibleParty />} />
+        <Route path="/financial" element={<Financial />} />
       </Route>
     </Routes>
   )

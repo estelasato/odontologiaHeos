@@ -1,5 +1,8 @@
 import anamnesisService from "@/services/anamnesisService";
-import budgetsService, { IBudget, IBudgetTreatm } from "@/services/budgetsService";
+import budgetsService, {
+  IBudget,
+  IBudgetTreatm,
+} from "@/services/budgetsService";
 import paymentTermService, {
   IPaymentTerm,
 } from "@/services/paymentTermService";
@@ -7,7 +10,7 @@ import professionalService from "@/services/professionalService";
 import masks from "@/utils/masks";
 import { BudgetSchema, BudgetType } from "@/validators/budgetValidator";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
@@ -16,7 +19,10 @@ import { toast } from "react-toastify";
 export const useBudget = (setOpen?: any, values?: IBudget) => {
   const { id } = useParams();
   const [selectData, setSelectData] = useState<any>();
-  const [tratamentosList, setTratamentosList] = useState<IBudgetTreatm[]>()
+  const [tratamentosList, setTratamentosList] = useState<IBudgetTreatm[]>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const queryClient = useQueryClient();
 
   const formBudgets = useForm<BudgetType>({
     resolver: zodResolver(BudgetSchema),
@@ -68,34 +74,46 @@ export const useBudget = (setOpen?: any, values?: IBudget) => {
     mutationFn: (params: { id: number; data: any }) =>
       budgetsService.update(params.id, params.data),
   });
-console.log(formBudgets.formState.errors)
-  // corrigir orçamento
-  // console.log(formBudgets.formState.errors, formBudgets.getValues());
-  // console.log(formBudgets.formState.errors, "errors");
+  console.log(formBudgets.formState.errors)
   const onSubmit = async (data: BudgetType) => {
-    const newData = {
-      ...data,
-      total: data.total,
-      idPaciente: Number(id),
-      tratamentos: tratamentosList?.map((item: any) => ({
-        ...item,
-        idTratamento: item.idTratamento,
-        total: Number(masks.number(`${item.total}`)),
-        valor: Number(masks.number(`${item.valor}`)),
-      })),
-    };
-    if (!tratamentosList || tratamentosList?.length == 0)
-      return toast.error("Insira ao menos um tratamento");
-    console.log(newData, "newData");
     try {
+      setIsLoading(true);
+      const filterTrat = tratamentosList?.filter((t) => t.qtd && t.qtd > 0);
+      if (
+        !tratamentosList ||
+        tratamentosList?.length == 0 ||
+        !filterTrat ||
+        filterTrat.length == 0
+      )
+        return toast.error("Insira ao menos um tratamento");
+
+      let newData = {
+        ...data,
+        total: data.total,
+        idPaciente: Number(id),
+        tratamentos: filterTrat?.map((item: any) => ({
+          ...item,
+          idTratamento: item.idTratamento,
+          total: Number(masks.number(`${item.total}`)),
+          valor: Number(masks.number(`${item.valor}`)),
+        })),
+      };
       if (values && values.id) {
         await updateBudget({ id: values.id, data: newData });
-      } else await createBudget(newData);
+      } else {
+        if (data.status == "PENDENTE") newData.contasReceber = [];
+        await createBudget(newData);
+      }
       setOpen && setOpen(false);
       refetch();
+      queryClient.invalidateQueries({ queryKey: ["budgets"] });
+      setIsLoading(false);
       toast.success("Orçamento salvo com sucesso");
     } catch (error) {
+      setIsLoading(false);
       toast.error("Erro ao salvar orçamento");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -117,7 +135,7 @@ console.log(formBudgets.formState.errors)
 
   useEffect(() => {
     reset(budgetData);
-    console.log(budgetData, "data");
+    // console.log(budgetData, "data");
   }, [budgetData]);
 
   return {
@@ -127,7 +145,7 @@ console.log(formBudgets.formState.errors)
     paymentTermOpt,
     professionalOpt,
     budgetData,
-    isPending: pendingCreate || pendingUpdate,
+    isPending: isLoading,
     handlePaymentTerm,
     setTratamentosList,
   };
