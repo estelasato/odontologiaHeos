@@ -1,3 +1,4 @@
+import { useAuthStore } from '@/stores/auth'
 import axios from 'axios'
 
 const api = axios.create({
@@ -9,16 +10,11 @@ const api = axios.create({
 
 api.interceptors.request.use(
   async (config) => {
-    // const token = useAuthStore.getState().token
-    // const company = useAuthStoreCompany.getState().company
+    const token = useAuthStore.getState().token
 
-    // if (token) {
-    //   config.headers.set('Authorization', `Bearer ${token}`)
-    // }
-    // if (company) {
-    //   config.headers.set('x-company-id', company.id)
-    // }
-
+    if (token) {
+      config.headers.set('Authorization', `Bearer ${token}`)
+    }
     return config
   },
   (error) => {
@@ -30,13 +26,12 @@ api.interceptors.response.use(
   (response) => {
     return response
   },
-  // (error) => {
-  //   if (error.response.status === 401) {
-  //     useAuthStore.getState().logout()
-  //     useAuthStoreCompany.getState().logoutCompany()
-  //   }
-  //   return Promise.reject(error)
-  // },
+  (error) => {
+    if (error.response.status === 401) {
+      useAuthStore.getState().logout()
+    }
+    return Promise.reject(error)
+  },
 )
 
 export default api

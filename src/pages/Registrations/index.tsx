@@ -13,7 +13,7 @@ export const Registrations = () => {
     { label: "Estados", component: <State /> },
     { label: "Cidades", component: <City /> },
   ];
-
+  console.log('aaa')
   return (
     <Container>
       <h1>Cadastros</h1>

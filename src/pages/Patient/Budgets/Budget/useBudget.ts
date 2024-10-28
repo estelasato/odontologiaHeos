@@ -64,12 +64,12 @@ export const useBudget = (setOpen?: any, values?: IBudget) => {
     },
   });
 
-  const { mutateAsync: createBudget, isPending: pendingCreate } = useMutation({
+  const { mutateAsync: createBudget } = useMutation({
     mutationKey: ["createBudget"],
     mutationFn: (data: any) => budgetsService.create(data),
   });
 
-  const { mutateAsync: updateBudget, isPending: pendingUpdate } = useMutation({
+  const { mutateAsync: updateBudget } = useMutation({
     mutationKey: ["updateBudget"],
     mutationFn: (params: { id: number; data: any }) =>
       budgetsService.update(params.id, params.data),

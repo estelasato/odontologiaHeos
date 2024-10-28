@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { FormProvider } from "react-hook-form";
 import Modal, { modalRefProps } from "..";
 import { useModalSchedule } from "./useModalSchedule";
-import { Input } from "@/components/Form/Input";
 import { Button } from "@/components/Button";
 import { DatePicker } from "@/components/Form/DatePicker";
 import { TextArea } from "@/components/Form/TextArea";
@@ -15,7 +14,6 @@ import { ModalInsertProfessional } from "../ModalInsertProfessional";
 import { FooterModal } from "../Footer";
 import { Container } from "./style";
 import { ModalConfirmation } from "../ModalConfirm";
-import { DatetimePicker } from "@/components/Form/DatetimePicker";
 
 
 interface ModalScheduleProps {

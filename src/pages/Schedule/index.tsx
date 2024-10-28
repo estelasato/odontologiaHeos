@@ -104,11 +104,11 @@ export const Schedule = () => {
     return;
   };
 
-  const handleEvents = (e: any) => {
-    console.log(e);
-    scheduleRef.current?.open();
-    return <ModalSchedule modalRef={scheduleRef} />;
-  };
+  // const handleEvents = (e: any) => {
+  //   console.log(e);
+  //   scheduleRef.current?.open();
+  //   return <ModalSchedule modalRef={scheduleRef} />;
+  // };
   // console.log(schedules);
   // const defaultDate = useMemo(() => new Date(2015, 3, 1), []);
   return (

@@ -46,7 +46,7 @@ export const useModalAnamnesis = (
       const desc = anamnesisForm.getValues('queixas')
       if (!desc) return anamnesisForm.setError('queixas', {message: 'Campo obrigfatório'})
       if (isCreate) {
-        const anamnesis = await create(data);
+        await create(data);
       } else await update(data)
       queryClient.invalidateQueries({queryKey: ['anamnesisOpt', id]});
       toast.success("Salvo com sucesso!");

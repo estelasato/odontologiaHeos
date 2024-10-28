@@ -5,7 +5,7 @@ import {
   useCallback,
   useEffect,
 } from "react";
-import { Control, Controller, useFormContext } from "react-hook-form";
+import { Control, Controller, useForm, useFormContext } from "react-hook-form";
 
 import { ErrorMessage } from "@/components/ErrorMessage";
 import masks, { MaskFunctions } from "../../../utils/masks";
@@ -56,7 +56,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     ref
   ) => {
     // const isPasswordInput = type === "password";
-    const { setValue, control: Control, getValues } = useFormContext();
+    const { setValue, control: Control, getValues } = useFormContext() || useForm();
 
     const handleInputChange = useCallback(
       (e: ChangeEvent<HTMLInputElement>) => {
