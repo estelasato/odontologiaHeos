@@ -56,7 +56,8 @@ export const Card = styled.div`
   min-width: 300px;
   margin-bottom: 20px;
   padding: 32px;
-  width: 60%;
+  width: 100%;
+  max-width: 450px;
 
   display: flex;
   align-items: stretch;
