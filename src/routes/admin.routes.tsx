@@ -1,4 +1,4 @@
-// import { LuClock } from "react-icons/lu";
+import { LuClock } from "react-icons/lu";
 // import { MdOutlineAssignment } from "react-icons/md";
 // import { FiUserCheck } from "react-icons/fi";
 import { RiFolderUserLine } from "react-icons/ri";
@@ -12,6 +12,7 @@ import { PiPillBold } from "react-icons/pi";
 import { LuCalendarClock } from "react-icons/lu";
 import { PiUsersThree } from "react-icons/pi";
 import { TbReportMoney } from "react-icons/tb";
+import { PiTooth } from "react-icons/pi";
 
 export default [
   {
@@ -44,34 +45,39 @@ export default [
     route: '/professionals',
     icon: <LiaUserNurseSolid color="white" size={25}/>
   },
-  {
-    name: 'Medicamentos',
-    route: '/medications',
-    icon: <RiMedicineBottleLine size={20}/>
-  },
-  {
-    name: 'Doenças',
-    route: '/illnesses',
-    icon: <RiThermometerLine size={20}/>
-  },
-  {
-    name: 'Alergias',
-    route: '/allergies',
-    icon: <PiPillBold size={20}/>
-  },
-  {
-    name: 'Hábitos',
-    route: '/habits',
-    icon: <PiTreeBold size={20}/>
-  },
+  // {
+  //   name: 'Medicamentos',
+  //   route: '/medications',
+  //   icon: <RiMedicineBottleLine size={20}/>
+  // },
+  // {
+  //   name: 'Doenças',
+  //   route: '/illnesses',
+  //   icon: <RiThermometerLine size={20}/>
+  // },
+  // {
+  //   name: 'Alergias',
+  //   route: '/allergies',
+  //   icon: <PiPillBold size={20}/>
+  // },
+  // {
+  //   name: 'Hábitos',
+  //   route: '/habits',
+  //   icon: <PiTreeBold size={20}/>
+  // },
   {
     name: 'Financeiro',
     route: '/financial',
     icon: <TbReportMoney size={20}/>
-  }
+  },
   // {
-  //   name: 'Cadastros',
-  //   route: '/cadastros',
-  //   icon: <LuClock color="white" size={20}/>
-  // }
+  //   name: 'Procedimentos',
+  //   route: '/procedures',
+  //   icon: <PiTooth size={20}/>
+  // },
+  {
+    name: 'Cadastros gerais',
+    route: '/registers',
+    icon: <RiMedicineBottleLine color="white" size={20}/>
+  }
 ]

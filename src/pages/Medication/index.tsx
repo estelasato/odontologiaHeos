@@ -53,9 +53,6 @@ export const Medication = ({ onClick }: IMedication) => {
         onConfirm={() => selectData?.id && handleRemove(selectData.id)}
       />
       <ModalBasicForm modalRef={modalRef} type="medications"/>
-
-      <h1>Medicamentos</h1>
-
       <SearchContainer modalRef={modalRef} onSearch={(e) => handleSearch(e)} />
       <Table
         cols={cols}

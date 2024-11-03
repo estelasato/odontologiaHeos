@@ -77,7 +77,7 @@ export const ModalAnamnesis = ({ modalRef }: ModalBasic) => {
             <Input
               width="100%"
               {...register("queixas")}
-              label="Descrição*"
+              label="Motivo da consulta*"
               error={errors.queixas?.message}
             />
           </Grid>

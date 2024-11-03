@@ -8,6 +8,7 @@ interface FooterModalProps {
   handleSubmit?: () => void;
   modalRef?: React.RefObject<any>;
   isLoading?: boolean;
+  labelConfirmBtn?: string;
 }
 
 export const FooterModal = ({
@@ -16,6 +17,7 @@ export const FooterModal = ({
   handleSubmit,
   modalRef,
   isLoading,
+  labelConfirmBtn="Salvar"
 }: FooterModalProps) => {
   return (
     <Container>
@@ -34,7 +36,7 @@ export const FooterModal = ({
         <Button isLoading={isLoading} className="btn-cancel" variant="link" onClick={() => modalRef &&  modalRef?.current?.close()}>
           Cancelar
         </Button>
-        <Button onClick={handleSubmit}>Salvar</Button>
+        <Button onClick={handleSubmit}>{labelConfirmBtn}</Button>
       </Content>
     </Container>
   );

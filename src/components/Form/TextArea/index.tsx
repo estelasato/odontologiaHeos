@@ -2,6 +2,7 @@ import { ComponentProps, forwardRef } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { Container } from "./styles";
 import { Input } from "antd";
+import { ErrorMessage } from "@/components/ErrorMessage";
 
 interface TextAreaProps extends ComponentProps<"textarea"> {
   label?: string;
@@ -12,6 +13,7 @@ interface TextAreaProps extends ComponentProps<"textarea"> {
   rows?: number;
   name?: string;
   className?: string;
+  error?: string;
 }
 
 export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
@@ -23,6 +25,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
     width,
     rows,
     name,
+    error,
     className,
     ...props
   }, ref ) => {
@@ -42,7 +45,8 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
               ref={ref}
               size="middle"
             />
-          </Container>
+            {!!error && <ErrorMessage error={error} />}
+            </Container>
         }
       />
     )

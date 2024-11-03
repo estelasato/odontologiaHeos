@@ -3,12 +3,9 @@ import { PrivateLayout } from "../layouts/Private";
 import { Registrations } from "../pages/Registrations";
 
 import { Habit } from "@/pages/Habit";
-import { Allergy } from "@/pages/Allergy";
 import { Patients } from "@/pages/Patients";
 import { Schedule } from "@/pages/Schedule";
 import { Employees } from "@/pages/Employees";
-import { Illnesses } from "@/pages/Illness";
-import { Medication } from "@/pages/Medication";
 import { Professional } from "@/pages/Professional";
 import { ResponsibleParty } from "@/pages/ResponsibleParty";
 import { Patient } from "@/pages/Patient";
@@ -17,6 +14,8 @@ import { UnauthenticatedRoute } from "@/components/UnauthenticatedRoute";
 import { PublicLayout } from "@/layouts/Public";
 import { Login } from "@/pages/Login";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+// import { Register } from "@/pages/Register";
+import { Registers } from "@/pages/Registers";
 
 export default function Router() {
   return (
@@ -24,6 +23,7 @@ export default function Router() {
       <Route element={<UnauthenticatedRoute redirectPath="/" />}>
         <Route element={<PublicLayout />}>
           <Route path="/login" element={<Login />} />
+          {/* <Route path="/register" element={<Register />} /> */}
         </Route>
       </Route>
 
@@ -37,9 +37,9 @@ export default function Router() {
           <Route path="/" element={<Registrations />} />
           <Route path="/registrations" element={<Registrations />} />
           <Route path="/employees" element={<Employees />} />
-          <Route path="/illnesses" element={<Illnesses />} />
+          {/* <Route path="/illnesses" element={<Illnesses />} />
           <Route path="/medications" element={<Medication />} />
-          <Route path="/allergies" element={<Allergy />} />
+          <Route path="/allergies" element={<Allergy />} /> */}
           <Route path="/habits" element={<Habit />} />
           <Route path="/patients" element={<Patients />} />
           <Route path="/patient/:id" element={<Patient />} />
@@ -47,6 +47,7 @@ export default function Router() {
           <Route path="/professionals" element={<Professional />} />
           <Route path="/responsible" element={<ResponsibleParty />} />
           <Route path="/financial" element={<Financial />} />
+          <Route path="/registers" element={<Registers />} />
         </Route>
       </Route>
     </Routes>

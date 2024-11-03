@@ -52,8 +52,6 @@ export const Allergy = ({ onClick }: IMedication) => {
       />
       <ModalBasicForm modalRef={modalRef} type="allergy"/>
 
-      <h1>Alergias</h1>
-
       <SearchContainer modalRef={modalRef} onSearch={(e) => handleSearch(e)} />
       <Table
         cols={cols}

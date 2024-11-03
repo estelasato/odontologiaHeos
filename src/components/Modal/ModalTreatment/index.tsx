@@ -69,7 +69,7 @@ export const ModalTreatment = ({ modalRef }: ModalTreatmentProps) => {
               error={errors.dataFim?.message}
             />
           </Grid>
-          <TextArea {...register("descricao")} label="Descrição"/>
+          <TextArea {...register("descricao")} label="Descrição*" error={errors.descricao?.message}/>
 
           <Select
             {...register("dente")}
@@ -81,6 +81,7 @@ export const ModalTreatment = ({ modalRef }: ModalTreatmentProps) => {
             {...register("idProfissional")}
             label="Profissional*"
             options={professionalOpts}
+            error={errors.idProfissional?.message}
           />
           <Box>
             <Select
