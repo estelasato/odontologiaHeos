@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useState } from "react";
+import { forwardRef, useEffect } from "react";
 import { useFormContext, Controller } from "react-hook-form";
 import "react-datepicker/dist/react-datepicker.css";
 import Calendar from "react-datepicker";
@@ -6,7 +6,6 @@ import { ptBR } from "date-fns/locale/pt-BR";
 
 import { ErrorMessage } from "@/components/ErrorMessage";
 import { Container, Label } from "./styles";
-import { setHours, setMinutes } from "date-fns";
 
 interface DateProps {
   label?: string;
@@ -50,16 +49,6 @@ export const DatePicker = forwardRef<HTMLInputElement, DateProps>(
         setValue(name, new Date(defaultValue));
       }
     }, [defaultValue]);
-
-    // const officeStartTime = new Date();
-    // officeStartTime.setHours(9, 0); // 9:00 AM
-
-    // const officeEndTime = new Date();
-    // officeEndTime.setHours(18, 0); // 6:00 PM
-
-    const [startDate, setStartDate] = useState(
-      setHours(setMinutes(new Date(), 0), 9)
-    );
 
     // Função para filtrar horários entre 08:00 e 18:00
     const filterPassedTime = (time: any) => {

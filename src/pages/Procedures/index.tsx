@@ -1,7 +1,6 @@
 import { modalRefProps } from "@/components/Modal";
 import { BasicProps } from "@/services/basicServices";
 import { useEffect, useMemo, useRef, useState } from "react";
-import columnsBasicForm from "../shared/basicTableData";
 import { Container } from "../Employees/styles";
 import { ModalConfirmation } from "@/components/Modal/ModalConfirm";
 import { SearchContainer } from "@/components/SearchContainer";

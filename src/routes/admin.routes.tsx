@@ -1,18 +1,18 @@
-import { LuClock } from "react-icons/lu";
+// import { LuClock } from "react-icons/lu";
 // import { MdOutlineAssignment } from "react-icons/md";
 // import { FiUserCheck } from "react-icons/fi";
 import { RiFolderUserLine } from "react-icons/ri";
 import { MdOutlineBadge } from "react-icons/md";
 import { RiMedicineBottleLine } from "react-icons/ri";
-import { RiThermometerLine } from "react-icons/ri";
-import { PiTreeBold } from "react-icons/pi";
+// import { RiThermometerLine } from "react-icons/ri";
+// import { PiTreeBold } from "react-icons/pi";
 import { MdOutlineLocationOn } from "react-icons/md";
 import { LiaUserNurseSolid } from "react-icons/lia";
-import { PiPillBold } from "react-icons/pi";
+// import { PiPillBold } from "react-icons/pi";
 import { LuCalendarClock } from "react-icons/lu";
 import { PiUsersThree } from "react-icons/pi";
 import { TbReportMoney } from "react-icons/tb";
-import { PiTooth } from "react-icons/pi";
+// import { PiTooth } from "react-icons/pi";
 
 export default [
   {

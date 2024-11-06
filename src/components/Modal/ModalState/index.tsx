@@ -44,7 +44,7 @@ export const ModalState = ({ modalRef }: any) => {
       reset(values);
     } else {
       reset(defaultValues);
-      setValue('ativo', 1)
+      setValue("ativo", 1);
     }
   }, [values]);
 
@@ -75,7 +75,13 @@ export const ModalState = ({ modalRef }: any) => {
             />
           </Box>
           <Grid $template="1fr 2fr">
-            <Input {...register("uf")} label="UF*" error={errors.uf?.message} />
+            <Input
+              {...register("uf")}
+              label="UF*"
+              error={errors.uf?.message}
+              type="number"
+              mask="uf"
+            />
             <Select
               {...register("idPais")}
               label="País*"

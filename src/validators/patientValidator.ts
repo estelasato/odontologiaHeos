@@ -56,7 +56,7 @@ export const PatientsSchema = AddressValidator.extend({
   email: zod.string().optional(),
   celular: zod
     .string()
-    .optional()
+    .min(8, "Campo obrigatório")
     .transform((value) => value && masks.unmask(value)),
   sexo: zod
     .string({ message: "Campo obrigatório" })

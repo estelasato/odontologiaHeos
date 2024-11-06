@@ -28,6 +28,7 @@ interface InputProps extends ComponentProps<"input"> {
   isPassword?: boolean;
   variant?: "invisible";
   className?: string;
+  maxSize?: number;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -51,12 +52,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       isPassword = false,
       className,
       variant,
+      maxSize = 35,
       ...props
     },
     ref
   ) => {
     // const isPasswordInput = type === "password";
-    const { setValue, control: Control, getValues } = useFormContext() || useForm();
+    const { setValue, control: Control } = useFormContext() || useForm();
 
     const handleInputChange = useCallback(
       (e: ChangeEvent<HTMLInputElement>) => {
@@ -73,7 +75,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           setValue(name as string, maskedValue);
         }
       },
-      [handleChange, mask, name, setValue]
+      [handleChange, mask]
     );
 
     const handleBlur = (e: any) => {
@@ -82,15 +84,16 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     };
 
     useEffect(() => {
-      if (name) {
-        const defaultV = getValues(name);
-        if (mask && name) {
-          // console.log(masks[mask](`${value}`), "aa", defaultV);
-          setValue(name, masks[mask](`${defaultV}`));
-        }
-
+      if (mask && name && value) {
+        setValue(name, masks[mask](`${value}`));
       }
-    }, [mask, name]);
+    }, [value])
+
+    const handleValue = (value: any) => {
+      console.log(value)
+      const result = String(value).slice(0, maxSize) || value
+      return mask ? masks[mask](`${result}`) : result || ""
+    }
 
     return (
       <Controller
@@ -114,7 +117,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               }}
               fullWidth={true}
               onBlur={handleBlur}
-              value={mask ? masks[mask](`${value}`) : value || ""}
+              value={handleValue(value)}
               InputProps={{ readOnly: disabled }}
               variant="standard"
               type={isPassword ? "password" : type}

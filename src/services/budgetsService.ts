@@ -1,8 +1,8 @@
 import api from "@/config/api";
 
-export interface IBudgetTreatm {
-  idTratamento?: number;
-  descricao?: string;
+export interface IBudgetProcedures {
+  idProcedimento?: number;
+  nome?: string;
   obs?: string;
   qtd: number;
   valor?: number;
@@ -17,8 +17,7 @@ export interface IBudget {
   idCondPagamento: number,
   status: string,
   total: number,
-  tratamentos: IBudgetTreatm[]
-  contasReceber?: any[]
+  procedimentos: IBudgetProcedures[]
 }
 export interface filterBudgtes {
   idPaciente?: number;

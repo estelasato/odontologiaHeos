@@ -40,6 +40,7 @@ export const ModalAllergyAnamnesis = ({
     <Modal ref={modalRef} getValues={setValues}>
       <ModalInsertAllergy modalRef={addAllergyRef} selectData={setSelectData}/>
       <Box>
+        <h2>Alergia</h2>
         <Grid
           $template="1fr 75px"
           $templateMd="1fr 75px"
@@ -47,7 +48,7 @@ export const ModalAllergyAnamnesis = ({
         >
           <Select
             {...register(`alergias.${index}.idAlergia`)}
-            label="Alergia"
+            label="Nome*"
             options={allergyOptions}
             error={fieldErrors?.idAlergia?.message}
           />

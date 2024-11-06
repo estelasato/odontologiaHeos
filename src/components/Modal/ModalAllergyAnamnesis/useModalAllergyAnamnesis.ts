@@ -31,8 +31,10 @@ export const useModalAllergyAnamnesis = (
       const r = errors.reduce((acc: any, e: any) => {
         const key = e.path[0]
         acc[key] = e;
+        acc[key].message = "Campo obrigatório";
         return acc
       }, {})
+      console.log(r)
       setFieldErrors(r);
     } else {
       setFieldErrors(null);

@@ -27,7 +27,7 @@ export const BudgetStatusOpts = [
   // { value: "PENDENTE", label: "Pendente" },
   // { value: "REJEITADO", label: "Rejeitado" },
   // { value: "EM_ANDAMENTO", label: "Em andamento" },
-  { value: "CONCLUÍDO", label: "Concluído" }, // se todas as parcelas estiverem pagas
+  { value: "CONCLUIDO", label: "Concluído" }, // se todas as parcelas estiverem pagas
   { value: "CANCELADO", label: "Cancelado" },
 
 ]
@@ -35,4 +35,5 @@ export const BudgetStatusOpts = [
 export const createBudgetStatusOpts = [
   { value: "APROVADO", label: "Aprovado" },
   { value: "PENDENTE", label: "Pendente" },
+  { value: "CANCELADO", label: "Cancelado" },
 ]

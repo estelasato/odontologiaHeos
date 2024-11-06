@@ -55,3 +55,24 @@ export const Box = styled.div`
   align-items: flex-end;
   gap: 12px;
 `;
+
+export const ValuesContainer = styled.div`
+  white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-self: flex-start;
+`;
+
+export const InfosContainer = styled.div`
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+
+  .addDesc {
+    cursor: pointer;
+    color: ${({ theme }) => theme.colors.primary.main};
+  }
+`;

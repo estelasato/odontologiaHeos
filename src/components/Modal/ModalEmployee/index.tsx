@@ -123,11 +123,11 @@ export const ModalEmployee = ({ modalRef }: ModalEmployeeProps) => {
               error={errors.cargo?.message}
             />
             <Input
-              {...register("salario")}
               label="Salário*"
               error={errors.salario?.message}
               mask="currency"
               name="salario"
+              control={employeeForm.control}
             />
             <Input
               {...register("pis")}

@@ -12,9 +12,9 @@ export const installmentsSchema = zod.object({
 export const paymentTermsSchema = zod.object({
   id: zod.any().optional(),
   descricao: zod.string().min(1, { message: 'Campo obrigatório' }),
-  desconto: zod.number().optional().nullable(),
-  juros: zod.number().optional().nullable(),
-  multa: zod.number().optional().nullable(),
+  desconto: zod.string().transform((d) => Number(d)).optional().nullable(),
+  juros: zod.string().transform((d) => Number(d)).optional().nullable(),
+  multa: zod.string().transform((d) => Number(d)).nullable(),
   status: zod.boolean().optional().transform((value) => !!value ? 1 : 0),
 
   idParcela: zod.coerce.number().optional(),

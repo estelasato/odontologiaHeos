@@ -14,7 +14,7 @@ import { UnauthenticatedRoute } from "@/components/UnauthenticatedRoute";
 import { PublicLayout } from "@/layouts/Public";
 import { Login } from "@/pages/Login";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
-// import { Register } from "@/pages/Register";
+import { Register } from "@/pages/Register";
 import { Registers } from "@/pages/Registers";
 
 export default function Router() {
@@ -23,7 +23,7 @@ export default function Router() {
       <Route element={<UnauthenticatedRoute redirectPath="/" />}>
         <Route element={<PublicLayout />}>
           <Route path="/login" element={<Login />} />
-          {/* <Route path="/register" element={<Register />} /> */}
+          <Route path="/register" element={<Register />} />
         </Route>
       </Route>
 

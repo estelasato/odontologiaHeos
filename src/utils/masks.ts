@@ -171,9 +171,30 @@ const masks: MaskFunctions = {
     return format(new Date(value), "dd/MM/yyyy - HH:mm");
   },
   convertToDateString: (value) => {
-
-    return format(new Date(value), "dd/MM/yyyy");
+    const isValid = new Date(value) || new Date();
+    return format(isValid, "dd/MM/yyyy");
   },
+  convertToDateRegex: (value) => {
+     const v = value.replace(/(\d{4})-(\d{2})-(\d{2})T.*/, "$3/$2/$1");
+    return v
+  },
+  ddi: (value) => {
+    const v = value.replace(/\D/g, "").slice(0, 3)
+    return v
+  },
+  sigla: (value) => {
+    const v = value.replace(/[^a-zA-Z]/g, "").slice(0, 4)
+    return v
+  },
+  uf: (value) => {
+    const v = value.replace(/\D/g, "").slice(0, 2)
+    return v
+  },
+  ddd: (value) => {
+    const v = value.replace(/\D/g, "").slice(0, 5)
+    return v
+  },
+  // limitSize: (value, size) => value.slice(0, size),
   // floatNum
 };
 

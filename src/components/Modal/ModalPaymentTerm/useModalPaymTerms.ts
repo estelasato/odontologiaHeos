@@ -194,7 +194,7 @@ export const useModalPaymTerms = (
         total += Number(item.perc);
       });
     }
-    console.log(total)
+
     paymTermsForm.setValue("percTotal", total);
   }, [listInstallm]);
 

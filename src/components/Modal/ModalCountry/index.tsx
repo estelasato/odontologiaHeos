@@ -68,13 +68,16 @@ export const ModalCountry = ({ modalRef }: ModalProps) => {
           <Box>
             <Input
               {...register("ddi")}
-              label="DDI"
+              label="DDI*"
+              type="number"
               error={errors.ddi?.message}
+              mask="ddi"
             />
             <Input
               {...register("sigla")}
               label="Sigla"
               error={errors.sigla?.message}
+              mask="sigla"
             />
             <Switch
               value={values?.ativo}

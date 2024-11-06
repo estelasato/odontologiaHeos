@@ -18,8 +18,14 @@ interface accReceivableList {
   dtCancelamento?: Date
   dtCadastro: Date
   dtUltAlt: Date
-  situacao: number
   dtRecebimento?: Date
   idUser?: number
   typeUser?: string
+  situacao?: string;
+}
+
+enum ISituation {
+  PENDENTE = 'PENDENTE',
+  CANCELADO = 'CANCELADO',
+  PAGO = 'PAGO'
 }

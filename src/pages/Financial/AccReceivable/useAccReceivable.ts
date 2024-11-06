@@ -3,12 +3,13 @@ import { useQuery } from "@tanstack/react-query"
 
 export const useAccReceivable = () => {
 
-  const {data: accReceivableList} = useQuery({
+  const {data: accReceivableList, refetch} = useQuery({
     queryKey: ['accReceivableList'],
     queryFn: () => accReceivableService.getAll()
   })
 
   return {
     accReceivableList,
+    refetch
   }
 }

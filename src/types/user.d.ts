@@ -10,3 +10,11 @@ interface ILoginOutput {
   token: string;
   usuario: IUsuario
 }
+
+interface IRegisterInput {
+  nome: string
+  email: string
+  senha: string
+  role?: string
+  ativo:1
+}

@@ -73,6 +73,8 @@ export const ModalCity = ({ modalRef }: any) => {
               {...register("ddd")}
               label="DDD"
               error={errors.ddd?.message}
+              type="number"
+              mask="ddd"
             />
             <Select
               {...register("idEstado")}

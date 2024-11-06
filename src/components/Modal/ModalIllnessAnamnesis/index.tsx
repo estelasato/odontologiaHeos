@@ -51,6 +51,7 @@ export const ModalIllnessAnamnesis = ({
         selectData={setSelectIllness}
       />
       <Box>
+        <h2>Doença</h2>
         <Grid $template="1fr 1fr" $templateMd="1fr">
           <Grid
             $template="1fr 70px"
@@ -59,7 +60,7 @@ export const ModalIllnessAnamnesis = ({
           >
             <Select
               {...register(`doencas.${index}.idDoenca`)}
-              label="Doença"
+              label="Nome*"
               options={illnessOptions}
               error={fieldErrors?.idDoenca.message}
             />

@@ -115,19 +115,19 @@ export const ModalPaymentTerm = ({ modalRef }: ModalPaymentTermProps) => {
             >
               <Input
                 {...register("desconto")}
-                label="Desconto"
+                label="Desconto %"
                 type="number"
                 error={errors.desconto?.message}
               />
               <Input
                 {...register("juros")}
-                label="Juros"
+                label="Juros %"
                 type="number"
                 error={errors.juros?.message}
               />
               <Input
                 {...register("multa")}
-                label="Multa"
+                label="Multa %"
                 type="number"
                 error={errors.multa?.message}
               />

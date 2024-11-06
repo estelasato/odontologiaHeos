@@ -11,9 +11,9 @@ export const TreatmentsSchema = zod.object({
   // }),
   dataInicio: zod.any(),
   dataFim: zod.any().optional(),
-  descricao: zod.string().optional(),
+  descricao: zod.string().min(1, 'Campo obrigatório'),
   dente: zod.string().optional(),
-  idProfissional: zod.number(),
+  idProfissional:zod.number({message: 'Campo obrigatório'}).min(1, 'Campo obrigatório'),
 })
 
 export interface Treatmentsype {

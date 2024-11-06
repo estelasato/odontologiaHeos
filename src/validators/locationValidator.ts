@@ -2,7 +2,7 @@ import * as zod from "zod";
 
 export const countrySchema = zod.object({
   id: zod.coerce.number().optional(),
-  ddi: zod.string().optional(),
+  ddi: zod.string().max(3, 'Máximo 3 caracteres').min(1, 'Campo obrigatório'),
   ativo: zod.coerce.boolean().optional().transform((value) => !!value ? 1 : 0),
   pais: zod.string().min(1,'Campo obrigatório'),
   sigla: zod.string().optional(),

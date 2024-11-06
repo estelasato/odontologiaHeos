@@ -5,13 +5,17 @@ import { useFormContext } from "react-hook-form";
 import { IoChevronDown } from "react-icons/io5";
 import { IoChevronUp } from "react-icons/io5";
 
-// import { Grid } from "@/config/grid";
-import { TreatmentsProps } from "@/services/treatmentsServices";
 import { Input } from "../Form/Input";
 import { Button } from "../Button";
 import { ModalInsertTreatment } from "../Modal/ModalInsertTreatment";
 import { ButtonContainer, Content } from "../IncludeResponsible/styles";
-import { Box, Container, FooterTable, TableCont } from "./styles";
+import {
+  Box,
+  Container,
+  InfosContainer,
+  TableCont,
+  ValuesContainer,
+} from "./styles";
 // import { ColumnDef } from "@tanstack/react-table";
 import Table from "../Table";
 import masks from "@/utils/masks";
@@ -19,21 +23,21 @@ import { TableIconColumn } from "@/pages/shared/iconsTable";
 import { Grid } from "@/config/grid";
 import { useIncludeBudget } from "./useIncludeBudget";
 
-export interface IBudgetTreatm extends TreatmentsProps {
+export interface IBudgetProcedure extends IProcedure {
   valor?: number;
   obs?: string;
   qtd?: string;
   total?: number;
   descricao?: string;
   id?: number;
-  idTratamento?: number;
+  idProcedimento?: number;
+  percDesconto?: number;
 }
-export const IncludeBudgetTreatm = ({
-  listData,
-  setTreatments,
+export const IncludeBudgetProcedure = ({
+  setProcedures,
 }: {
-  listData?: IBudgetTreatm[];
-  setTreatments: (data: any) => void;
+  listData?: IBudgetProcedure[];
+  setProcedures: (data: any) => void;
 }) => {
   const [open, setOpen] = useState(true);
   const {
@@ -43,19 +47,19 @@ export const IncludeBudgetTreatm = ({
     handleUpdateSubtotal,
     handleSave,
     treatmentRef,
+    calcDiscount,
     list,
-  } = useIncludeBudget(setTreatments, listData);
+  } = useIncludeBudget(setProcedures);
   const { register } = useFormContext();
-
   const cols = useMemo(
     () => [
       {
         header: "Código",
-        accessorKey: "idTratamento",
+        accessorKey: "idProcedimento",
       },
       {
-        header: "Tratamento",
-        accessorKey: "descricao",
+        header: "Procedimento",
+        accessorKey: "nome",
       },
       {
         header: "Obs",
@@ -95,7 +99,7 @@ export const IncludeBudgetTreatm = ({
         cell: (row: any) => (
           <TableIconColumn
             handleEdit={() => handleEdit(row.row.index)}
-            handleRemove={() => handleRemove(row.row.original.idTratamento)}
+            handleRemove={() => handleRemove(row.row.original.idProcedimento)}
           />
         ),
       },
@@ -127,9 +131,9 @@ export const IncludeBudgetTreatm = ({
           $templateMd="80px 1fr"
           $templateSm="80px 1fr"
         >
-          <Input {...register("idTratamento")} disabled label="Código" />
+          <Input {...register("idProcedimento")} disabled label="Código" />
           <Box>
-            <Input {...register("tratamento")} label="Tratamento" disabled />
+            <Input {...register("procedimento")} label="Procedimento" disabled />
             <Button onClick={() => treatmentRef.current?.open()}>+</Button>
           </Box>
         </Grid>
@@ -172,15 +176,30 @@ export const IncludeBudgetTreatm = ({
         <hr />
       </div>
 
-      {list?.length > 0 && (
-        <FooterTable>
-          <Input
-            {...register("total")}
+      {list?.length >= 0 && (
+        <ValuesContainer>
+          <InfosContainer>
+            <h4>Desconto %:</h4>
+            <Input
+            width="50px"
             variant="invisible"
-            placeholder="0,00"
-            mask="currency"
-          />
-        </FooterTable>
+              {...register("percDesconto")}
+              type="number"
+              placeholder="0"
+              // error={errors.percDesconto?.message}
+            />
+            <p className="addDesc" onClick={() => calcDiscount()}>Aplicar desconto</p>
+          </InfosContainer>
+          <InfosContainer>
+            <h4>Total:</h4>
+            <Input
+              {...register("total")}
+              variant="invisible"
+              placeholder="0,00"
+              mask="currency"
+            />
+          </InfosContainer>
+        </ValuesContainer>
       )}
     </Container>
   );

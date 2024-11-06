@@ -23,6 +23,12 @@ class AuthServices {
     this.setLoginStorage(data);
     return data
   }
+
+  async register(credentials: IRegisterInput) {
+    const { data } = await api.post('/usuarios', credentials);
+    this.setLoginStorage(data);
+    return data
+  }
 }
 
 export default new AuthServices();

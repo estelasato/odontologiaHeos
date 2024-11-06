@@ -100,7 +100,7 @@ export const About = () => {
           />
           <Input
             {...register("celular")}
-            label="Celular"
+            label="Celular*"
             error={errors.celular?.message}
             mask="cell"
           />

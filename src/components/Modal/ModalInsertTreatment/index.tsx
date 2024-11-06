@@ -1,29 +1,28 @@
-import { TreatmentsProps } from "@/services/treatmentsServices";
 import { RefObject, useState } from "react";
 import { toast } from "react-toastify";
 import Modal from "..";
 import { Container } from "../ModalInsertResponsible/styles";
 import { Button } from "@/components/Button";
-import { Treatments } from "@/pages/Patient/Treatments";
+import { Procedures } from "@/pages/Procedures";
 
 interface ModalInsertTreatmentProps {
   modalRef: RefObject<any>;
-  selectData: (data: TreatmentsProps) => void;
+  selectData: (data: IProcedure) => void;
 }
 export const ModalInsertTreatment = ({ modalRef, selectData }: ModalInsertTreatmentProps) => {
-  const [data, setData] = useState<TreatmentsProps | undefined>();
+  const [data, setData] = useState<IProcedure | undefined>();
 
   const handleSelect = () => {
     if (data) {
       selectData(data)
-    } else toast.error('Selecione um tratamento')
+    } else toast.error('Selecione um procedimento')
   }
 
   return (
     <Modal ref={modalRef} width="90%">
       <Container>
-        <Treatments onClickRow={(e) => setData(e)}/>
-        <Button className="select-btn" onClick={() => handleSelect()}>Inserir tratamento</Button>
+        <Procedures onClick={(e) => setData(e)}/>
+        <Button className="select-btn" onClick={() => handleSelect()}>Inserir procedimento</Button>
       </Container>
     </Modal>
   )

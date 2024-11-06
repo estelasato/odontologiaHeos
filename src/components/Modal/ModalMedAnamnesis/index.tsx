@@ -38,6 +38,7 @@ export const ModalMedAnamnesis = ({
     <Modal ref={modalRef} getValues={setValues}>
       <ModalInsertMed modalRef={addMedRef} selectData={setSelectData} />
       <Box>
+        <h2>Medicamento</h2>
         <Grid
           $template="1fr 75px"
           $templateMd="1fr 75px"
@@ -45,7 +46,7 @@ export const ModalMedAnamnesis = ({
         >
           <Select
             {...register(`medicamentos.${index}.idMedicamento`)}
-            label="Medicamento"
+            label="Nome*"
             options={medOptions}
             error={fieldErrors?.idMedicamento?.message}
           />

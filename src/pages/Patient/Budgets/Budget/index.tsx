@@ -5,15 +5,20 @@ import { useBudget } from "./useBudget";
 import { Input } from "@/components/Form/Input";
 import { FaChevronLeft } from "react-icons/fa6";
 import { Select } from "@/components/Form/Select";
-import { BudgetStatusOpts, createBudgetStatusOpts } from "@/utils/shared/Options";
+import {
+  BudgetStatusOpts,
+  createBudgetStatusOpts,
+} from "@/utils/shared/Options";
 import { Grid } from "@/config/grid";
 import { Button } from "@/components/Button";
 import { FooterModal } from "@/components/Modal/Footer";
-import { IncludeBudgetTreatm } from "@/components/IncludeBudgetTreatment";
+// import { IncludeBudgetProcedure } from "@/components/IncludeBudgetProcedureent";
 import { ModalInsertPaymentTerms } from "@/components/Modal/ModalInsertPaymTerms";
 import { modalRefProps } from "@/components/Modal";
 import { useRef } from "react";
 import { IncludeAccReceivable } from "@/components/IncludeAccReceivable";
+import { ModalService } from "@/components/ModalService";
+import { IncludeBudgetProcedure } from "@/components/IncludeBudgetTreatment";
 
 // Defina as variantes de animação
 const pageVariants = {
@@ -52,7 +57,8 @@ const Budget = ({ setOpen, data }: IBudget) => {
     budgetData,
     isPending,
     handlePaymentTerm,
-    setTratamentosList,
+    setProcedureList,
+    modalServiceRef,
   } = useBudget(setOpen, data);
   const {
     register,
@@ -62,6 +68,10 @@ const Budget = ({ setOpen, data }: IBudget) => {
 
   const modalInsertRef = useRef<modalRefProps>(null);
 
+  function submitService() {
+    modalServiceRef.current?.close()
+    setOpen(false)
+  }
   return (
     <motion.div
       initial="initial"
@@ -75,6 +85,7 @@ const Budget = ({ setOpen, data }: IBudget) => {
         modalRef={modalInsertRef}
         selectData={handlePaymentTerm}
       />
+      <ModalService modalRef={modalServiceRef} submitData={submitService}/>
       <FormProvider {...formBudgets}>
         <Container>
           <Content>
@@ -103,26 +114,20 @@ const Budget = ({ setOpen, data }: IBudget) => {
             />
           </Box>
 
-          <Grid $alignItems="flex-start" $template="1fr 1fr">
-            <Select
-              {...register("idAnamnese")}
-              label="Anamnese*"
-              error={errors.idAnamnese?.message}
-              options={anamnesisOpt || []}
-            />
-
+          <Grid $alignItems="flex-start" $template="1fr 1fr 1fr">
             <Select
               {...register("idProfissional")}
               label="Profissional*"
               error={errors.idProfissional?.message}
               options={professionalOpt || []}
             />
-
           </Grid>
 
-          <IncludeBudgetTreatm listData={budgetData?.tratamentos || []} setTreatments={(data) => setTratamentosList(data)} />
+          <IncludeBudgetProcedure
+            setProcedures={(data) => setProcedureList(data)}
+          />
 
-          <BoxPayment>
+          {/* <BoxPayment>
             <Select
               disabled={budgetData && budgetData?.status != 'PENDENTE'}
               width="300px"
@@ -131,7 +136,7 @@ const Budget = ({ setOpen, data }: IBudget) => {
               error={errors.idCondPagamento?.message}
               options={paymentTermOpt || []}
             />
-            {!budgetData || budgetData?.status == 'PENDENTE' && (
+
             <Button
               variant="link"
               spaceLabel
@@ -139,11 +144,9 @@ const Budget = ({ setOpen, data }: IBudget) => {
             >
               +
             </Button>
-
-            )}
           </BoxPayment>
 
-          <IncludeAccReceivable defaultValues={budgetData}/>
+          <IncludeAccReceivable defaultValues={budgetData}/> */}
 
           <FooterModal
             // modalRef={modalRef}
