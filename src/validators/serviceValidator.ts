@@ -3,7 +3,7 @@ import * as zod from "zod";
 
 export const ServiceSchema = zod.object({
   id: zod.any().optional(),
-  idCondPagamento: zod.number(),
+  idCondPagamento: zod.number({ message: 'Campo obrigatório'}),
   idOrcamento: zod.number(),
   status: zod.string().optional(),
   obs: zod.string().optional(),

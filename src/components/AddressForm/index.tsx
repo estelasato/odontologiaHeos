@@ -46,17 +46,17 @@ export const AddressForm = () => {
       />
       <p className="title">Endereço</p>
       <Grid $template="1fr 3fr 1fr 2fr" $templateMd="1fr 2fr 1fr 1fr">
-        <Input {...register("cep")} label="Cep" mask="zipcode" />
-        <Input {...register("logradouro")} label="Logradouro" />
-        <Input {...register("numero")} label="Número" mask="number" />
-        <Input {...register("bairro")} label="Bairro" />
+        <Input {...register("cep")} label="Cep*" mask="zipcode" error={errors.cep?.message} />
+        <Input {...register("logradouro")} label="Logradouro*" maxSize={50} error={errors.cep?.message} />
+        <Input {...register("numero")} label="Número*" mask="number" error={errors.cep?.message} />
+        <Input {...register("bairro")} label="Bairro*" error={errors.cep?.message} />
       </Grid>
       <GridCont $template="1fr 1fr 70px 1fr 50px">
         <Input {...register("complemento")} label="Complemento" />
 
         <Select
           {...register("idCidade")}
-          label="Cidade"
+          label="Cidade*"
           options={cityOpt || []}
           error={errors.idEstado?.message}
         />

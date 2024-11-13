@@ -19,6 +19,7 @@ import { useRef } from "react";
 import { IncludeAccReceivable } from "@/components/IncludeAccReceivable";
 import { ModalService } from "@/components/ModalService";
 import { IncludeBudgetProcedure } from "@/components/IncludeBudgetTreatment";
+import masks from "@/utils/masks";
 
 // Defina as variantes de animação
 const pageVariants = {
@@ -69,8 +70,8 @@ const Budget = ({ setOpen, data }: IBudget) => {
   const modalInsertRef = useRef<modalRefProps>(null);
 
   function submitService() {
-    modalServiceRef.current?.close()
-    setOpen(false)
+    modalServiceRef.current?.close();
+    setOpen(false);
   }
   return (
     <motion.div
@@ -85,7 +86,7 @@ const Budget = ({ setOpen, data }: IBudget) => {
         modalRef={modalInsertRef}
         selectData={handlePaymentTerm}
       />
-      <ModalService modalRef={modalServiceRef} submitData={submitService}/>
+      <ModalService modalRef={modalServiceRef} submitData={submitService} />
       <FormProvider {...formBudgets}>
         <Container>
           <Content>
@@ -120,6 +121,7 @@ const Budget = ({ setOpen, data }: IBudget) => {
               label="Profissional*"
               error={errors.idProfissional?.message}
               options={professionalOpt || []}
+              disabled={budgetData?.status == "APROVADO"}
             />
           </Grid>
 
@@ -127,34 +129,27 @@ const Budget = ({ setOpen, data }: IBudget) => {
             setProcedures={(data) => setProcedureList(data)}
           />
 
-          {/* <BoxPayment>
-            <Select
-              disabled={budgetData && budgetData?.status != 'PENDENTE'}
-              width="300px"
-              {...register("idCondPagamento")}
-              label="Condição de Pagamento*"
-              error={errors.idCondPagamento?.message}
-              options={paymentTermOpt || []}
+          {budgetData?.status == "APROVADO" ? (
+            <Content>
+              <div>
+                <p>Data de cadastro</p>
+                <p>{masks.convertDateISO(budgetData?.dtCadastro || new Date())}</p>
+              </div>
+              <div>
+                <p>Data da última alteração</p>
+                <p>{masks.convertDateISO(budgetData?.dtUltAlt || new Date())}</p>
+              </div>
+            </Content>
+          ) : (
+            <FooterModal
+              // modalRef={modalRef}
+              handleCancel={() => setOpen(false)}
+              dtCadastro={budgetData?.dtCadastro}
+              dtUltAlt={budgetData?.dtUltAlt}
+              isLoading={isPending}
+              handleSubmit={handleSubmit(onSubmit)}
             />
-
-            <Button
-              variant="link"
-              spaceLabel
-              onClick={() => modalInsertRef.current?.open()}
-            >
-              +
-            </Button>
-          </BoxPayment>
-
-          <IncludeAccReceivable defaultValues={budgetData}/> */}
-
-          <FooterModal
-            // modalRef={modalRef}
-            dtCadastro={budgetData?.dtCadastro}
-            dtUltAlt={budgetData?.dtUltAlt}
-            isLoading={isPending}
-            handleSubmit={handleSubmit(onSubmit)}
-          />
+          )}
         </Container>
       </FormProvider>
     </motion.div>

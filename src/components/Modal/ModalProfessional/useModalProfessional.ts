@@ -1,7 +1,7 @@
 import { RefObject } from "react";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { modalRefProps } from "..";
@@ -36,10 +36,21 @@ export const useModalProfessional = (
   })
 
   const { refetch } = useProfessional();
-console.log(professionalForm.formState.errors)
+  const queryClient = useQueryClient();
+
+  const professionals: any[] | undefined = queryClient.getQueryData(["professionalList"]);
+
+  function invalidCpf(cpf: string) {
+    const result = professionals?.find((p) => p.cpf == cpf);
+    return result ?? false;
+  }
+
   const onSubmit = async (data?: any) => {
+    if (invalidCpf(data.cpf)) {
+      professionalForm.setError("cpfCnpj", { message: "Documento já cadastrado" });
+      return;
+    }
     try {
-      console.log(data)
       if (isCreate) {
         await createProfessional(data);
       } else {

@@ -84,6 +84,9 @@ export const useIncludeAccReceivable = (defaultValues?: any) => {
       })
       setDataTable(contasRec)
       setValue('contasReceber', contasRec)
+    } else {
+      setDataTable([])
+      setValue('contasReceber', [])
     }
   }, [watchPaymentTerm, watchValor, paymentTermData])
 

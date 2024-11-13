@@ -2,12 +2,12 @@ import masks from "@/utils/masks";
 import * as zod from "zod";
 
 export const AddressValidator = zod.object({
-  cep: zod.string().optional().nullable().transform((value) => value && masks.unmask(value)),
-  logradouro: zod.string().optional().nullable(),
-  numero: zod.coerce.number().optional(),
-  bairro: zod.string().optional().nullable(),
+  cep: zod.string().min(1, 'Campo obrigatório').transform((value) => value && masks.unmask(value)),
+  logradouro: zod.string().min(1, 'Campo obrigatório'),
+  numero: zod.coerce.number().min(1, 'Campo obrigatório'),
+  bairro: zod.string().min(1, 'Campo obrigatório'),
   complemento: zod.string().optional().nullable(),
-  idCidade: zod.string().optional().nullable(),
+  idCidade: zod.string().min(1, 'Campo obrigatório'),
   // nome puxado automático
   uf: zod.string().optional().nullable(),
   pais: zod.string().optional().nullable(),

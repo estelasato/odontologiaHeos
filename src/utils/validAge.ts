@@ -14,7 +14,7 @@ export function maxBirthDate() {
 }
 export function maxBirthDateAge() {
   const date = new Date();
-  date.setFullYear(date.getFullYear() - 16);
+  date.setFullYear(date.getFullYear() - 18);
   return date;
 }
 export function minBirthDate() {

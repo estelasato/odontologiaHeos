@@ -58,6 +58,17 @@ export const DatePicker = forwardRef<HTMLInputElement, DateProps>(
       // Permitir apenas horários entre 08:00 e 18:00
       return hours >= 8 && hours < 19;
     };
+
+    const min = new Date();
+    min.setHours(8, 0, 0); // 9:00 AM
+
+    const max = new Date();
+    max.setHours(18, 30, 0); // 9:00 AM
+
+
+    const maxD = new Date();
+    maxD.setMonth(maxD.getMonth() + 6); // Adiciona 6 meses à data atual
+
     return (
       <Container className={className}>
         <Label>{label}</Label>
@@ -76,12 +87,14 @@ export const DatePicker = forwardRef<HTMLInputElement, DateProps>(
                     handleChange && handleChange(date);
                     onChange(date);
                   }}
+
                   minDate={minDate}
                   {...fieldProps}
                   disabled={disabled}
-                  // minTime={minTime}
-                  // maxTime={maxTime}
-                  maxDate={maxDate}
+                  minTime={min}
+                  maxTime={max}
+
+                  maxDate={maxDate || maxD}
                   ref={ref as any}
                   selected={value ? new Date(value) : undefined}
                   dateFormat={hasTime ? "dd/MM/yyyy HH:mm" : "dd/MM/yyyy"}

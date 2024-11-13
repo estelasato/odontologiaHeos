@@ -113,7 +113,7 @@ export const ModalPaymentTerm = ({ modalRef }: ModalPaymentTermProps) => {
               $templateMd="1fr 1fr 1fr 1fr"
               $templateSm="1fr 1fr 1fr 1fr"
             >
-              <Input
+              {/* <Input
                 {...register("desconto")}
                 label="Desconto %"
                 type="number"
@@ -130,11 +130,12 @@ export const ModalPaymentTerm = ({ modalRef }: ModalPaymentTermProps) => {
                 label="Multa %"
                 type="number"
                 error={errors.multa?.message}
-              />
+              /> */}
               <Switch
                 value={values?.status}
                 {...register("status")}
                 label="Ativo"
+                disabled={ values ? false : true }
               />
             </Grid>
           </Grid>

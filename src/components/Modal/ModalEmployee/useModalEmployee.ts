@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { RefObject } from "react";
 import { useForm } from "react-hook-form";
 import { modalRefProps } from "..";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import employeeServices, { EmployeeProps } from "@/services/employeeServices";
 import { toast } from "react-toastify";
 import { useEmployee } from "@/pages/Employees/useEmployee";
@@ -31,11 +31,22 @@ export const useModalEmployee = (
     }
   })
 
+  const queryClient = useQueryClient();
+  const employees: any[] | undefined = queryClient.getQueryData(["employeeList"]);
+
+  function invalidCpf(cpf: string) {
+    const result = employees?.find((p) => p.cpf == cpf);
+    return result ?? false;
+  }
+
   const { refetch } = useEmployee();
 
   const onSubmit = async (data?: any) => {
+    if (invalidCpf(data.cpf)) {
+      employeeForm.setError("cpf", { message: "CPF já cadastrado" });
+      return;
+    }
     try {
-      console.log(data)
       if (isCreate) {
         await createEmployee(data);
       } else {

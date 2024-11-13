@@ -9,8 +9,7 @@ export const EmployeeSchema = AddressValidator.extend({
   nome: zod.string().min(1,'Campo obrigatório'),
   cpf: zod
   .string()
-  .optional()
-  .nullable()
+  .min(11, { message: 'Campo obrigatório' })
   .transform((value) => value && masks.unmask(value))
   .refine((value) => {
     if (value && !validarCPF(value)) {
@@ -31,19 +30,25 @@ export const EmployeeSchema = AddressValidator.extend({
   estCivil: zod.string().optional().nullable(),
 
   cargo: zod.string().min(1, 'Campo obrigatório'),
-  salario: zod
-  .coerce
+  salario: zod.coerce
   .string({ required_error: 'Campo obrigatório' })
   .min(1, 'Campo obrigaório')
   .transform((value) => value && masks.unmask(value))
   .transform((value) => value && masks.number(value))
-  .refine((value) => !value || parseFloat(value) > 1, { message: 'Campo inválido' }),
+  .refine((value) => {
+    if (!value) {
+      return false;
+    }
+    return true;
+  }, {
+    message: 'Campo inválido'
+  }),
   pis: zod
   .string()
   .min(11, 'Insira um PIS válido')
   .transform((value) => value && masks.unmask(value)).nullable(),
-  dtAdmissao: zod.coerce.date().optional(),
-  dtDemissao: zod.coerce.date().optional(),
+  dtAdmissao: zod.coerce.date({ message: 'Campo obrigatório', invalid_type_error: 'Data inválida', required_error: 'Campo obrigatório' }),
+  dtDemissao: zod.coerce.date().optional().nullable(),
 
   ativo: zod.boolean().optional().transform((value) => !!value ? 1 : 0),
   idCidade: zod.number().optional().nullable(),
@@ -73,7 +78,7 @@ export type EmployeeFormSchema = zod.infer<typeof EmployeeSchema>
 export const defaultValuesEmployee = {
   id: undefined,
   nome: '',
-  cpf: null,
+  cpf: undefined,
   rg: null,
   dtNascimento: undefined,
   email: '',

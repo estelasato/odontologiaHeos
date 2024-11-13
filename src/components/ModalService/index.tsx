@@ -32,25 +32,27 @@ export const ModalService = ({ modalRef, submitData }: IModalService) => {
     watch,
   } = form;
 
+  const totalOrc = values?.total || values?.valor;
+
   useEffect(() => {
     if (values) {
       reset(values);
-      setValue("valor", values.total || values.valor);
+      setValue("valor", totalOrc);
       setValue("percDesconto", undefined);
     }
     serviceData && reset(serviceData)
   }, [values, serviceData]);
 
   const watchPerc = watch("percDesconto");
-  const valor = getValues("valor");
+  const valor = totalOrc
 
   function calcDiscount() {
-    if (!valor) return toast.error("Total inválido");
+    if (!totalOrc) return toast.error("Total inválido");
     if (watchPerc && (watchPerc < 0 || watchPerc > 99))
       return toast.error("Desconto inválido");
     if (!watchPerc)  setValue("valor", values.total);
     const perc = Number(watchPerc);
-    const total = Number(valor);
+    const total = Number(totalOrc);
     const discount = total * (perc / 100);
     const newTotal = total - discount;
     setValue("valor", newTotal as any || values.total);
@@ -68,6 +70,12 @@ export const ModalService = ({ modalRef, submitData }: IModalService) => {
     { value: 'CONCLUIDO', label: 'Concluído' },
   ]
 
+  const totalWatch = watch("valor")
+  useEffect(() => {
+    form.setValue('idCondPagamento', undefined)
+    // apagar contas Receber ao mudar valor
+  }, [totalWatch]);
+
 const {paymentTermOpt} = useBudget()
   const modalInsertRef = useRef<modalRefProps>(null);
   return (
@@ -79,7 +87,7 @@ const {paymentTermOpt} = useBudget()
         selectData={handlePaymentTerm}
       />
           <Content>
-            <Input {...register("id")} label="Código" width="120px" />
+            <Input {...register("id")} label="Código" width="120px" disabled/>
             <Select
               className="select_status"
               {...register("status")}
@@ -111,7 +119,7 @@ const {paymentTermOpt} = useBudget()
 
             <Input
               mask="currency"
-              // {...register("valor")}
+              disabled
               label="Total"
               width="120px"
               name="valor"

@@ -11,6 +11,7 @@ import { Container, GridComp } from "./styles";
 import { Switch } from "@/components/Switch";
 import { FooterModal } from "../Footer";
 import { useModalResponsible } from "./useModalResponsible";
+import { maxBirthDateAge, minBirthDate } from "@/utils/validAge";
 
 interface ModalResponsibleProps {
   modalRef: RefObject<any>;
@@ -28,7 +29,6 @@ export const ModalResponsible = ({ modalRef }: ModalResponsibleProps) => {
     register,
   } = responsibleForm;
 
-  console.log(errors, 'error respo');
   useEffect(() => {
     if (values) {
       reset(values);
@@ -79,6 +79,8 @@ export const ModalResponsible = ({ modalRef }: ModalResponsibleProps) => {
               label="Data de Nascimento*"
               error={errors.dtNascimento?.message}
               defaultValue={values?.dtNascimento}
+              maxDate={maxBirthDateAge()}
+              minDate={minBirthDate()}
             />
             <Input
               {...register("celular")}
@@ -119,6 +121,7 @@ export const ModalResponsible = ({ modalRef }: ModalResponsibleProps) => {
               value={values?.ativo != false ? true : false}
               {...register("ativo")}
               label="Ativo"
+              disabled={ values ? false : true }
             />
           </GridComp>
 

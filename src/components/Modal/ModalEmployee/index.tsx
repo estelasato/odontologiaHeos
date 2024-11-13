@@ -2,7 +2,7 @@ import { FormProvider } from "react-hook-form";
 import Modal from "..";
 import { Container, GridComp } from "./styles";
 import { AddressForm, defaultAddressValues } from "@/components/AddressForm";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/Form/Input";
 import { Grid } from "@/config/grid";
 // import masks from "@/utils/masks";
@@ -23,13 +23,14 @@ export const ModalEmployee = ({ modalRef }: ModalEmployeeProps) => {
   const [values, setValues] = useState<any>(null);
 
   const { employeeForm, onSubmit } = useModalEmployee(!values, modalRef);
-
   const {
     handleSubmit,
     formState: { errors },
     reset,
+    watch,
     register,
   } = employeeForm;
+  console.log(errors)
 
   const handleValues = (values: any) => {
     setValues(values);
@@ -40,6 +41,20 @@ export const ModalEmployee = ({ modalRef }: ModalEmployeeProps) => {
       reset(defaultAddressValues);
     }
   }
+
+  function maxDate() {
+    const date = new Date();
+    date.setMonth(date.getMonth() + 1);
+    return date;
+  }
+
+  const watchAdmissao = watch("dtAdmissao");
+
+  const [minDateDemissao, setMinDateDemissao] = useState<any>(null);
+
+  useEffect(() => {
+    setMinDateDemissao(watchAdmissao)
+  }, [watchAdmissao])
 
   return (
     <Modal
@@ -106,11 +121,11 @@ export const ModalEmployee = ({ modalRef }: ModalEmployeeProps) => {
               {...register("rg")}
               label="RG"
               error={errors.rg?.message}
-              mask="rg"
+              // mask="rg"
             />
             <Input
               {...register("cpf")}
-              label="CPF"
+              label="CPF*"
               error={errors.cpf?.message}
               mask="cpf"
             />
@@ -128,6 +143,7 @@ export const ModalEmployee = ({ modalRef }: ModalEmployeeProps) => {
               mask="currency"
               name="salario"
               control={employeeForm.control}
+              maxSize={12}
             />
             <Input
               {...register("pis")}
@@ -139,21 +155,26 @@ export const ModalEmployee = ({ modalRef }: ModalEmployeeProps) => {
 
             {/* <Grid $template="1fr 1fr 1fr" $templateMd="1fr 1fr"> */}
             <DatePicker
-              label="Data de Admissão"
+              label="Data de Admissão *"
               error={errors.dtAdmissao?.message}
               defaultValue={values?.dtAdmissao}
               {...register("dtAdmissao")}
+              minDate={minBirthDate()}
+              maxDate={maxDate()}
             />
             <DatePicker
               label="Data de Demissão"
               error={errors.dtDemissao?.message}
               defaultValue={values?.dtDemissao}
               {...register("dtDemissao")}
+              minDate={minDateDemissao}
+              disabled={!watchAdmissao}
             />
             <Switch
               value={values?.ativo}
               {...register("ativo")}
               label="Ativo"
+              disabled={ values ? false : true }
             />
           </GridComp>
 

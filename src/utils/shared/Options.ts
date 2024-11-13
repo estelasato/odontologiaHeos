@@ -35,5 +35,5 @@ export const BudgetStatusOpts = [
 export const createBudgetStatusOpts = [
   { value: "APROVADO", label: "Aprovado" },
   { value: "PENDENTE", label: "Pendente" },
-  { value: "CANCELADO", label: "Cancelado" },
+  // { value: "CANCELADO", label: "Cancelado" },
 ]

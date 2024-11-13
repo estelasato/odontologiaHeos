@@ -28,6 +28,7 @@ export const ModalPaymentMethod = ({ modalRef }: IModalPaymentMethod) => {
               value={values?.status}
               {...register("status")}
               label="Ativo"
+              disabled={ values ? false : true }
             />
           </Content>
           <Input {...register("descricao")} label="Forma de Pagamento" />

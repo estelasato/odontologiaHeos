@@ -16,7 +16,7 @@ import { FooterModal } from "../Footer";
 import { Container, GridComp } from "./styles";
 import { IncludeHabits } from "@/components/IncludeHabits";
 import { defaultValuesPatient } from "@/validators/patientValidator";
-import { minBirthDate } from "@/utils/validAge";
+import { maxBirthDateAge, minBirthDate } from "@/utils/validAge";
 
 interface ModalPatientProps {
   modalRef: RefObject<any>;
@@ -41,6 +41,8 @@ export const ModalPatient = ({ modalRef }: ModalPatientProps) => {
       reset(defaultAddressValues);
     }
   }, [values]);
+
+  console.log(values)
 
   return (
     <Modal
@@ -83,6 +85,7 @@ export const ModalPatient = ({ modalRef }: ModalPatientProps) => {
               {...register("dtNascimento")}
               // name="dtNascimento"
               minDate={minBirthDate()}
+              maxDate={maxBirthDateAge()}
               label="Data de Nascimento"
               error={errors.dtNascimento?.message}
               defaultValue={values?.dtNascimento}
@@ -130,6 +133,7 @@ export const ModalPatient = ({ modalRef }: ModalPatientProps) => {
               value={values?.ativo}
               {...register("ativo")}
               label="Ativo"
+              disabled={ values ? false : true }
             />
           </GridComp>
 

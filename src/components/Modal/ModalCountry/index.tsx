@@ -83,6 +83,7 @@ export const ModalCountry = ({ modalRef }: ModalProps) => {
               value={values?.ativo}
               {...register("ativo")}
               label="Ativo"
+              disabled={ values ? false : true }
             />
           </Box>
 

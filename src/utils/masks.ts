@@ -191,7 +191,7 @@ const masks: MaskFunctions = {
     return v
   },
   ddd: (value) => {
-    const v = value.replace(/\D/g, "").slice(0, 5)
+    const v = value.replace(/\D/g, "").slice(0, 3)
     return v
   },
   // limitSize: (value, size) => value.slice(0, size),

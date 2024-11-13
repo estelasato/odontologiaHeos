@@ -50,8 +50,11 @@ export const IncludeBudgetProcedure = ({
     calcDiscount,
     list,
   } = useIncludeBudget(setProcedures);
-  const { register } = useFormContext();
-  const cols = useMemo(
+  const { register, getValues } = useFormContext();
+
+  const hasApproved = getValues("status") == "APROVADO";
+
+  let cols: any = useMemo(
     () => [
       {
         header: "Código",
@@ -92,6 +95,23 @@ export const IncludeBudgetProcedure = ({
         },
         meta: { alignHeader: "right", width: "150px", alignText: "right" },
       },
+      // {
+      //   header: "",
+      //   accessorKey: "delete",
+      //   meta: { alignText: "right" },
+      //   cell: (row: any) => (
+      //     <TableIconColumn
+      //       handleEdit={() => handleEdit(row.row.index)}
+      //       handleRemove={() => handleRemove(row.row.original.idProcedimento)}
+      //     />
+      //   ),
+      // },
+    ],
+    [list]
+  );
+
+  if (!hasApproved) {
+    cols.push(
       {
         header: "",
         accessorKey: "delete",
@@ -103,10 +123,8 @@ export const IncludeBudgetProcedure = ({
           />
         ),
       },
-    ],
-    [list]
-  );
-
+    )
+  }
   return (
     <Container>
       <ModalInsertTreatment
@@ -120,57 +138,63 @@ export const IncludeBudgetProcedure = ({
         </div>
       </Content>
 
-      <Grid
-        $alignItems="flex-end"
-        $template="2fr 1fr"
-        $templateMd="2 1fr"
-        $templateSm="1fr"
-      >
+      {!hasApproved && (
         <Grid
-          $template="80px 1fr"
-          $templateMd="80px 1fr"
-          $templateSm="80px 1fr"
+          $alignItems="flex-end"
+          $template="2fr 1fr"
+          $templateMd="2 1fr"
+          $templateSm="1fr"
         >
-          <Input {...register("idProcedimento")} disabled label="Código" />
-          <Box>
-            <Input {...register("procedimento")} label="Procedimento" disabled />
-            <Button onClick={() => treatmentRef.current?.open()}>+</Button>
-          </Box>
+          <Grid
+            $template="80px 1fr"
+            $templateMd="80px 1fr"
+            $templateSm="80px 1fr"
+          >
+            <Input {...register("idProcedimento")} disabled label="Código" />
+            <Box>
+              <Input
+                {...register("procedimento")}
+                label="Procedimento"
+                disabled
+              />
+              <Button onClick={() => treatmentRef.current?.open()}>+</Button>
+            </Box>
+          </Grid>
+          <Input {...register("obs")} label="Obs" />
+
+          <Grid
+            $minWidth="100px"
+            $template="1fr 1fr 1fr"
+            $templateMd="1fr 1fr 1fr"
+            $templateSm="1fr 1fr 1fr"
+          >
+            <Input
+              handleChange={() => handleUpdateSubtotal()}
+              {...register("valor")}
+              label="Valor"
+              mask="currency"
+              placeholder="0,00"
+            />
+            <Input
+              type="number"
+              {...register("qtd")}
+              label="Qtd"
+              handleChange={() => handleUpdateSubtotal()}
+            />
+            <Input
+              {...register("subtotal")}
+              label="total"
+              mask="currency"
+              placeholder="0,00"
+              disabled
+            />
+          </Grid>
+
+          <ButtonContainer onClick={() => handleSave()}>
+            <Button variant="link">Salvar tratamento</Button>
+          </ButtonContainer>
         </Grid>
-        <Input {...register("obs")} label="Obs" />
-
-        <Grid
-          $minWidth="100px"
-          $template="1fr 1fr 1fr"
-          $templateMd="1fr 1fr 1fr"
-          $templateSm="1fr 1fr 1fr"
-        >
-          <Input
-            handleChange={() => handleUpdateSubtotal()}
-            {...register("valor")}
-            label="Valor"
-            mask="currency"
-            placeholder="0,00"
-          />
-          <Input
-            type="number"
-            {...register("qtd")}
-            label="Qtd"
-            handleChange={() => handleUpdateSubtotal()}
-          />
-          <Input
-            {...register("subtotal")}
-            label="total"
-            mask="currency"
-            placeholder="0,00"
-          />
-        </Grid>
-
-        <ButtonContainer onClick={() => handleSave()}>
-          <Button variant="link">Salvar tratamento</Button>
-        </ButtonContainer>
-      </Grid>
-
+      )}
       <div style={{ width: "100%" }}>
         <TableCont>{open && <Table cols={cols} data={list || []} />}</TableCont>
         <hr />
@@ -181,14 +205,19 @@ export const IncludeBudgetProcedure = ({
           <InfosContainer>
             <h4>Desconto %:</h4>
             <Input
-            width="50px"
-            variant="invisible"
+              width="50px"
+              variant="invisible"
               {...register("percDesconto")}
               type="number"
               placeholder="0"
+              disabled={hasApproved}
               // error={errors.percDesconto?.message}
             />
-            <p className="addDesc" onClick={() => calcDiscount()}>Aplicar desconto</p>
+            {!hasApproved && (
+              <p className="addDesc" onClick={() => calcDiscount()}>
+                Aplicar desconto
+              </p>
+            )}
           </InfosContainer>
           <InfosContainer>
             <h4>Total:</h4>
@@ -197,6 +226,7 @@ export const IncludeBudgetProcedure = ({
               variant="invisible"
               placeholder="0,00"
               mask="currency"
+              disabled
             />
           </InfosContainer>
         </ValuesContainer>

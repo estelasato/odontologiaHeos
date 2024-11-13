@@ -71,11 +71,13 @@ export const ModalProcedures = ({ modalRef }: IModalProcedures) => {
               label="Valor"
               mask="currency"
               width="150px"
+              maxSize={13}
             />
             <Switch
               value={values?.ativo}
               {...register("ativo")}
               label="Ativo"
+              disabled={ values ? false : true }
             />
           </Grid>
           <FooterModal

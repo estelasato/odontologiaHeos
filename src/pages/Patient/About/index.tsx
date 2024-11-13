@@ -14,6 +14,7 @@ import { Container, GridComp } from "./styles";
 import { useAbout } from "./useAbout";
 import { FooterModal } from "@/components/Modal/Footer";
 import { useParams } from "react-router-dom";
+import { maxBirthDateAge, minBirthDate } from "@/utils/validAge";
 
 export const About = () => {
   const { id } = useParams();
@@ -42,15 +43,6 @@ export const About = () => {
     date.setMonth(date.getMonth() - 6);
     return date;
   }, []);
-
-  // if (!id && !patientData) {
-  //   return (
-  //   <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-  //     <Spinner size={15} />
-  //   </div>
-
-  //   )
-  // }
 
   return (
     <FormProvider {...patientForm}>
@@ -81,6 +73,7 @@ export const About = () => {
               value={patientData?.ativo}
               {...register("ativo")}
               label="Ativo"
+              disabled={ patientData ? false : true }
             />
           </Grid>
         </Grid>
@@ -97,10 +90,11 @@ export const About = () => {
             label="Data de Nascimento*"
             error={errors.dtNascimento?.message}
             defaultValue={patientData?.dtNascimento}
+            minDate={minBirthDate()}
           />
           <Input
             {...register("celular")}
-            label="Celular*"
+            label="Celular"
             error={errors.celular?.message}
             mask="cell"
           />

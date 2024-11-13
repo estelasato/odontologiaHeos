@@ -85,12 +85,7 @@ export const useBudget = (setOpen?: any, values?: IBudget) => {
       setIsLoading(true);
       // console.log(data)
       const filterProc = procedureList?.filter((t) => t.qtd && t.qtd > 0);
-      if (
-        !procedureList ||
-        procedureList?.length == 0 ||
-        !filterProc ||
-        filterProc.length == 0
-      )
+      if (!procedureList || procedureList?.length == 0 ||!filterProc || filterProc.length == 0)
         return toast.error("Insira ao menos um tratamento");
       const newObj = {
         id: data?.id,
@@ -108,8 +103,9 @@ export const useBudget = (setOpen?: any, values?: IBudget) => {
       };
 
       let result: IBudget | undefined;
-      if (values && values.id) {
-      // if (values && values.id && values.status != 'APROVADO') {
+      if (data.total == 0 || !data.total) return toast.error('Total inválido')
+
+      if (values && values.id && values.status != 'APROVADO') {
         await updateBudget({ id: values.id, data: newObj });
       }
 
@@ -126,7 +122,7 @@ export const useBudget = (setOpen?: any, values?: IBudget) => {
       setIsLoading(false);
       toast.success("Orçamento salvo com sucesso");
 
-      // // abre modal de serviço passando o orçamento aprovado
+      // abre modal de serviço passando o orçamento aprovado
       if (data.status == "APROVADO")
       (values?.id || result?.id) && modalServiceRef.current?.open({ idOrcamento: values?.id || result?.id, total: data.total, idProfissional: data.idProfissional });
     } catch (error) {
@@ -143,6 +139,7 @@ export const useBudget = (setOpen?: any, values?: IBudget) => {
   //   if (selectData) setValue("idCondPagamento", selectData?.id);
   // }, [selectData]);
 
+
   const handlePaymentTerm = (data: IPaymentTerm) => {
     if (!data.status) {
       return toast.error("Selecione uma condição ativa");
@@ -155,7 +152,15 @@ export const useBudget = (setOpen?: any, values?: IBudget) => {
 
   useEffect(() => {
     reset(budgetData);
-    // console.log(budgetData, "data");
+    if (budgetData?.percDesconto) {
+      const perc = Number(budgetData.percDesconto);
+      const total = Number(budgetData?.total);
+      const discount = total * (perc / 100);
+      const newTotal = total - discount;
+
+      formBudgets.setValue('total', newTotal)
+    }
+
   }, [budgetData]);
 
   return {

@@ -9,10 +9,11 @@ interface SwitchTypes extends ComponentProps<any> {
   control?: any;
   handleChange?: (e: any) => void;
   label?: string;
+  disabled?: boolean;
 }
 
 export const Switch = forwardRef<HTMLInputElement, SwitchTypes>(
-  ({ label, handleChange, value = true, name, control, ...props }, ref) => {
+  ({ disabled = false, label, handleChange, value = true, name, control, ...props }, ref) => {
     const method = useFormContext();
 
     useEffect(() => {
@@ -32,6 +33,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchTypes>(
             <Container>
               <p className="label-input">{label}</p>
               <SwitchComp
+                disabled={disabled}
                 {...field}
                 onChange={(e) => {
                   field.onChange(e);

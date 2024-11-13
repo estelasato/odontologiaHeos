@@ -27,6 +27,7 @@ export const useModalPatient = (modalRef: RefObject<modalRefProps>) => {
     },
   });
 
+  console.log(patientForm.formState.errors)
   const { mutateAsync: updatePatient, isPending: pendingEdit } = useMutation({
     mutationKey: ["updatePatient"],
     mutationFn: async (params: any) => {

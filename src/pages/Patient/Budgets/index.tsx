@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from "react";
-import { Container } from "./styles";
+import { BtnContent, Container } from "./styles";
 import { SearchContainer } from "@/components/SearchContainer";
 import Table from "@/components/Table";
 import { useBudgets } from "./useBudgets";
@@ -9,6 +9,7 @@ import Budget from "./Budget";
 import { AnimatePresence } from "framer-motion";
 import { TableIconColumn } from "@/pages/shared/iconsTable";
 import masks from "@/utils/masks";
+import { Button } from "@/components/Button";
 
 export const Budgets = () => {
   const { budgets } = useBudgets();
@@ -26,7 +27,14 @@ export const Budgets = () => {
         header: "Total",
         accessorKey: "total",
         cell: (row: any) => {
-          const value = row.getValue() as any;
+          let value = row.getValue() as any;
+          const d = row.row.original.percDesconto;
+          if (d) {
+            const perc = Number(d);
+            const total = Number(row.row.original.total);
+            const discount = total * (perc / 100);
+            value = total - discount;
+          }
           return <>{masks.currencyAllPlatforms(value)}</>;
         },
       },
@@ -34,18 +42,18 @@ export const Budgets = () => {
         header: "status",
         accessorKey: "status",
       },
-      {
-        header: "Código Anamnese",
-        accessorKey: "idAnamnese",
-        meta: {alignText: "center"},
-      },
+      // {
+      //   header: "Código Anamnese",
+      //   accessorKey: "idAnamnese",
+      //   meta: {alignText: "center"},
+      // },
       {
         header: "Última Alteração",
         accessorKey: "dtUltAlt",
         cell: (row: any) => {
-          const date = row.getValue() as string
+          const date = row.getValue() as string;
           return <>{masks.convertToDateString(date)}</>;
-        }
+        },
       },
       {
         header: "",
@@ -73,16 +81,34 @@ export const Budgets = () => {
   // TODO: integrar orçamento (edição, busca...)
   return (
     <Container>
-      <AnimatePresence>{open && <Budget setOpen={setOpen} data={selectBudget}/>}</AnimatePresence>
+      <AnimatePresence>
+        {open && <Budget setOpen={setOpen} data={selectBudget} />}
+      </AnimatePresence>
 
       {!open && (
         <>
           <ModalBudgets modalRef={modalRefCreate} />
-          <SearchContainer
+
+          <BtnContent>
+            <Button
+              className="add-btn-budget"
+              variant="link"
+              onClick={() => {
+                setSelectBudget(null);
+                setOpen(!open);
+              }}
+            >
+              + Adicionar
+            </Button>
+          </BtnContent>
+          {/* <SearchContainer
             // modalRef={modalRef}
             // onSearch={(e) => handleSearch(e)}
-            onClick={() => {setSelectBudget(null); setOpen(!open)}}
-          />
+            onClick={() => {
+              setSelectBudget(null);
+              setOpen(!open);
+            }}
+          /> */}
 
           <Table
             cols={cols}

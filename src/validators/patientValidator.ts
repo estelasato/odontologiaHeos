@@ -24,6 +24,13 @@ export function hasAgeMin (data: string | Date) {
   return birtdate <= hasMin;
 }
 
+export function isAdult (data: string | Date) {
+  const today = new Date();
+  const birtdate = new Date(data);
+  const hasMin = new Date(today.setMonth(today.getFullYear() - 16));
+  return birtdate >= hasMin;
+}
+
 export const PatientsSchema = AddressValidator.extend({
   id: zod.any().optional(),
   nome: zod.string().min(1, "Campo obrigatório"),
@@ -56,7 +63,8 @@ export const PatientsSchema = AddressValidator.extend({
   email: zod.string().optional(),
   celular: zod
     .string()
-    .min(8, "Campo obrigatório")
+    .optional()
+    // .min(8, "Campo obrigatório")
     .transform((value) => value && masks.unmask(value)),
   sexo: zod
     .string({ message: "Campo obrigatório" })

@@ -26,7 +26,6 @@ export const ModalBasicForm = ({ type, modalRef }: ModalBasic) => {
     register,
     formState: { errors },
   } = basicForm;
-  console.log(errors);
 
   useEffect(() => {
     if (values) {
@@ -63,6 +62,7 @@ export const ModalBasicForm = ({ type, modalRef }: ModalBasic) => {
               value={values?.ativo}
               {...register("ativo")}
               label="Ativo"
+              disabled={ values ? false : true }
             />
           </Content>
           <FooterModal

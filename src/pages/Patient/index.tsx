@@ -17,7 +17,7 @@ export const Patient = () => {
     { label: "Anamneses", component: <Anamnesis />, enable: id ?? false},
     { label: "Orçamentos", component: <Budgets />, enable: id ?? false },
     { label: "Serviços", component: <ServicesList />, enable: id ?? false },
-    { label: "Tratamentos", component: <Treatments />, enable: true }, // sera todos os tratamentos realizados
+    { label: "Tratamentos", component: <Treatments />, enable: false }, // sera todos os tratamentos realizados
   ];
 
   return (

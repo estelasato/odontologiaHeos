@@ -90,8 +90,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     }, [value])
 
     const handleValue = (value: any) => {
-      console.log(value)
-      const result = String(value).slice(0, maxSize) || value
+      const result = !!value ? String(value).slice(0, maxSize) : value
       return mask ? masks[mask](`${result}`) : result || ""
     }
 

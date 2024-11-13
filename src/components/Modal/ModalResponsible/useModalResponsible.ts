@@ -35,10 +35,19 @@ export const useModalResponsible = (
 
   const { refetch } = useResponsible();
   const queryClient = useQueryClient();
+  const responsibles: any[] | undefined = queryClient.getQueryData(["responsibleList"]);
+
+  function invalidCpf(cpf: string) {
+    const result = responsibles?.find((p) => p.cpf == cpf);
+    return result ?? false;
+  }
 
   const onSubmit = async (data?: any) => {
+    if (invalidCpf(data.cpf)) {
+      responsibleForm.setError("cpf", { message: "CPF já cadastrado" });
+      return;
+    }
     try {
-      console.log(data)
       if (data?.dtNascimento && validAge(data?.dtNascimento)) {
           return toast.error("O responsável deve ser maior de idade");
       }

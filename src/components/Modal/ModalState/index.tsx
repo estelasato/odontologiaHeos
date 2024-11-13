@@ -72,6 +72,7 @@ export const ModalState = ({ modalRef }: any) => {
               value={values?.ativo}
               {...register("ativo")}
               label="Ativo"
+              disabled={ values ? false : true }
             />
           </Box>
           <Grid $template="1fr 2fr">

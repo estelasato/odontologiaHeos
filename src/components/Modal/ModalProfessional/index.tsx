@@ -116,6 +116,7 @@ export const ModalProfessional = ({ modalRef }: ModalResponsibleProps) => {
               value={values?.ativo}
               {...register("ativo")}
               label="Ativo"
+              disabled={ values ? false : true }
             />
           </GridComp>
 
@@ -124,6 +125,7 @@ export const ModalProfessional = ({ modalRef }: ModalResponsibleProps) => {
               {...register("cro")}
               label="CRO*"
               error={errors.cro?.message}
+              maxSize={6}
             />
             <Input
               {...register("especialidade")}

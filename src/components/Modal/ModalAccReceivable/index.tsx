@@ -85,7 +85,7 @@ export const ModalAccReceivable = ({ modalRef }: IModalAccReceivable) => {
               mask="convertToDateRegex"
             />
           </Grid>
-
+{/*
           <Grid $template="1fr 1fr 1fr">
             <Input
               {...register("juros")}
@@ -102,15 +102,14 @@ export const ModalAccReceivable = ({ modalRef }: IModalAccReceivable) => {
               label="Desconto"
               disabled
             />
-          </Grid>
+          </Grid> */}
           <FooterModal
             labelConfirmBtn={values?.situacao === 'PAGO' ? 'Parcela paga' : "Marcar como paga"}
             // isLoading={isLoading}
             modalRef={modalRef}
-            // dtCadastro={values?.dtCadastro}
-            // dtUltAlt={values?.dtUltAlt}
-            handleSubmit={handlePayment}
-            // handleSubmit={handleSubmit((e) => values?.situacao != 'PAGO' && handlePayment)}
+            dtCadastro={values?.dtCadastro}
+            dtUltAlt={values?.dtUltAlt}
+            handleSubmit={handleSubmit((e) => values?.situacao == 'PAGO' ? '' : handlePayment())}
           />
       </Container>
       </FormProvider>

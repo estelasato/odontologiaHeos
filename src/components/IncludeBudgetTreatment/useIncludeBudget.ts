@@ -86,8 +86,12 @@ export const useIncludeBudget = (setProcedures: (data: any) => void) => {
       const newList = list?.filter((r: IBudgetProcedure) => {
         return r.idProcedimento != id;
       });
-      console.log(newList, "remove", id, list);
+
       setList(newList);
+      if (newList.length == 0) {
+        setValue("total", undefined)
+        setValue("percDesconto", undefined)
+      }
     },
     [list]
   );
@@ -129,6 +133,7 @@ export const useIncludeBudget = (setProcedures: (data: any) => void) => {
       });
       setValue("total", sumTotal);
       setProcedures(list)
+      calcDiscount()
     }
   }, [list]);
 
@@ -145,6 +150,8 @@ export const useIncludeBudget = (setProcedures: (data: any) => void) => {
   }, [list])
 
   const watchPerc = watch('percDesconto')
+
+
   function calcDiscount() {
     if (!sumTotal) return toast.error('Total inválido')
       if (watchPerc < 0 || watchPerc > 100) return toast.error('Desconto inválido')
@@ -152,7 +159,7 @@ export const useIncludeBudget = (setProcedures: (data: any) => void) => {
     const total = Number(sumTotal)
     const discount = total * (perc / 100)
     const newTotal = total - discount
-    setValue('total', newTotal)
+    setValue('total', masks.currency(`${newTotal}`))
   }
 
   return {
